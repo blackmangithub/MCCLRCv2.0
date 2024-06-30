@@ -4,8 +4,8 @@ session_start();
 // Check if user is already authenticated
 //if(isset($_SESSION['auth'])) {
 //    $_SESSION['message_error'] = "You are already logged in";
- //   header("Location: index.php");
- //   exit(0);
+//    header("Location: index.php");
+//    exit(0);
 //}
 
 include('./admin/config/dbcon.php');
@@ -54,8 +54,8 @@ include('./admin/config/dbcon.php');
 <body>
      <section class="d-flex mt-1 flex-column justify-content-center align-items-center">
           <a href="home.php" class="back">
-          <i class="bi bi-arrow-left-circle-fill"></i>
-     </a>
+               <i class="bi bi-arrow-left-circle-fill"></i>
+          </a>
           <div class="container-xl">
                <div class="col mx-auto rounded shadow bg-white">
                     <div class="row">
@@ -87,13 +87,13 @@ include('./admin/config/dbcon.php');
                                         <div class="invalid-feedback">Please select your role.</div>
                                    </div>
                                    <div class="col-md-12">
-                                   <div class="form-floating mb-3">
-                    <input type="text" id="student_id" class="form-control" name="student_id" placeholder="Student ID No" autocomplete="off" required maxlength="9" oninput="formatStudentID(this)">
-                    <label id="student_id_label" for="student_id">Student ID No.</label>
-                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                        Please enter your Student ID No.
-                    </div>
-                </div>
+                                        <div class="form-floating mb-3">
+                                             <input type="text" id="student_id" class="form-control" name="student_id" placeholder="Student ID No" autocomplete="off" required maxlength="9" oninput="formatStudentID(this)">
+                                             <label id="student_id_label" for="student_id">Student ID No.</label>
+                                             <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                                  Please enter your Student ID No.
+                                             </div>
+                                        </div>
                                         <div class="form-floating mb-3">
                                              <span class="password-show-toggle js-password-show-toggle"><span
                                                        class="uil"></span></span>
@@ -112,6 +112,9 @@ include('./admin/config/dbcon.php');
                                              <p>
                                                   Don't have an account?
                                                   <a href="./signup.php" class="text-info">Signup</a>
+                                             </p>
+                                             <p>
+                                                  <a href="reset-password.php" class="text-info">Forgot Password?</a>
                                              </p>
                                         </div>
                                    </div>
@@ -146,22 +149,22 @@ include('./admin/config/dbcon.php');
           });
 
           function formatStudentID(input) {
-        let studentID = input.value.trim(); // Trim whitespace from input
+               let studentID = input.value.trim(); // Trim whitespace from input
 
-        // Remove non-numeric characters except hyphen
-        studentID = studentID.replace(/[^\d-]/g, '');
+               // Remove non-numeric characters except hyphen
+               studentID = studentID.replace(/[^\d-]/g, '');
 
-        // Remove hyphen if already present
-        studentID = studentID.replace(/-/g, '');
+               // Remove hyphen if already present
+               studentID = studentID.replace(/-/g, '');
 
-        // Insert hyphen after the first 4 digits if necessary
-        if (studentID.length > 4) {
-            studentID = studentID.substring(0, 4) + '-' + studentID.substring(4);
-        }
+               // Insert hyphen after the first 4 digits if necessary
+               if (studentID.length > 4) {
+                    studentID = studentID.substring(0, 4) + '-' + studentID.substring(4);
+               }
 
-        // Update the input field value
-        input.value = studentID;
-    }
+               // Update the input field value
+               input.value = studentID;
+          }
      </script>
 
      <?php

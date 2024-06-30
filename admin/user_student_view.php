@@ -45,7 +45,7 @@ include('includes/sidebar.php');
                               <center>
                                    <?php if($user['qr_code'] != ""): ?>
                                    <img src="../qrcodes/<?php echo $user['qr_code']; ?>" alt=""
-                                        width="200px" height="200px">
+                                        width="150px" height="150px">
                                    <?php else: ?>
                                    <img src="assets/img/admin.png" class="rounded-circle" alt="" width="250px"
                                         height="250px">
