@@ -54,7 +54,7 @@ include('includes/navbar.php');
 
                <div class="col-md-6 p-5">
                     <h4 class="fs-1">Monday - Saturdays:</h4>
-                    <h4 class="fs-3">8:00 AM 5:00 PM (No Noon Break)</h4>
+                    <h4 class="fs-3">10:00 AM 5:00 PM (No Noon Break)</h4>
                </div>
                <div class="col-md-6">
                     <img src="assets/img/undraw_book_lover_re_rwjy.svg" class="h-75" alt="">
