@@ -5,7 +5,7 @@ include('config/dbcon.php');
 if(!isset($_SESSION['auth']))
 {
   $_SESSION['message_error'] ="Scan your QR Code to enter.";
-  header("Location:index.php");
+  header("Location:attendance_list.php");
   exit(0);
 }
 else  
@@ -13,7 +13,7 @@ else
   if($_SESSION['auth_role'] != "1")
   {
     $_SESSION['message_error'] = "<small>You are not authorized as ADMIN</small>";
-    header("Location:admin_login.php");
+    header("Location:attendance_list.php");
     exit(0);
   }
   
