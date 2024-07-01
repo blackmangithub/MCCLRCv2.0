@@ -134,7 +134,7 @@ include('includes/navbar.php');
                          <div class="col-md-7 col-lg-8 text-center text-md-start">
                               <!-- Copyright -->
                               <div class="p-3">
-                                   Madridejos Community College
+                                   Madridejos Community College 2.0
                               </div>
 
                          </div>
