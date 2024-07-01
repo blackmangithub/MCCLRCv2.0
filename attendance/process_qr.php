@@ -41,7 +41,7 @@ if (isset($_POST['text'])) {
         $lastname = $user['lastname'];
         $date_log = date("Y-m-d");
 
-        $log_query = "INSERT INTO user_log (username, firstname, middlename, lastname, time_log, date_log) VALUES ('$username', '$firstname', '$middlename', '$lastname', NOW(), '$date_log')";
+        $log_query = "INSERT INTO user_log (student_id, firstname, middlename, lastname, time_log, date_log) VALUES ('$username', '$firstname', '$middlename', '$lastname', NOW(), '$date_log')";
         $log_query_run = mysqli_query($con, $log_query);
 
         if ($log_query_run) {

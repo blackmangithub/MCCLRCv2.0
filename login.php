@@ -132,40 +132,56 @@ include('./admin/config/dbcon.php');
      <script src="assets/js/script.js"></script>
 
      <script>
-          document.addEventListener('DOMContentLoaded', function() {
-               const roleSelect = document.getElementById('role_as');
-               const studentIdLabel = document.getElementById('student_id_label');
-               const studentIdInput = document.getElementById('student_id');
+     document.addEventListener('DOMContentLoaded', function() {
+          const roleSelect = document.getElementById('role_as');
+          const studentIdLabel = document.getElementById('student_id_label');
+          const studentIdInput = document.getElementById('student_id');
 
-               roleSelect.addEventListener('change', function() {
-                    if (roleSelect.value === 'faculty') {
-                         studentIdLabel.textContent = 'Username';
-                         studentIdInput.placeholder = 'Enter your username';
-                    } else {
-                         studentIdLabel.textContent = 'Student ID No.';
-                         studentIdInput.placeholder = 'Enter your Student ID No.';
-                    }
-               });
+          // Event listener for role select change
+          roleSelect.addEventListener('change', function() {
+               if (roleSelect.value === 'faculty') {
+                    studentIdLabel.textContent = 'Username';
+                    studentIdInput.placeholder = 'Enter your username';
+                    studentIdInput.removeAttribute('maxlength'); // Remove maxlength for free typing
+                    studentIdInput.removeEventListener('input', formatStudentID); // Remove formatStudentID event
+               } else {
+                    studentIdLabel.textContent = 'Student ID No.';
+                    studentIdInput.placeholder = 'Enter your Student ID No. (e.g., 2021-1055)';
+                    studentIdInput.setAttribute('maxlength', '9'); // Set maxlength for student ID
+                    studentIdInput.addEventListener('input', formatStudentID); // Add formatStudentID event
+               }
           });
 
-          function formatStudentID(input) {
-               let studentID = input.value.trim(); // Trim whitespace from input
-
-               // Remove non-numeric characters except hyphen
-               studentID = studentID.replace(/[^\d-]/g, '');
-
-               // Remove hyphen if already present
-               studentID = studentID.replace(/-/g, '');
-
-               // Insert hyphen after the first 4 digits if necessary
-               if (studentID.length > 4) {
-                    studentID = studentID.substring(0, 4) + '-' + studentID.substring(4);
-               }
-
-               // Update the input field value
-               input.value = studentID;
+          // Initial setup based on default role selection
+          if (roleSelect.value === 'faculty') {
+               studentIdInput.removeAttribute('maxlength');
+               studentIdInput.removeEventListener('input', formatStudentID);
+          } else {
+               studentIdInput.setAttribute('maxlength', '9');
+               studentIdInput.addEventListener('input', formatStudentID);
           }
-     </script>
+     });
+
+     function formatStudentID() {
+    const studentIDInput = document.getElementById('student_id');
+    const roleSelect = document.getElementById('role_as');
+    const selectedRole = roleSelect.value;
+
+    if (selectedRole === 'student') {
+        let studentID = studentIDInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+
+        // Format based on the length of studentID
+        if (studentID.length > 4) {
+            studentID = studentID.slice(0, 4) + '-' + studentID.slice(4); // Format as YYYY-XXXX
+        } else if (studentID.length > 0) {
+            studentID = studentID.slice(0, 4); // If less than 4 characters, keep as is (possibly incomplete)
+        }
+
+        studentIDInput.value = studentID; // Update the input value
+    }
+}
+</script>
+
 
      <?php
      // Include scripts and message handling here

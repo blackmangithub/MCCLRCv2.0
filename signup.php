@@ -269,11 +269,7 @@ include('./admin/config/dbcon.php');
                          <div class="field">
                     <div class="label" id="stud_idLabel">Student ID No.</div>
                     <input type="text" name="student_id_no" id="student_id_no" maxlength="9" oninput="formatStudentID(this)">
-                    <div class="invalid-feedback">
-                        Student ID must be in the format '1234-5678'.
-                    </div>
                 </div>
-
                 <div class="field">
                     <div class="label">Password</div>
                     <input type="password" name="password" id="passwordInput" oninput="validatePassword(this)">
@@ -316,128 +312,91 @@ include('./admin/config/dbcon.php');
      <script src="assets/js/script.js"></script>
 
      <script>
-          document.addEventListener('DOMContentLoaded', (event) => {
+          function togglePasswordVisibility() {
+               const passwordInput = document.getElementById('password');
+               const passwordIcon = document.querySelector('.toggle-password-icon');
+               if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordIcon.classList.remove('fa-eye');
+                    passwordIcon.classList.add('fa-eye-slash');
+               } else {
+                    passwordInput.type = 'password';
+                    passwordIcon.classList.remove('fa-eye-slash');
+                    passwordIcon.classList.add('fa-eye');
+               }
+          }
+
+          function toggleConfirmPasswordVisibility() {
+               const passwordInput = document.getElementById('confirm-password');
+               const passwordIcon = document.querySelector('.toggle-password-icon');
+               if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordIcon.classList.remove('fa-eye');
+                    passwordIcon.classList.add('fa-eye-slash');
+               } else {
+                    passwordInput.type = 'password';
+                    passwordIcon.classList.remove('fa-eye-slash');
+                    passwordIcon.classList.add('fa-eye');
+               }
+          }
+
+          function formatCellphone(cell) {
+               const cleaned = cell.value.replace(/\D/g, '');
+               const match = cleaned.match(/^(\d{4})(\d{3})(\d{4})$/);
+               if (match) {
+                    cell.value = `(${match[1]}) ${match[2]}-${match[3]}`;
+               }
+          }
+
+          function formatStudentID() {
+    const studentIDInput = document.getElementById('student_id_no');
     const roleSelect = document.getElementById('role');
-    const courseLabel = document.getElementById('courseLabel');
-    const stud_idLabel = document.getElementById('stud_idLabel');
-    const optionLabel = document.getElementById('optionLabel');
-    const year_levelField = document.getElementById('year_levelField');
+    const selectedRole = roleSelect.value;
 
-    roleSelect.addEventListener('change', (event) => {
-        if (event.target.value === 'faculty') {
-          courseLabel.textContent = 'Department';
-          stud_idLabel.textContent = 'Username';
-          optionLabel.textContent = '--Select Department--';
-          year_levelField.style.display = 'none';
+    if (selectedRole === 'student') {
+        let studentID = studentIDInput.value.replace(/\D/g, ''); // Remove non-numeric characters
 
-        } else {
-          courseLabel.textContent = 'Course';
-          stud_idLabel.textContent = 'Student ID No.';
-          optionLabel.textContent = '--Select Course--';
-          year_levelField.style.display = 'block';
+        // Format based on the length of studentID
+        if (studentID.length > 4) {
+            studentID = studentID.slice(0, 4) + '-' + studentID.slice(4); // Format as YYYY-XXXX
+        } else if (studentID.length > 0) {
+            studentID = studentID.slice(0, 4); // If less than 4 characters, keep as is (possibly incomplete)
         }
-    });
-});
 
-document.addEventListener('DOMContentLoaded', function() {
-    const togglePassword = document.querySelectorAll('.toggle-password');
-
-    togglePassword.forEach(function(toggle) {
-        toggle.addEventListener('click', function() {
-            const toggleIcon = this.querySelector('.toggle-password-icon');
-            const toggleTarget = document.querySelector(this.getAttribute('toggle'));
-
-            if (toggleTarget.type === 'password') {
-                toggleTarget.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                toggleTarget.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        });
-    });
-});
-
-function validateNameInput(inputElement, feedbackElement) {
-        var name = inputElement.value.trim();
-        
-        // Check if input is empty
-        if (name === '') {
-            feedbackElement.style.display = 'none';
-            inputElement.classList.remove('is-invalid');
-            return;
-        }
-        
-        // Check if the first character is uppercase
-        if (/^[A-Z]/.test(name)) {
-            feedbackElement.style.display = 'none';
-            inputElement.classList.remove('is-invalid');
-        } else {
-            feedbackElement.style.display = 'block';
-            inputElement.classList.add('is-invalid');
-        }
+        studentIDInput.value = studentID; // Update the input value
     }
+}
 
-    document.getElementById('lastname').addEventListener('input', function () {
-        validateNameInput(this, this.nextElementSibling);
-    });
+          document.getElementById('role').addEventListener('change', function () {
+               const yearLevelField = document.getElementById('year_levelField');
+               const stud_idLabel = document.getElementById('stud_idLabel');
+               const roleSelect = document.getElementById('role');
+               const studentIDInput = document.getElementById('student_id_no');
+               const selectedRole = roleSelect.value;
 
-    document.getElementById('firstname').addEventListener('input', function () {
-        validateNameInput(this, this.nextElementSibling);
-    });
+               if (selectedRole === 'student') {
+                    yearLevelField.style.display = 'block';
+                    stud_idLabel.textContent = 'Student ID No.';
+                    studentIDInput.value = ''; // Clear the input value
+               } else if (selectedRole === 'faculty') {
+                    yearLevelField.style.display = 'none';
+                    stud_idLabel.textContent = 'Faculty Username';
+                    studentIDInput.value = ''; // Clear the input value
+               }
+          });
 
-    document.getElementById('middlename').addEventListener('input', function () {
-        validateNameInput(this, this.nextElementSibling);
-    });
+          function validateCellphone(input) {
+               const value = input.value;
+               const warningMessage = document.getElementById('warning_message');
 
-    function validateCellphone(input) {
-            const phoneNumber = input.value.trim();
-
-            if (phoneNumber === "") {
-                document.getElementById('warning_message').textContent = ""; // Clear warning if input is empty
-            } else if (!phoneNumber.startsWith('09')) {
-                document.getElementById('warning_message').textContent = "Please enter a valid cellphone number starting with '09'.";
-            } else {
-                document.getElementById('warning_message').textContent = ""; // Clear warning if '09' prefix is correct
-            }
-        }
-
-        // Prevent non-numeric input
-        document.getElementById('cell_no').addEventListener('input', function(e) {
-            this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
-        });
-
-        function formatStudentID(input) {
-        // Remove non-numeric characters
-        let formatted = input.value.replace(/\D/g, '');
-
-        // Apply formatting if there are more than 4 digits
-        if (formatted.length > 4) {
-            formatted = formatted.substring(0, 4) + '-' + formatted.substring(4, 8);
-        } else if (formatted.length === 4 && !formatted.includes('-')) {
-            formatted = formatted.substring(0, 4) + '-';
-        }
-
-        // Update the input field value
-        input.value = formatted;
-    }
-
-    function validatePassword(input) {
-        const password = input.value.trim(); // Trim whitespace from input
-        
-        if (password === '') {
-            document.getElementById('passwordLengthFeedback').style.display = 'none'; // Hide feedback if password is empty
-            input.classList.remove('is-invalid');
-        } else if (password.length >= 8) {
-            document.getElementById('passwordLengthFeedback').style.display = 'none';
-            input.classList.remove('is-invalid');
-        } else {
-            document.getElementById('passwordLengthFeedback').style.display = 'block';
-            input.classList.add('is-invalid');
-        }
-    }
+               if (!/^09\d{9}$/.test(value)) {
+                    input.classList.add('is-invalid');
+                    warningMessage.textContent = "Invalid phone number. Please enter an 11-digit phone number starting with '09'.";
+               } else {
+                    input.classList.remove('is-invalid');
+                    warningMessage.textContent = '';
+               }
+          }
      </script>
 
      <?php include('message.php'); ?>

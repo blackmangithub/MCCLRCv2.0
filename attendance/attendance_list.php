@@ -129,8 +129,8 @@
                                                                            class="table table-striped table-bordered">
                                                                            <thead>
                                                                                 <tr>
-                                                                                     <th>Student ID</th>
-                                                                                     <th>Student Name</th>
+                                                                                     
+                                                                                     <th>Full Name</th>
                                                                                      <th>Time In</th>
                                                                                      <th>Date</th>
                                                                                 </tr>
@@ -154,7 +154,7 @@
                                                        ?>
                                                                                 <tr>
                                                                                      <?php date_default_timezone_set('Asia/Manila'); ?>
-                                                                                     <td><?= $row['student_id']; ?></td>
+                                                                                     
                                                                                      <td><?= $row['firstname'].' '.$row['middlename'].' '.$row['lastname']; ?>
                                                                                      </td>
                                                                                      <td><?= date("h:i:s a", strtotime($row['time_log'])); ?>
@@ -169,14 +169,14 @@
                                              else
                                              {
                                              
-                                                  $result= mysqli_query($con,"SELECT * from user_log ORDER BY user_log_id DESC 
+                                                  $result= mysqli_query($con,"SELECT * FROM user_log ORDER BY user_log_id DESC 
                                              ");
                                                   while ($row= mysqli_fetch_array ($result) ){
                                                  
                                                   ?>
                                                                                 <tr>
                                                                                      <?php date_default_timezone_set('Asia/Manila'); ?>
-                                                                                     <td><?= $row['student_id']; ?></td>
+                                                                                     
                                                                                      <td><?= $row['firstname'].' '.$row['middlename'].' '.$row['lastname']; ?>
                                                                                      </td>
                                                                                      <td><?= date("h:i:s a", strtotime($row['time_log'])); ?>
