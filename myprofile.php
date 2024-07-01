@@ -157,6 +157,9 @@ $name_session = $_SESSION['auth_stud']['stud_name'];
                                                                  <div class="col-md-8 col-lg-9 position-relative">
                                                                       <input name="current_password" type="password" class="form-control" id="currentPassword">
                                                                       <i class="bi bi-eye-fill position-absolute password-toggle" id="toggleCurrentPassword" style="right: 23px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                                                      <div class="invalid-feedback" id="currentPasswordWarning">
+                                                                           Password must be at least 8 characters long.
+                                                                      </div>
                                                                  </div>
                                                             </div>
                                                             <div class="row mb-3">
@@ -164,6 +167,9 @@ $name_session = $_SESSION['auth_stud']['stud_name'];
                                                                  <div class="col-md-8 col-lg-9 position-relative">
                                                                       <input name="newpassword" type="password" class="form-control" id="newPassword">
                                                                       <i class="bi bi-eye-fill position-absolute password-toggle" id="toggleNewPassword" style="right: 23px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                                                      <div class="invalid-feedback" id="newPasswordWarning">
+                                                                           Password must be at least 8 characters long.
+                                                                      </div>
                                                                  </div>
                                                             </div>
                                                             <div class="row mb-3">
@@ -171,13 +177,13 @@ $name_session = $_SESSION['auth_stud']['stud_name'];
                                                                  <div class="col-md-8 col-lg-9 position-relative">
                                                                       <input name="renewpassword" type="password" class="form-control" id="renewPassword">
                                                                       <i class="bi bi-eye-fill position-absolute password-toggle" id="toggleRenewPassword" style="right: 23px; top: 30%; transform: translateY(-50%); cursor: pointer;"></i>
+                                                                      <div class="invalid-feedback" id="renewPasswordWarning">
+                                                                           Password must be at least 8 characters long.
+                                                                      </div>
                                                                  </div>
                                                             </div>
                                                             <div class="text-center">
                                                                  <button type="submit" name="change_password" class="btn btn-primary">Change Password</button>
-                                                            </div>
-                                                            <div id="passwordWarning" class="text-center text-danger" style="display: none;">
-                                                                 Password must be at least 8 characters long.
                                                             </div>
                                                        </form>
                                                   </div>
@@ -299,16 +305,42 @@ function togglePasswordVisibility(passwordId, toggleIconId) {
 function validatePasswords() {
     const newPassword = document.getElementById('newPassword').value;
     const renewPassword = document.getElementById('renewPassword').value;
-    const passwordWarning = document.getElementById('passwordWarning');
 
-    if (newPassword.length < 8 || renewPassword.length < 8) {
-        passwordWarning.style.display = 'block';
-        return false;
+    let valid = true;
+
+    if (newPassword.length < 8) {
+        document.getElementById('newPasswordWarning').style.display = 'block';
+        valid = false;
+    } else {
+        document.getElementById('newPasswordWarning').style.display = 'none';
     }
 
-    passwordWarning.style.display = 'none';
-    return true;
+    if (renewPassword.length < 8) {
+        document.getElementById('renewPasswordWarning').style.display = 'block';
+        valid = false;
+    } else {
+        document.getElementById('renewPasswordWarning').style.display = 'none';
+    }
+
+    return valid;
 }
+
+// Add event listeners to validate passwords on input
+document.getElementById('newPassword').addEventListener('input', function () {
+    if (this.value.length >= 8) {
+        document.getElementById('newPasswordWarning').style.display = 'none';
+    } else {
+        document.getElementById('newPasswordWarning').style.display = 'block';
+    }
+});
+
+document.getElementById('renewPassword').addEventListener('input', function () {
+    if (this.value.length >= 8) {
+        document.getElementById('renewPasswordWarning').style.display = 'none';
+    } else {
+        document.getElementById('renewPasswordWarning').style.display = 'block';
+    }
+});
 </script>
 
 <?php
