@@ -39,23 +39,21 @@ $name_session = $_SESSION['auth_stud']['stud_name'];
                 
                ?>
                                    <div class="card">
-                                        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
-
-                                             <center>
-                                                  <?php if($row['qr_code'] != ""): ?>
-                                                  <img src="qrcodes/<?php echo $row['qr_code']; ?>"
-                                                       alt="" width="200px" height="200px">
-                                                  <?php else: ?>
-                                                  <img src="uploads/books_img/book_image.jpg" alt="" width="200px"
-                                                       height="250px">
-                                                  <?php endif; ?>
-                                             </center>
-
-                                             <h3><?= $row['role_as'];?></h3>
-
-                                        </div>
-                                   </div>
+                              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                                   <center>
+                                        <?php if($row['qr_code'] != ""): ?>
+                                             <a href="qrcodes/<?php echo $row['qr_code']; ?>" download>
+                                                  <img src="qrcodes/<?php echo $row['qr_code']; ?>" alt="QR Code" width="200px" height="200px">
+                                             </a>
+                                        <?php else: ?>
+                                             <img src="uploads/books_img/book_image.jpg" alt="Book Image" width="200px" height="250px">
+                                        <?php endif; ?>
+                                        <h4 style="font-size:15px;margin-top:-18px;">Click the QR Code to download.</h4>
+                                   </center>
+                                   <br>
+                                   <h3><?= strtoupper($row['role_as']); ?></h3>
+                              </div>
+                              </div>
                               </div>
                               <div class="col-xl-8">
                                    <div class="card">
