@@ -23,13 +23,18 @@
 </head>
 
 <body>
-    <header id="header" class="header fixed-top d-flex align-items-center">
+    <header id="header" class="header fixed-top d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
             <a href="#" class="logo d-flex align-items-center">
                 <img src="assets/img/mcc-logo.png" alt="logo" class=" mx-2" />
                 <span class="d-none d-lg-block mx-2">MCC <span class="text-info d-block fs-6">Learning Resource Center</span></span>
             </a>
         </div>
+        <div class="d-flex align-items-center">
+        <a href="attendance_list.php" class="btn btn-primary position-relative mx-5">
+                Back
+                </a>
+</div>
     </header>
 
     <main id="main" class="main">
