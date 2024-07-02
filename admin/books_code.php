@@ -103,9 +103,8 @@ if(isset($_POST['update_book']))
 }
 
 // Add Book
-if(isset($_POST['add_book']))
-{
-     
+// Add Book
+if(isset($_POST['add_book'])) {
      $title = mysqli_real_escape_string($con, $_POST['title']);
      $author = mysqli_real_escape_string($con, $_POST['author']);
      $copyright_date = mysqli_real_escape_string($con, $_POST['copyright_date']);
@@ -113,67 +112,45 @@ if(isset($_POST['add_book']))
      $isbn = mysqli_real_escape_string($con, $_POST['isbn']);
      $place_publication = mysqli_real_escape_string($con, $_POST['place_publication']);
      $call_number = mysqli_real_escape_string($con, $_POST['call_number']);
-     $accession_number = mysqli_real_escape_string($con, $_POST['accession_number']);
      $copy = mysqli_real_escape_string($con, $_POST['copy']);
      $category = mysqli_real_escape_string($con, $_POST['category']);
      $book_image = $_FILES['book_image']['name'];
-    
-     if($book_image != "")
-     {
-          $book_extension = pathinfo($book_image, PATHINFO_EXTENSION);
-          $book_filename = time().'.'. $book_extension;
-
-          $pre = "MCC";
-          $mid = $_POST['new_barcode'];
-          $suf = "LRC";
-          $gen = $pre.$mid.$suf;
-
-          $query = "INSERT INTO book (title, author, copyright_date, publisher, isbn, place_publication, call_number, accession_number, copy, category_id, barcode, book_image, date_added) VALUES ('$title', '$author', '$copyright_date', '$publisher', '$isbn', '$place_publication', '$call_number', '$accession_number',  '$copy', '$category', '$gen', '$book_filename', NOW())";
-          $query_run = mysqli_query($con, $query);
-
-          mysqli_query($con,"insert into barcode (pre_barcode,mid_barcode,suf_barcode) values ('$pre', '$mid', '$suf') ");
-
-          if($query_run)
-          {
-               move_uploaded_file($_FILES['book_image']['tmp_name'], '../uploads/books_img/'.$book_filename);
-               $_SESSION['message_success'] = 'Book Added successfully';
-               header("Location: books.php");
-               exit(0);
-          }
-          else
-          {
-               $_SESSION['message_error'] = 'Book not Added';
-               header("Location: books.php");
-               exit(0);
-          }
+ 
+     if($book_image != "") {
+         $book_extension = pathinfo($book_image, PATHINFO_EXTENSION);
+         $book_filename = time().'.'. $book_extension;
+ 
+         $pre = "MCC"; // Prefix for the barcode
+         $suf = "LRC"; // Suffix for the barcode
+ 
+         // Insert book for each accession number
+         for ($i = 1; $i <= $copy; $i++) {
+             $accession_number = mysqli_real_escape_string($con, $_POST['accession_number_' . $i]);
+             
+             // Generate barcode based on accession number
+             $gen = $pre . $accession_number . $suf;
+ 
+             $query = "INSERT INTO book (title, author, copyright_date, publisher, isbn, place_publication, call_number, accession_number, copy, category_id, barcode, book_image, date_added) VALUES ('$title', '$author', '$copyright_date', '$publisher', '$isbn', '$place_publication', '$call_number', '$accession_number', '$copy', '$category', '$gen', '$book_filename', NOW())";
+             $query_run = mysqli_query($con, $query);
+         }
+ 
+         if($query_run) {
+             mysqli_query($con,"insert into barcode (pre_barcode,mid_barcode,suf_barcode) values ('$pre', '$mid', '$suf') ");
+             
+             move_uploaded_file($_FILES['book_image']['tmp_name'], '../uploads/books_img/'.$book_filename);
+             $_SESSION['message_success'] = 'Book Added successfully';
+             header("Location: books.php");
+             exit(0);
+         } else {
+             $_SESSION['message_error'] = 'Book not Added';
+             header("Location: books.php");
+             exit(0);
+         }
+     } else {
+         $_SESSION['message_error'] = 'Please upload a book image';
+         header("Location: books.php");
+         exit(0);
      }
-     else
-     {
-          $pre = "MCC";
-          $mid = $_POST['new_barcode'];
-          $suf = "LRC";
-          $gen = $pre.$mid.$suf;
-
-          $query = "INSERT INTO book (title, author, copyright_date, publisher, isbn, place_publication, call_number, accession_number, copy, category_id, barcode, book_image, date_added) VALUES ('$title', '$author', '$copyright_date', '$publisher', '$isbn', '$place_publication', '$call_number', '$accession_number', '$copy', '$category' '$gen', '$book_image', NOW())";
-          $query_run = mysqli_query($con, $query);
-
-          mysqli_query($con,"insert into barcode (pre_barcode,mid_barcode,suf_barcode) values ('$pre', '$mid', '$suf') ");
-
-          if($query_run)
-          {
-               move_uploaded_file($_FILES['book_image']['tmp_name'], '../uploads/books_img/'.$_FILES['book_image']['name']);
-               $_SESSION['message_success'] = 'Book Added successfully';
-               header("Location: books.php");
-               exit(0);
-          }
-          else
-          {
-               $_SESSION['message_error'] = 'Book not Added';
-               header("Location: books.php");
-               exit(0);
-          }
-     }
-     
-     
-}
+ }
+ 
 ?>
