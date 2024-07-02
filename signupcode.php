@@ -62,7 +62,7 @@ if(isset($_POST['register_btn'])) {
     if(mysqli_query($con, $insert_query)) {
         // Generate QR Code
         $identifier = ($role_as == 'student') ? $student_id_no : $student_id_no; // Adjust username if needed for faculty
-        $qrdata = "User ID: $identifier\nRole: $role_as"; // Example data to encode in QR code
+        $qrdata = "$identifier"; // Example data to encode in QR code
         $qrfile = "./qrcodes/$identifier.png"; // Path to save QR code image
         $qrimage = "$identifier.png";
         QRcode::png($qrdata, $qrfile); // Generate QR code
