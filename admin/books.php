@@ -110,17 +110,6 @@ include('./includes/sidebar.php');
                                                                                 title="Edit Book">
                                                                                 <i class="bi bi-pencil-fill"></i>
                                                                            </a>
-                                                                           <!-- Delete Book Action-->
-                                                                           <form action="books_code.php" method="POST">
-                                                                                <button type="submit" name="delete_book"
-                                                                                     value="<?=$book['book_id'];?>"
-                                                                                     class="btn btn-sm  border text-danger"
-                                                                                     data-bs-toggle="tooltip"
-                                                                                     data-bs-placement="bottom"
-                                                                                     title="Delete Book">
-                                                                                     <i class="bi bi-trash-fill"></i>
-                                                                                </button>
-                                                                           </form>
                                                                       </div>
                                                                  </td>
                                                             </tr>

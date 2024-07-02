@@ -113,7 +113,7 @@ if(isset($_POST['add_book'])) {
      $place_publication = mysqli_real_escape_string($con, $_POST['place_publication']);
      $call_number = mysqli_real_escape_string($con, $_POST['call_number']);
      $copy = mysqli_real_escape_string($con, $_POST['copy']);
-     $category = mysqli_real_escape_string($con, $_POST['category']);
+     $category = mysqli_real_escape_string($con, $_POST['lrc_location']);
      $book_image = $_FILES['book_image']['name'];
  
      if($book_image != "") {
@@ -130,7 +130,7 @@ if(isset($_POST['add_book'])) {
              // Generate barcode based on accession number
              $gen = $pre . $accession_number . $suf;
  
-             $query = "INSERT INTO book (title, author, copyright_date, publisher, isbn, place_publication, call_number, accession_number, copy, category_id, barcode, book_image, date_added) VALUES ('$title', '$author', '$copyright_date', '$publisher', '$isbn', '$place_publication', '$call_number', '$accession_number', '$copy', '$category', '$gen', '$book_filename', NOW())";
+             $query = "INSERT INTO book (title, author, copyright_date, publisher, isbn, place_publication, call_number, accession_number, copy, category_id, barcode, book_image, date_added, status) VALUES ('$title', '$author', '$copyright_date', '$publisher', '$isbn', '$place_publication', '$call_number', '$accession_number', '$copy', '$category', '$gen', '$book_filename', NOW(), 'Available')";
              $query_run = mysqli_query($con, $query);
          }
  
