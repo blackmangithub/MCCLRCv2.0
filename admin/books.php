@@ -63,7 +63,7 @@ include('./includes/sidebar.php');
                                                        </thead>
                                                        <tbody>
                                                             <?php
-                                                            $query = "SELECT * FROM book";
+                                                            $query = "SELECT * FROM book GROUP BY title ORDER BY title DESC";
                                                             $query_run = mysqli_query($con, $query);
                                                             
                                                             if(mysqli_num_rows($query_run))

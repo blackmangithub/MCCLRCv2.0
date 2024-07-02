@@ -18,13 +18,23 @@ include('./includes/sidebar.php');
           <div class="row">
                <div class="col-lg-12">
                     <div class="card">
-                         <div class="card-header d-flex align-items-center justify-content-between">
-                              <h5 class="m-0 text-dark fw-bold">Book Details</h5>
-                              <a href="books.php" class="btn btn-primary">
-                                   Back
-                              </a>
-                         </div>
-                         <div class="card-body">
+                    <div class="card-body">
+                    <div class="table-responsive mt-3">
+                    <ul class="nav nav-tabs" id="myTab">
+                                        <li class="nav-item">
+                                             <!-- Book Tab -->
+                                             <button class="nav-link active" id="books-tab" data-bs-toggle="tab"
+                                                  data-bs-target="#books-tab-pane">Book Details</button>
+                                        </li>
+                                        <li class="nav-item">
+                                             <!-- Ebook Tabs -->
+                                             <button class="nav-link" id="ebooks-tab" data-bs-toggle="tab"
+                                                  data-bs-target="#ebooks-tab-pane">Copies</button>
+                                        </li>
+                                   </ul>
+                                   <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="books-tab-pane">
+                                        <div class="card-body">
                               <?php
                               if(isset($_GET['id']))
                               {
@@ -89,11 +99,6 @@ include('./includes/sidebar.php');
                                         </div>
 
                                         <div class="mb-3">
-                                             <span class="fw-semibold">Accession Number &ensp;</span>
-                                             <p class="d-inline">:&nbsp;<?=$book['accession_number'];?></p>
-                                        </div>
-
-                                        <div class="mb-3">
 
                                              <span class="fw-semibold">LRC Location &ensp;</span>
                                              <p class="d-inline">:&nbsp;<?=$book['classname'];?></p>
@@ -112,19 +117,49 @@ include('./includes/sidebar.php');
                                              <p class="d-inline">:&nbsp;<?=$book['call_number'];?></p>
                                         </div>
 
-
-
-
-
-                                        <div class="">
-                                             <span class="fw-semibold">Barcode
-                                                  &emsp;&emsp;&emsp;&emsp;&emsp;&ensp;</span>
-                                             <p class="d-inline">:&nbsp;<?=$book['barcode'];?></p>
-                                        </div>
                                    </div>
                               </div>
 
                          </div>
+</div>
+<div class="tab-pane fade" id="ebooks-tab-pane">
+<div class="table-responsive">
+    <br>
+    <!-- Books Table -->
+                              <table id="myDataTable" class="table table-bordered table-striped table-sm">
+                                   <thead>
+                                        <tr>
+                                             <th>Accession No.</th>
+                                             <th>Barcode</th>
+                                             <th>Status</th>
+                                             <th>LRC Location</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <?php
+                                        $query = "SELECT * FROM book ORDER BY title DESC";
+                                        $query_run = mysqli_query($con, $query);
+
+                                        if(mysqli_num_rows($query_run) > 0) {
+                                             while($book = mysqli_fetch_assoc($query_run)) {
+                                        ?>
+                                        <tr>
+                                             <td><?= $book['accession_number']; ?></td>
+                                             <td><?= $book['barcode']; ?></td>
+                                             <td><?= $book['status']; ?></td>
+                                             <td><?= $book['category_id']; ?></td>
+                                        </tr>
+                                        <?php
+                                             }
+                                        } else {
+                                             echo '<tr><td colspan="4">No records found</td></tr>';
+                                        }
+                                        ?>
+                                   </tbody>
+                              </table>
+                              </div>
+                                        </div>
+</div>
                          <div class="card-footer d-flex justify-content-end">
 
 
@@ -138,6 +173,8 @@ include('./includes/sidebar.php');
                          }  
                          ?>
                          </div>
+                    </div>
+                    </div>
                     </div>
                </div>
      </section>
