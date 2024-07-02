@@ -57,7 +57,7 @@ include('includes/navbar.php');
                     <h4 class="fs-3">8:00 AM 5:00 PM (No Noon Break)</h4>
                </div>
                <div class="col-md-6">
-                    <img src="assets/img/undraw_book_lover_re_rwjy.svg" class="h-75" alt="">
+                    <img src="" class="h-75" alt="">
                </div>
           </div>
      </div>
