@@ -12,48 +12,89 @@ if (isset($_POST['text'])) {
     $faculty_query = "SELECT * FROM user WHERE username = '$qr_code'";
     $faculty_query_run = mysqli_query($con, $faculty_query);
 
+    $date_log = date("Y-m-d");
+
     if (mysqli_num_rows($student_query_run) > 0) {
         $user = mysqli_fetch_assoc($student_query_run);
 
-        // Insert student log into user_log table
+        // Check for existing log entry for today
         $student_id = $user['student_id_no'];
-        $firstname = $user['firstname'];
-        $middlename = $user['middlename'];
-        $lastname = $user['lastname'];
-        $date_log = date("Y-m-d");
+        $log_check_query = "SELECT * FROM user_log WHERE student_id = '$student_id' AND date_log = '$date_log' AND time_out = ''";
+        $log_check_query_run = mysqli_query($con, $log_check_query);
 
-        $log_query = "INSERT INTO user_log (student_id, firstname, middlename, lastname, time_log, date_log) VALUES ('$student_id', '$firstname', '$middlename', '$lastname', NOW(), '$date_log')";
-        $log_query_run = mysqli_query($con, $log_query);
+        if (mysqli_num_rows($log_check_query_run) > 0) {
+            // Update the existing log with time_out
+            $log_update_query = "UPDATE user_log SET time_out = NOW() WHERE student_id = '$student_id' AND date_log = '$date_log' AND time_out = ''";
+            $log_update_query_run = mysqli_query($con, $log_update_query);
 
-        if ($log_query_run) {
-            header("Location:attendance_list.php");
+            if ($log_update_query_run) {
+                header("Location:attendance_list.php");
+                exit();
+            } else {
+                header("Location:qr_scanner.php");
+                exit("Failed to update time out for student.");
+            }
         } else {
-            header("Location:qr_scanner.php");
-            echo "Failed to insert log for student.";
+            // Insert student log into user_log table
+            $firstname = $user['firstname'];
+            $middlename = $user['middlename'];
+            $lastname = $user['lastname'];
+            $course = $user['course'];
+            $year_level = $user['year_level'];
+
+            $log_insert_query = "INSERT INTO user_log (student_id, firstname, middlename, lastname, time_log, date_log, time_out, course, year_level, role) VALUES ('$student_id', '$firstname', '$middlename', '$lastname', NOW(), '$date_log', '', '$course', '$year_level', 'student')";
+            $log_insert_query_run = mysqli_query($con, $log_insert_query);
+
+            if ($log_insert_query_run) {
+                header("Location:attendance_list.php");
+                exit();
+            } else {
+                header("Location:qr_scanner.php");
+                exit("Failed to insert log for student.");
+            }
         }
     } elseif (mysqli_num_rows($faculty_query_run) > 0) {
         $user = mysqli_fetch_assoc($faculty_query_run);
 
-        // Insert faculty log into user_log table
+        // Check for existing log entry for today
         $username = $user['username'];
-        $firstname = $user['firstname'];
-        $middlename = $user['middlename'];
-        $lastname = $user['lastname'];
-        $date_log = date("Y-m-d");
+        $log_check_query = "SELECT * FROM user_log WHERE student_id = '$username' AND date_log = '$date_log' AND time_out = ''";
+        $log_check_query_run = mysqli_query($con, $log_check_query);
 
-        $log_query = "INSERT INTO user_log (student_id, firstname, middlename, lastname, time_log, date_log) VALUES ('$username', '$firstname', '$middlename', '$lastname', NOW(), '$date_log')";
-        $log_query_run = mysqli_query($con, $log_query);
+        if (mysqli_num_rows($log_check_query_run) > 0) {
+            // Update the existing log with time_out
+            $log_update_query = "UPDATE user_log SET time_out = NOW() WHERE student_id = '$username' AND date_log = '$date_log' AND time_out = ''";
+            $log_update_query_run = mysqli_query($con, $log_update_query);
 
-        if ($log_query_run) {
-            header("Location:attendance_list.php");
+            if ($log_update_query_run) {
+                header("Location:attendance_list.php");
+                exit();
+            } else {
+                header("Location:qr_scanner.php");
+                exit("Failed to update time out for faculty.");
+            }
         } else {
-            header("Location:qr_scanner.php");
-            echo "Failed to insert log for faculty.";
+            // Insert faculty log into user_log table
+            $firstname = $user['firstname'];
+            $middlename = $user['middlename'];
+            $lastname = $user['lastname'];
+            $course = $user['course'];
+
+            $log_insert_query = "INSERT INTO user_log (student_id, firstname, middlename, lastname, time_log, date_log, time_out, course, year_level, role) VALUES ('$username', '$firstname', '$middlename', '$lastname', NOW(), '$date_log', '', '$course', 'faculty', 'faculty')";
+            $log_insert_query_run = mysqli_query($con, $log_insert_query);
+
+            if ($log_insert_query_run) {
+                header("Location:attendance_list.php");
+                exit();
+            } else {
+                header("Location:qr_scanner.php");
+                exit("Failed to insert log for faculty.");
+            }
         }
     } else {
-        echo "User not found";
+        exit("User not found");
     }
 } else {
-    echo "No QR code provided";
+    exit("No QR code provided");
 }
 ?>

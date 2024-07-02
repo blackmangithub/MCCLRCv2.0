@@ -129,10 +129,11 @@
                                                                            class="table table-striped table-bordered">
                                                                            <thead>
                                                                                 <tr>
-                                                                                     
-                                                                                     <th>Full Name</th>
-                                                                                     <th>Time In</th>
                                                                                      <th>Date</th>
+                                                                                     <th>Time in</th>
+                                                                                     <th>Full Name</th>
+                                                                                     <th>Program</th>
+                                                                                     <th>Time out</th>
                                                                                 </tr>
                                                                            </thead>
                                                                            <tbody>
@@ -144,7 +145,7 @@
                                                             $from_date = $_POST['from_date'];
                                                             $to_date = $_POST['to_date'];
           
-                                                            $query = "SELECT * FROM user_log WHERE date_log BETWEEN '$from_date' AND '$to_date'";
+                                                            $query = "SELECT * FROM user_log WHERE date_log BETWEEN '$from_date' AND '$to_date' ORDER BY date_log DESC";
                                                             $query_run = mysqli_query($con, $query);
           
                                                             if(mysqli_num_rows($query_run) > 0 )
@@ -161,6 +162,8 @@
                                                                                      </td>
                                                                                      <td><?= date("M d, Y", strtotime($row['date_log'])); ?>
                                                                                      </td>
+                                                                                     <td><?=$row['year_level'].' - '.$row['course']; ?></td>
+                                                                                     <td><?= date("h:i:s a", strtotime($row['time_out'])); ?></td>
                                                                                 </tr>
                                                                                 <?php      }
                                                   }
@@ -169,20 +172,20 @@
                                              else
                                              {
                                              
-                                                  $result= mysqli_query($con,"SELECT * FROM user_log ORDER BY user_log_id DESC 
-                                             ");
+                                                  $result= mysqli_query($con,"SELECT * FROM user_log ORDER BY date_log DESC");
                                                   while ($row= mysqli_fetch_array ($result) ){
                                                  
                                                   ?>
                                                                                 <tr>
                                                                                      <?php date_default_timezone_set('Asia/Manila'); ?>
-                                                                                     
-                                                                                     <td><?= $row['firstname'].' '.$row['middlename'].' '.$row['lastname']; ?>
+                                                                                     <td><?= date("M d, Y", strtotime($row['date_log'])); ?>
                                                                                      </td>
                                                                                      <td><?= date("h:i:s a", strtotime($row['time_log'])); ?>
                                                                                      </td>
-                                                                                     <td><?= date("M d, Y", strtotime($row['date_log'])); ?>
+                                                                                     <td><?= $row['firstname'].' '.$row['middlename'].' '.$row['lastname']; ?>
                                                                                      </td>
+                                                                                     <td><?=$row['year_level'].' - '.$row['course']; ?></td>
+                                                                                     <td><?= date("h:i:s a", strtotime($row['time_out'])); ?></td>
                                                                                 </tr>
                                                                                 <?php } 
                                                        }
