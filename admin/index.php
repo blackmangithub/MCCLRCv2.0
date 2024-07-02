@@ -131,7 +131,7 @@ include('./includes/sidebar.php');
                                                  $total_student_attendance[] = $student['total'];
                                              }
                                              ?>
-                                             <h5 class="card-title">TOP STUDENT LIBRARY USER</h5>
+                                             <h5 class="card-title">TOP STUDENTS LIBRARY USER</h5>
                                              <canvas id="pieChartStudents" style="max-height: 220px;"></canvas>
                                              <script>
                                              document.addEventListener("DOMContentLoaded", () => {
