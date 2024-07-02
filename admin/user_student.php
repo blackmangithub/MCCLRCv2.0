@@ -16,7 +16,7 @@ include('./includes/sidebar.php');
 <main id="main" class="main">
      <div class="pagetitle d-flex justify-content-between">
           <div>
-               <h1>Manage Users</h1>
+               <h1>Manage Students</h1>
                <nav>
                     <ol class="breadcrumb">
                          <li class="breadcrumb-item"><a href="users.php">Users</a></li>
@@ -31,9 +31,6 @@ include('./includes/sidebar.php');
                <div class="col-lg-12">
                     <div class="card">
                          <div class="card-header d-flex justify-content-between align-items-center">
-                              <h5 class="m-0 text-dark fw-semibold">Students</h5>
-
-
 
                               <a href="user_student_approval.php" class="btn btn-primary position-relative">
     <i class="bi bi-people-fill"></i>

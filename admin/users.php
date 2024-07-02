@@ -236,7 +236,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                                  }
                                                             ?>
                                                             <p class="card-text text-center"><small>Total
-                                                                      Faculty Staff</small></p>
+                                                                      Faculty</small></p>
                                                        </div>
                                                   </div>
                                              </div>
@@ -260,7 +260,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                                  }
                                                             ?>
                                                             <p class="card-text text-center"><small>Total
-                                                                      Faculty Staff</small></p>
+                                                                      Faculty</small></p>
                                                        </div>
                                                   </div>
                                              </div>
@@ -284,7 +284,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                                  }
                                                             ?>
                                                             <p class="card-text text-center"><small>Total
-                                                                      Faculty Staff</small></p>
+                                                                      Faculty</small></p>
                                                        </div>
                                                   </div>
                                              </div>
@@ -308,7 +308,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                                  }
                                                             ?>
                                                             <p class="card-text text-center"><small>Total
-                                                                      Faculty Staff</small></p>
+                                                                      Faculty</small></p>
                                                        </div>
                                                   </div>
                                              </div>
@@ -332,7 +332,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                                  }
                                                             ?>
                                                             <p class="card-text text-center"><small>Total
-                                                                      Faculty Staff</small></p>
+                                                                      Faculty</small></p>
                                                        </div>
                                                   </div>
                                              </div>
