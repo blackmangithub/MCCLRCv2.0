@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2024 at 04:47 PM
+-- Generation Time: Jul 02, 2024 at 08:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,7 +48,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `firstname`, `middlename`, `lastname`, `email`, `address`, `phone_number`, `password`, `confirm_password`, `admin_image`, `admin_type`, `role_as`, `admin_added`) VALUES
-(13, 'Relinas', '', 'Jabal-balili', 'admin@gmail.com', 'address', '(+63) 9123-456-789', '21232f297a57a5a743894a0e4a801fc3', '21232f297a57a5a743894a0e4a801fc3', '1670055503.png', '', 1, '2022-11-30 01:17:21'),
+(13, 'Relinas', '', 'Jabal-balili', 'admin@gmail.com', 'address', '09123456789', '21232f297a57a5a743894a0e4a801fc3', '21232f297a57a5a743894a0e4a801fc3', '1670055503.png', '', 1, '2022-11-30 01:17:21'),
 (35, 'Emelen', '', 'Bayon-on', 'emelenbayon-on@gmail.com', 'Maricaban, Santa Fe, Cebu', '(+63) 9342-167-893', '0f420395018d23a2200007ad2fd37e84', '0f420395018d23a2200007ad2fd37e84', '1670213672.jpg', '', 1, '2022-12-06 22:55:14');
 
 -- --------------------------------------------------------
@@ -171,7 +171,12 @@ INSERT INTO `barcode` (`barcode_id`, `pre_barcode`, `mid_barcode`, `suf_barcode`
 (62, 'MCC', 45, 'LRC'),
 (63, 'MCC', 46, 'LRC'),
 (64, 'MCC', 47, 'LRC'),
-(65, 'MCC', 48, 'LRC');
+(65, 'MCC', 48, 'LRC'),
+(66, 'MCC', 49, 'LRC'),
+(67, 'MCC', 0, 'LRC'),
+(68, 'MCC', 0, 'LRC'),
+(69, 'MCC', 0, 'LRC'),
+(70, 'MCC', 0, 'LRC');
 
 -- --------------------------------------------------------
 
@@ -193,29 +198,17 @@ CREATE TABLE `book` (
   `copy` int(20) NOT NULL,
   `barcode` varchar(50) NOT NULL,
   `book_image` varchar(100) NOT NULL,
-  `date_added` datetime NOT NULL
+  `date_added` datetime NOT NULL,
+  `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `book`
 --
 
-INSERT INTO `book` (`book_id`, `call_number`, `accession_number`, `title`, `category_id`, `author`, `copyright_date`, `publisher`, `place_publication`, `isbn`, `copy`, `barcode`, `book_image`, `date_added`) VALUES
-(55, 'none', '4036', 'Social Ethical , Legal and Professional Issues in Computing with complete explanation of the PHILIPPINES', 4, 'Lavina, Charlemagne', '2020', 'Mindshapes Co., INC.', 'Intramuros , Manila', '978-621-406-293-5', 8, 'MCC30LRC', '1670511518.jpg', '2022-12-08 22:58:38'),
-(56, 'none', '4129', 'Essentials Of Human Computer Interaction', 1, 'Cortez, Dan Michael', '2021', 'Library Services & Publishing INC.', 'Intramuros Manila', '978-621-427-084-2', 10, 'MCC31LRC', '1670511866.jpg', '2022-12-08 23:04:26'),
-(57, 'none', '4274', 'Introduction To Computer Networking', 2, 'Pomperada, Jake  ', '2020', 'Unlimited Book Library Services & Publishing INC.', 'Intramuros Manila', '978-621-427-073-6', 9, 'MCC32LRC', '1670512140.jpg', '2022-12-08 23:09:00'),
-(58, 'none', '4167', 'Introduction To Ruby Programming ', 2, 'Pomperada, Jake', '2019', 'Library Services & Publishing INC.', 'Intramuros Manila', '978-621-427-071-2', 9, 'MCC33LRC', '1670512281.jpg', '2022-12-08 23:11:21'),
-(59, 'none', '4148', 'Introduction To Techno Preneurship', 3, 'Juanez, Jennifer ', '2019', 'Unlimited Book Library Services & Publishing INC.', 'Intramuros Manila', '978-621-427-067-5', 9, 'MCC34LRC', '1670512452.jpg', '2022-12-08 23:14:12'),
-(60, 'none', '3168', 'Learning Microsoft Visual C #', 4, 'Abante, Marmelo', '2018', 'Library Services & Publishing INC.', 'Intramuros Manila', '978-621-427-031-6', 9, 'MCC35LRC', '1670512587.jpg', '2022-12-08 23:16:27'),
-(61, 'none', '4083', 'Introduction To Perl Programming', 2, 'Pomperada, Jake', '2021', 'Unlimited Book Library Services & Publishing INC.', 'Intramuros Manila', '978-621-427-077-4', 9, 'MCC36LRC', '1670512734.jpg', '2022-12-08 23:18:54'),
-(62, 'none', '4152', 'Web Programming Using Php & My SQL', 1, 'Lampawog, Harley', '2021', 'Unlimited Book Library Services & Publishing INC.', 'Intramuros Manila', '978-621-427-081-1', 9, 'MCC37LRC', '1670512885.jpg', '2022-12-08 23:21:25'),
-(63, 'none', '4188', 'Introduction To Information Technology and Computer Fundamentals', 5, 'Besuena, Jerelyn', '2019', 'Unlimited Book Library Services & Publishing INC.', 'Intramuros Manila', '978-621-427-058-3', 10, 'MCC38LRC', '1670513139.jpg', '2022-12-08 23:25:39'),
-(64, 'none', '3204', 'Computer Systems Organization With Assembly Language', 3, 'Revano, Teodoro, Jr.', '2018', 'Mindshapes Co., INC.', '61 G/F Herald Bldg.', '978-621-406-168-6', 10, 'MCC39LRC', '1670513247.jpg', '2022-12-08 23:27:27'),
-(65, 'none', '3120', 'Information System Fundamentals', 2, 'Revano , Teodoro  Jr.', '2019', 'Mindshapes Co., INC.', 'Intramuros , Manila', '978-621-406-230-0', 9, 'MCC40LRC', '1670513328.jpg', '2022-12-08 23:28:48'),
-(66, 'none', '4010', 'OutComes Based Practical Guide To Thesis And Capstone Project Writing In Computing', 1, 'Laviña, Charlemagne', '2022', 'Mindshapes Co., INC.', 'Intramuros , Manila', '978-621-406-342-0', 4, 'MCC41LRC', '1670513775.jpg', '2022-12-08 23:30:02'),
-(67, 'none', '4198', 'Introduction to  JQuery Programming', 2, 'Pomperada Jake', '2021', 'Library Services & Publishing INC.', 'Intramuros, Manila', '978-621-427-094-1', 8, 'MCC42LRC', '1670513735.jpg', '2022-12-08 23:35:35'),
-(68, 'none', '3966', 'Fundamental Of JavaScript Programming', 3, 'Pomperada, Jake', '2016', 'Intramuros Corporate Plaza Bldg.', 'Recoletos St., Manila', '978-621-406-097-9', 8, 'MCC43LRC', '1670829432.jpg', '2022-12-12 15:17:12'),
-(69, 'none', '4305', 'Introduction To Computer Programming And Logic Formulation Using C langguage Programming (Programming Langguage For Beginners) 3rd Edition', 0, 'Abante, Marmelo', '2019', 'Unlimited Book Library Services & Publishing INC.', 'Intramuros Manila', '978-621-427-045-3', 11, 'MCC44LRC', '1670917907.jpg', '2022-12-13 15:51:47');
+INSERT INTO `book` (`book_id`, `call_number`, `accession_number`, `title`, `category_id`, `author`, `copyright_date`, `publisher`, `place_publication`, `isbn`, `copy`, `barcode`, `book_image`, `date_added`, `status`) VALUES
+(83, '25325423', '2414', 'ffsdfsdf', 1, 'fgdsgfg', '43r252', 'dgdgd', 'dgegwg', '3252354325', 2, 'MCC2414LRC', '1719934889.jpg', '2024-07-02 23:41:29', 'Available'),
+(84, '25325423', '23432', 'ffsdfsdf', 1, 'fgdsgfg', '43r252', 'dgdgd', 'dgegwg', '3252354325', 2, 'MCC23432LRC', '1719934889.jpg', '2024-07-02 23:41:30', 'Available');
 
 -- --------------------------------------------------------
 
@@ -234,6 +227,14 @@ CREATE TABLE `borrow_book` (
   `borrowed_status` varchar(100) NOT NULL,
   `book_penalty` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `borrow_book`
+--
+
+INSERT INTO `borrow_book` (`borrow_book_id`, `user_id`, `faculty_id`, `book_id`, `date_borrowed`, `due_date`, `date_returned`, `borrowed_status`, `book_penalty`) VALUES
+(587, 84, 0, 55, '2024-07-02 15:12:08', '2024-07-05 15:12:08', '2024-07-02 15:13:24', 'returned', 'No Penalty'),
+(588, 84, 0, 55, '2024-07-02 15:17:34', '2024-07-05 15:17:34', '2024-07-02 15:23:15', 'returned', 'No Penalty');
 
 -- --------------------------------------------------------
 
@@ -315,9 +316,8 @@ CREATE TABLE `holds` (
 --
 
 INSERT INTO `holds` (`hold_id`, `book_id`, `user_id`, `hold_status`, `hold_date`) VALUES
-(52, 69, 72, '', '2024-06-22 13:45:25'),
-(53, 68, 72, '', '2024-06-22 21:54:29'),
-(54, 67, 72, '', '2024-06-22 21:59:16');
+(60, 69, 87, '', '2024-07-02 15:04:59'),
+(61, 55, 87, '', '2024-07-02 15:08:29');
 
 -- --------------------------------------------------------
 
@@ -419,7 +419,11 @@ INSERT INTO `report` (`report_id`, `book_id`, `user_id`, `faculty_id`, `admin_na
 (1304, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-04-05 16:23:00'),
 (1305, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-04-06 16:09:53'),
 (1306, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-04-06 16:10:21'),
-(1307, 55, 1, 0, 'Relinas  Jabal-balili', 'Borrowed Book', '2023-04-08 08:25:48');
+(1307, 55, 1, 0, 'Relinas  Jabal-balili', 'Borrowed Book', '2023-04-08 08:25:48'),
+(1308, 55, 84, 0, 'Relinas  Jabal-balili', 'Borrowed Book', '2024-07-02 15:12:15'),
+(1309, 55, 84, 0, 'Relinas  Jabal-balili', 'Returned Book', '2024-07-02 15:13:24'),
+(1310, 55, 84, 0, 'Relinas  Jabal-balili', 'Borrowed Book', '2024-07-02 15:19:17'),
+(1311, 55, 84, 0, 'Relinas  Jabal-balili', 'Returned Book', '2024-07-02 15:23:15');
 
 -- --------------------------------------------------------
 
@@ -443,30 +447,8 @@ CREATE TABLE `return_book` (
 --
 
 INSERT INTO `return_book` (`return_book_id`, `user_id`, `faculty_id`, `book_id`, `date_borrowed`, `due_date`, `date_returned`, `book_penalty`) VALUES
-(601, 1, 0, 55, '2022-12-14 01:53:16', '2022-12-17 01:53:16', '2022-12-14 01:54:10', 'No Penalty'),
-(602, 44, 0, 55, '2022-12-14 01:53:55', '2022-12-17 01:53:55', '2022-12-14 01:54:59', 'No Penalty'),
-(603, 0, 6, 56, '2022-12-14 01:56:21', '2022-12-17 01:56:21', '2022-12-14 01:56:43', 'No Penalty'),
-(604, 1, 0, 55, '2022-12-14 10:34:34', '2022-12-17 10:34:34', '2022-12-14 10:36:36', 'No Penalty'),
-(605, 0, 6, 55, '2022-12-14 10:37:50', '2022-12-17 10:37:50', '2022-12-14 10:38:06', 'No Penalty'),
-(606, 1, 0, 57, '2022-12-15 21:51:56', '2022-12-18 21:51:56', '2022-12-20 22:11:51', '20'),
-(607, 1, 0, 55, '2022-12-15 21:51:23', '2022-12-18 21:51:23', '2022-12-20 22:16:11', '20'),
-(608, 1, 0, 56, '2022-12-15 21:51:45', '2022-12-18 21:51:45', '2022-12-20 22:16:31', '20'),
-(609, 45, 0, 69, '2022-12-15 21:53:49', '2022-12-18 21:53:49', '2022-12-22 00:08:25', '31'),
-(610, 45, 0, 59, '2022-12-15 21:53:06', '2022-12-18 21:53:06', '2022-12-22 00:08:44', '31'),
-(611, 45, 0, 66, '2022-12-15 21:53:30', '2022-12-18 21:53:30', '2022-12-22 00:08:59', '31'),
-(612, 0, 6, 69, '2022-12-15 21:55:11', '2022-12-18 21:55:11', '2022-12-15 23:40:11', 'No Penalty'),
-(613, 1, 0, 55, '2022-12-16 15:18:53', '2022-12-19 15:18:53', '2022-12-16 15:20:11', 'No Penalty'),
-(614, 1, 0, 55, '2022-12-16 15:18:53', '2022-12-19 15:18:53', '2022-12-16 15:20:38', 'No Penalty'),
-(617, 1, 0, 55, '2023-03-29 11:10:29', '2023-04-01 11:10:29', '2023-03-29 11:11:25', 'No Penalty'),
-(618, 1, 0, 55, '2023-03-29 20:52:17', '2023-04-01 20:52:17', '2023-03-29 20:52:31', 'No Penalty'),
-(619, 0, 6, 55, '2023-03-29 21:58:33', '2023-08-26 21:58:33', '2023-03-29 21:58:46', 'No Penalty'),
-(620, 1, 0, 55, '2023-03-29 20:55:17', '2023-04-01 20:55:17', '2023-04-02 22:02:51', '10'),
-(621, 1, 0, 55, '2023-03-29 22:08:39', '2023-04-01 22:08:39', '2023-04-03 22:09:57', '20'),
-(622, 1, 0, 55, '2023-03-31 11:14:58', '2023-04-03 11:14:58', '2023-03-31 11:35:18', 'No Penalty'),
-(623, 1, 0, 55, '2023-03-31 11:40:54', '2023-04-05 11:40:54', '2023-04-04 13:01:42', 'No Penalty'),
-(624, 1, 0, 55, '2023-04-04 14:06:50', '2023-04-07 14:06:50', '2023-04-04 14:07:06', 'No Penalty'),
-(625, 1, 0, 55, '2023-04-04 14:09:17', '2023-04-07 14:09:17', '2023-04-05 16:21:28', 'No Penalty'),
-(626, 1, 0, 55, '2023-04-06 16:09:51', '2023-04-09 16:09:51', '2023-04-06 16:10:11', 'No Penalty');
+(627, 84, 0, 55, '2024-07-02 15:12:08', '2024-07-05 15:12:08', '2024-07-02 15:13:18', 'No Penalty'),
+(628, 84, 0, 55, '2024-07-02 15:17:34', '2024-07-05 15:17:34', '2024-07-02 15:22:56', 'No Penalty');
 
 -- --------------------------------------------------------
 
@@ -494,17 +476,21 @@ CREATE TABLE `user` (
   `role_as` varchar(50) NOT NULL,
   `status` varchar(50) NOT NULL,
   `user_added` datetime NOT NULL,
-  `qr_code` varchar(255) NOT NULL
+  `qr_code` varchar(255) NOT NULL,
+  `reset_token` varchar(100) NOT NULL,
+  `token_expiry` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `user_log_id`, `lastname`, `firstname`, `middlename`, `gender`, `course`, `address`, `cell_no`, `birthdate`, `email`, `year_level`, `student_id_no`, `username`, `password`, `cpassword`, `role_as`, `status`, `user_added`, `qr_code`) VALUES
-(72, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '(+63) 9858-024-662', '2002-03-14', 'calatero2002@gmail.com', '4th year', '2021-1055', '', '$2y$10$8K8bxqpWYPBZKvzNUHI.AeOLv8FAYgH0XzbN9bCln0QWckZJC/eSO', '', 'student', 'approved', '2024-06-22 01:26:51', '2021-1055.png'),
-(76, 0, 'Ofianga', 'Joana', '', 'Female', 'BSIT', 'Pili, Madridejos, Cebu', '(+63) 9123-456-789', '2002-06-19', 'calatero2002@gmail.com', '4th year', '2021-1181', '', '$2y$10$I2uUqDRdHdJdAS5VOq2Ite6mGVDIxaNsgWvF4wV3Xrxvv7jiqFCn.', '', 'student', 'approved', '2024-06-22 03:35:27', '2021-1181.png'),
-(82, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '(+63) 9858-024-662', '2002-03-14', 'calatero2002@gmail.com', '', '', 'diovin', '$2y$10$WrVHq65IRaI0816XGqntUu7UKusrfFSuhS01aIWlp9RXYVh31ueWa', '', 'faculty', 'approved', '2024-06-22 12:50:50', 'diovin.png');
+INSERT INTO `user` (`user_id`, `user_log_id`, `lastname`, `firstname`, `middlename`, `gender`, `course`, `address`, `cell_no`, `birthdate`, `email`, `year_level`, `student_id_no`, `username`, `password`, `cpassword`, `role_as`, `status`, `user_added`, `qr_code`, `reset_token`, `token_expiry`) VALUES
+(84, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'bman23382@gmail.com', '4th year', '2021-1055', '', '$2y$10$AYJwsS7T8yi1Vj1SdFNBOebvWM1UorXDjsJma.02uq4YsGaudnNTi', '', 'student', 'approved', '2024-07-01 20:04:19', '2021-1055.png', '', '0000-00-00 00:00:00'),
+(85, 0, 'Ofianga', 'Joana', '', 'Female', 'BSIT', 'Pili, Madridejos, Cebu', '09123456789', '2002-06-19', 'ofiangajoana22@gmail.com', '4th year', '2021-1181', '', '$2y$10$ceZfbQE.yM8052SZJvaGs.yzcOXfmr3mNHY1WOEtJR3nxT/MZ5naW', '', 'student', 'approved', '2024-07-01 20:53:47', '2021-1181.png', '', '0000-00-00 00:00:00'),
+(86, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'bman23382@gmail.com', '', '', 'diovin', '$2y$10$X2TKGGTDn0M7K5sjjtmYeOYTL8ZucnABKmVES0GqRd4TBV6sEzequ', '', 'faculty', 'approved', '2024-07-01 21:32:47', 'diovin.png', '', '0000-00-00 00:00:00'),
+(87, 0, 'Cahutay', 'Mayette', 'Dela Pena', 'Female', 'BSIT', 'Pili, Madridejos, Cebu', '09647364736', '2022-05-21', 'cahutaymayette2002@gmail.com', '4th year', '2021-1180', '', '$2y$10$sN3tYonteOFOcMYDJcGI0OhRyuBJXjx.U3V09yakqDPFJE/X2FOGq', '', 'student', 'approved', '2024-07-02 14:38:22', '2021-1180.png', '', '0000-00-00 00:00:00'),
+(88, 0, 'Mata', 'Romeo', '', 'Male', 'BSED', 'Patao, Bantayan, Cebu', '09675643353', '2002-12-12', 'mata@gmail.com', '4th year', '2021-1170', '', '$2y$10$CNbhgHwpuqW.oayUqA.q4.SvNbv8aO9AbAnf3xLlISlJvcR7f5MAy', '', 'student', 'approved', '2024-07-02 15:28:33', '2021-1170.png', '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -519,15 +505,22 @@ CREATE TABLE `user_log` (
   `firstname` varchar(45) NOT NULL,
   `middlename` varchar(45) NOT NULL,
   `time_log` time NOT NULL,
-  `date_log` date NOT NULL
+  `date_log` date NOT NULL,
+  `time_out` time NOT NULL,
+  `course` varchar(50) NOT NULL,
+  `year_level` varchar(50) NOT NULL,
+  `role` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `user_log`
 --
 
-INSERT INTO `user_log` (`user_log_id`, `student_id`, `lastname`, `firstname`, `middlename`, `time_log`, `date_log`) VALUES
-(236, '2019-0404', 'Ofiasa', 'Pedro', 'Layaog', '11:53:12', '2022-12-16');
+INSERT INTO `user_log` (`user_log_id`, `student_id`, `lastname`, `firstname`, `middlename`, `time_log`, `date_log`, `time_out`, `course`, `year_level`, `role`) VALUES
+(266, '2021-1055', 'Calatero', 'Diovin', 'Pasicaran', '18:14:48', '2024-07-02', '00:00:00', 'BSIT', '4th year', 'student'),
+(267, '2021-1181', 'Ofianga', 'Joana', '', '18:19:47', '2024-07-02', '00:00:00', 'BSIT', '4th year', 'student'),
+(268, 'diovin', 'Calatero', 'Diovin', 'Pasicaran', '18:20:01', '2024-07-02', '00:00:00', 'BSIT', 'faculty', 'faculty'),
+(269, '2021-1170', 'Mata', 'Romeo', '', '18:21:42', '2024-07-02', '00:00:00', 'BSED', '4th year', 'student');
 
 -- --------------------------------------------------------
 
@@ -687,19 +680,19 @@ ALTER TABLE `allowed_days`
 -- AUTO_INCREMENT for table `barcode`
 --
 ALTER TABLE `barcode`
-  MODIFY `barcode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `barcode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `borrow_book`
 --
 ALTER TABLE `borrow_book`
-  MODIFY `borrow_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=587;
+  MODIFY `borrow_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=589;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -717,7 +710,7 @@ ALTER TABLE `faculty`
 -- AUTO_INCREMENT for table `holds`
 --
 ALTER TABLE `holds`
-  MODIFY `hold_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `hold_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `penalty`
@@ -729,25 +722,25 @@ ALTER TABLE `penalty`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1308;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1312;
 
 --
 -- AUTO_INCREMENT for table `return_book`
 --
 ALTER TABLE `return_book`
-  MODIFY `return_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=627;
+  MODIFY `return_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=629;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `user_log`
 --
 ALTER TABLE `user_log`
-  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=237;
+  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=270;
 
 --
 -- AUTO_INCREMENT for table `web_opac`
