@@ -92,7 +92,6 @@ body {
     min-height: 100vh;
     width: 100vw;
     overflow-x: hidden;
-    font-family: var(--bs-body-font-family);
     font-size: var(--bs-body-font-size);
     font-weight: var(--bs-body-font-weight);
     line-height: var(--bs-body-line-height);
@@ -9099,7 +9098,9 @@ fieldset:disabled .btn {
 
 .text-white {
     --bs-text-opacity: 1;
+    font-family: var(--bs-body-font-family);
     color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important
+    
 }
 
 .text-body {
