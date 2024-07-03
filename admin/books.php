@@ -2,9 +2,13 @@
 include('authentication.php');
 include('includes/header.php'); 
 include('./includes/sidebar.php'); 
-
 ?>
 
+<style>
+     #hover:hover{
+          text-decoration: underline;
+     }
+</style>
 
 <main id="main" class="main" data-aos="fade-down">
      <?php  $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/")+ 1); ?>
@@ -20,7 +24,6 @@ include('./includes/sidebar.php');
           <div class="row">
                <div class="col-lg-12">
                     <div class="card">
-
                          <div class="card-body">
                               <div class="table-responsive mt-3">
                                    <ul class="nav nav-tabs" id="myTab">
@@ -49,37 +52,38 @@ include('./includes/sidebar.php');
                                                        class="table table-bordered table-striped table-sm">
                                                        <thead>
                                                             <tr>
-
                                                                  <th>Image</th>
                                                                  <th>Title</th>
                                                                  <th>Author</th>
                                                                  <th>Copyright Date</th>
                                                                  <th>Publisher</th>
-                                                                 <th>Copy</th>
                                                                  <th>Call Number</th>
+                                                                 <th>Copy</th>
                                                                  <th>Action</th>
-
                                                             </tr>
                                                        </thead>
                                                        <tbody>
-                                                            <?php
-                                                            $query = "SELECT * FROM book GROUP BY title ORDER BY title DESC";
-                                                            $query_run = mysqli_query($con, $query);
-                                                            
-                                                            if(mysqli_num_rows($query_run))
-                                                            {
-                                                                 foreach($query_run as $book)
-                                                                 {
-                                                                      ?>
+                                                       <?php
+                                                       $query = "
+                                                       SELECT 
+                                                            book.*, 
+                                                            COUNT(book.accession_number) AS copy_count, 
+                                                            SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count 
+                                                       FROM book 
+                                                       GROUP BY book.title 
+                                                       ORDER BY book.title DESC";
+                                                       $query_run = mysqli_query($con, $query);
+
+                                                       if (mysqli_num_rows($query_run)) {
+                                                       foreach ($query_run as $book) {
+                                                            ?>
                                                             <tr>
                                                                  <td>
                                                                       <center>
-                                                                           <?php if($book['book_image'] != ""): ?>
-                                                                           <img src="../uploads/books_img/<?php echo $book['book_image']; ?>"
-                                                                                alt="" width="60px" height="60px">
+                                                                           <?php if ($book['book_image'] != ""): ?>
+                                                                           <img src="../uploads/books_img/<?php echo $book['book_image']; ?>" alt="" width="60px" height="60px">
                                                                            <?php else: ?>
-                                                                           <img src="../uploads/books_img/book_image.jpg"
-                                                                                alt="" width="60px" height="60px">
+                                                                           <img src="../uploads/books_img/book_image.jpg" alt="" width="60px" height="60px">
                                                                            <?php endif; ?>
                                                                       </center>
                                                                  </td>
@@ -87,13 +91,17 @@ include('./includes/sidebar.php');
                                                                  <td><?=$book['author'];?></td>
                                                                  <td><?=$book['copyright_date'];?></td>
                                                                  <td><?=$book['publisher'];?></td>
-                                                                 <td><?=$book['copy'];?></td>
                                                                  <td><?=$book['call_number'];?></td>
+                                                                 <td>
+                                                                 <a href="book_views.php?title=<?= urlencode($book['title']); ?>&tab=copies" id="hover" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View Copies">
+                                                                 <?= $book['available_count'];?> of <?= $book['copy_count'];?> available
+                                                                 </a>
+                                                                 </td>
                                                                  <td class=" justify-content-center">
                                                                       <div class="btn-group"
                                                                            style="background: #DFF6FF;  ">
                                                                            <!-- View Book Action-->
-                                                                           <a href="book_views.php?id=<?=$book['book_id']; ?>"
+                                                                           <a href="book_views.php?title=<?= urlencode($book['title']); ?>"
                                                                                 name=""
                                                                                 class="viewBookBtn btn btn-sm  border text-primary"
                                                                                 data-bs-toggle="tooltip"
@@ -113,7 +121,6 @@ include('./includes/sidebar.php');
                                                                       </div>
                                                                  </td>
                                                             </tr>
-
                                                             <?php
                                                                  }
                                                             }
@@ -160,7 +167,6 @@ include('./includes/sidebar.php');
                                                             <tr>
                                                                  <td>
                                                                       <center>
-
                                                                            <?php if($book['opac_image'] != ""): ?>
                                                                            <img src="../uploads/ebook_img/<?=$book['opac_image'];?>"
                                                                                 alt="" width="60px" height="60px">
@@ -209,7 +215,6 @@ include('./includes/sidebar.php');
                                                                       </div>
                                                                  </td>
                                                             </tr>
-
                                                             <?php
                                                                  }
                                                             }
@@ -220,14 +225,12 @@ include('./includes/sidebar.php');
                                              </div>
                                         </div>
                                    </div>
-
                               </div>
                          </div>
                          <div class="card-footer"></div>
                     </div>
                </div>
           </div>
-
      </section>
 </main>
 <?php 
