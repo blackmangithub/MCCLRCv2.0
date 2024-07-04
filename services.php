@@ -13,8 +13,8 @@ include('includes/navbar.php');
                     <h4 class="fs-1">Monday - Saturdays:</h4>
                     <h4 class="fs-3">8:00 AM 5:00 PM (No Noon Break)</h4>
                </div>
-               <div class="col-md-6">
-                    <img src="assets/img/undraw_book_lover_re_rwjy.svg" alt="">
+               <div class="clearfix p-3 ">
+               <img src="assets/img/A.gif" class="img-fluid" alt="Responsive GIF">
                </div>
           </div>
      </div>
