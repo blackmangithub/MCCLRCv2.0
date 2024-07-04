@@ -91,6 +91,9 @@ $(document).ready(function() {
 <!-- Loading animation -->
 <script src="assets/js/aos.js"></script>
 
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap-datepicker.min.js"></script>
+
 <script>
 AOS.init();
 </script>

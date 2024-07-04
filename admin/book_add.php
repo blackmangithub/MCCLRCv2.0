@@ -39,10 +39,10 @@ include('./includes/sidebar.php');
                                         </div>
                                    </div>
                                    <div class="row d-flex justify-content-center">
-                                        <div class="col-12 col-md-5">
+                                   <div class="col-12 col-md-5">
                                              <div class="mb-2 input-group-sm">
-                                                  <label for="copyright_date">Copyright Date</label>
-                                                  <input type="text" name="copyright_date" class="form-control" required>
+                                                  <label for="isbn">ISBN</label>
+                                                  <input type="text" name="isbn" class="form-control" required>
                                              </div>
                                         </div>
                                         <div class="col-12 col-md-5">
@@ -53,11 +53,15 @@ include('./includes/sidebar.php');
                                         </div>
                                    </div>
                                    <div class="row d-flex justify-content-center">
-                                        <div class="col-12 col-md-5">
-                                             <div class="mb-2 input-group-sm">
-                                                  <label for="isbn">ISBN</label>
-                                                  <input type="text" name="isbn" class="form-control" required>
-                                             </div>
+                                   <div class="col-12 col-md-5">
+                                        <div class="mb-2 input-group-sm">
+                                             <label for="copyright_date">Copyright Date</label>
+                                             <input type="text" id="copyright_date"
+                                                       name="copyright_date"
+                                                       class="form-control"
+                                                       required
+                                                       autocomplete="off">
+                                        </div>
                                         </div>
                                         <div class="col-12 col-md-5">
                                              <div class="mb-2 input-group-sm">
@@ -71,7 +75,7 @@ include('./includes/sidebar.php');
                                         <div class="col-12 col-md-5">
                                              <div class="mb-2 input-group-sm">
                                                   <label for="call_number">Call Number</label>
-                                                  <input onkeydown="studentFormatEdit()" name="call_number" id="book_call_number" class="form-control student_number" placeholder="" required>
+                                                  <input type="number" onkeydown="studentFormatEdit()" name="call_number" id="book_call_number" class="form-control student_number" placeholder="" required>
                                              </div>
                                         </div>
                                         <div class="col-12 col-md-5">
@@ -119,8 +123,8 @@ include('./includes/sidebar.php');
                                         </div>
                                         <div class="col-12 col-md-5">
                                              <div class="mb-2 input-group-sm">
+                                             <div class="d-flex justify-content-between">
                                                   <label for="book_image">Book Image</label>
-                                                  <div class="d-flex justify-content-between">
                                                        <span class="text-muted"><small>(Optional)</small></span>
                                                   </div>
                                                   <input type="file" name="book_image" class="form-control">
@@ -154,11 +158,22 @@ function generateAccessionFields() {
      container.innerHTML = '';
      for (let i = 1; i <= copyCount; i++) {
           const input = document.createElement('input');
-          input.type = 'text';
+          input.type = 'number';
           input.name = 'accession_number_' + i;
           input.className = 'form-control mb-2';
           input.placeholder = 'Accession Number ' + i;
           container.appendChild(input);
      }
 }
+
+$(document).ready(function() {
+    $('#copyright_date').datepicker({
+        format: "yyyy",
+        viewMode: "years",
+        minViewMode: "years",
+        autoclose: true,
+        clearBtn: true,
+        todayHighlight: true
+    });
+});
 </script>

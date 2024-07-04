@@ -43,7 +43,7 @@
      <!-- Loader -->
      <link rel="stylesheet" href="https://www.cssportal.com/css-loader-generator/" />
 
-
+     <link rel="stylesheet" href="assets/css/bootstrap-datepicker.min.css">
 
 
 

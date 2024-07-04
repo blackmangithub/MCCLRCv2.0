@@ -139,16 +139,46 @@ $activeTabPane = isset($_GET['tab']) && $_GET['tab'] == 'copies' ? 'copies-tab-p
                                                         <td><?= $book['status']; ?></td>
                                                         <td><?= $book['classname']; ?></td>
                                                         <td>
-                                                        <form action="books_code.php" method="POST">
+                                                            <!-- Edit Button -->
+                                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<?= $book['accession_number']; ?>">Edit</button>
+                                                            <!-- Delete Button -->
+                                                            <form action="books_code.php" method="POST" class="d-inline">
                                                                 <input type="hidden" name="accession_number" value="<?= $book['accession_number']; ?>">
                                                                 <button type="submit" name="delete_book" class="btn btn-danger btn-sm">Delete</button>
                                                             </form>
                                                         </td>
                                                     </tr>
+                                                    <!-- Edit Modal -->
+                                                    <div class="modal fade" id="editModal<?= $book['accession_number']; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="editModalLabel">Edit Accession Number</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <form action="books_code.php" method="POST" onsubmit="return validateForm(this);">
+                                                                    <div class="modal-body">
+                                                                        <input type="hidden" name="old_accession_number" value="<?= $book['accession_number']; ?>">
+                                                                        <div class="mb-3">
+                                                                            <label for="accession_number" class="form-label">Accession Number</label>
+                                                                            <input type="number" name="accession_number" class="form-control" value="<?= $book['accession_number']; ?>" pattern="[0-9]*" title="Please enter only numbers" required oninput="validateNumberInput(this)">
+                                                                            <div id="accession_number_error" class="text-danger" style="display: none;"></div>
+                                                                        </div>
+                                                                        <input type="hidden" name="title" value="<?= $book_title; ?>">
+                                                                        <input type="hidden" name="accession_number_check" value="true">
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit" name="update_accession_number" class="btn btn-primary">Save changes</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <?php
                                                 }
                                             } else {
-                                                echo '<tr><td colspan="4">No records found</td></tr>';
+                                                echo '<tr><td colspan="5">No records found</td></tr>';
                                             }
                                             ?>
                                         </tbody>
@@ -171,3 +201,38 @@ include('./includes/footer.php');
 include('./includes/script.php');
 include('../message.php');
 ?>
+
+<script>
+function validateNumberInput(input) {
+    // Filter out non-numeric characters
+    input.value = input.value.replace(/[^0-9]/g, '');
+}
+
+function validateForm(form) {
+    var accessionNumber = form.accession_number.value.trim();
+    var errorElement = document.getElementById('accession_number_error');
+    var saveButton = form.querySelector('button[type="submit"]');
+    
+    // Clear previous error
+    errorElement.textContent = '';
+    errorElement.style.display = 'none';
+    saveButton.disabled = false;
+    
+    // Check if accession number exists
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "books_code.php", false); // Synchronous request
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send("accession_number=" + encodeURIComponent(accessionNumber) + "&accession_number_check=true");
+    
+    if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText);
+        if (response.exists) {
+            errorElement.textContent = "This accession number already exists.";
+            errorElement.style.display = 'block';
+            saveButton.disabled = true;
+            return false;
+        }
+    }
+    return true;
+}
+</script>

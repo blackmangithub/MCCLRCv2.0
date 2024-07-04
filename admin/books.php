@@ -58,7 +58,7 @@ include('./includes/sidebar.php');
                                                                  <th>Copyright Date</th>
                                                                  <th>Publisher</th>
                                                                  <th>Call Number</th>
-                                                                 <th>Copy</th>
+                                                                 <th>Copies</th>
                                                                  <th>Action</th>
                                                             </tr>
                                                        </thead>
@@ -110,7 +110,7 @@ include('./includes/sidebar.php');
                                                                                 <i class="bi bi-eye-fill"></i>
                                                                            </a>
                                                                            <!-- Edit Book Action-->
-                                                                           <a href="book_edit.php?id=<?= $book['book_id']; ?>"
+                                                                           <a href="book_edit.php?title=<?= urlencode($book['title']); ?>"
                                                                                 name="update_book"
                                                                                 class="btn btn-sm  border text-success"
                                                                                 data-bs-toggle="tooltip"
