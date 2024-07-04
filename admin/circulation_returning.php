@@ -183,17 +183,9 @@ $user_row = mysqli_fetch_array($user_query);
 									$book_id= $_POST['book_id'];
 									$date_borrowed= $_POST['date_borrowed'];
 									$due_date= $_POST['due_date'];
-									$date_returned = $_POST['date_returned'];
-
-									$update_copies = mysqli_query($con,"SELECT * FROM book WHERE book_id = '$book_id' ");
-									$copies_row= mysqli_fetch_assoc($update_copies);
+									$date_returned = $_POST['date_returned'];																
 									
-									$book_copies = $copies_row['copy'];
-									$new_book_copies = $book_copies + 1;
-									
-									
-									
-									mysqli_query($con,"UPDATE book SET copy = '$new_book_copies' WHERE book_id = '$book_id'");
+									mysqli_query($con,"UPDATE book SET status = 'Available' WHERE book_id = '$book_id'");
 									
 								
 									$timezone = "Asia/Manila";
