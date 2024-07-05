@@ -83,7 +83,7 @@ include('./includes/sidebar.php');
                                              </div>
                                              <div class="ps-3">
                                                   <?php
-                                                  $query = "SELECT * FROM user WHERE role_as = 'faculty' AND status = 'approved'";
+                                                  $query = "SELECT * FROM faculty WHERE (role_as = 'faculty' OR role_as = 'staff') AND status = 'approved'";
                                                   $query_run = mysqli_query($con, $query); 
                                                   $total_borrowers = mysqli_num_rows($query_run);
                                                   echo '<h6>' . $total_borrowers . '</h6>';
@@ -165,7 +165,7 @@ include('./includes/sidebar.php');
                                              <?php
                                              $faculty = [];
                                              $total_faculty_attendance = [];
-                                             $query = "SELECT *, COUNT(student_id) as total FROM `user_log` WHERE role = 'faculty' GROUP BY student_id ORDER BY COUNT(student_id) DESC LIMIT 5";
+                                             $query = "SELECT *, COUNT(student_id) as total FROM `user_log` WHERE role = 'faculty' OR role = 'staff' GROUP BY student_id ORDER BY COUNT(student_id) DESC LIMIT 5";
                                              $query_run = mysqli_query($con, $query); 
 
                                              foreach ($query_run as $student) {

@@ -14,7 +14,7 @@ include('./includes/sidebar.php');
                     <ol class="breadcrumb">
                          <li class="breadcrumb-item"><a href="users.php">Users</a></li>
                          <li class="breadcrumb-item"><a href="user_faculty.php">Faculty</a></li>
-                         <li class="breadcrumb-item active">Faculty Approval</li>
+                         <li class="breadcrumb-item active">Faculty/Staff Approval</li>
                     </ol>
                </nav>
           </div>
@@ -25,7 +25,7 @@ include('./includes/sidebar.php');
                <div class="col-lg-12">
                     <div class="card">
                          <div class="card-header d-flex justify-content-between align-items-center">
-                              <h5 class="m-0 text-dark fw-semibold">Faculty Approval</h5>
+                              <h5 class="m-0 text-dark fw-semibold">Faculty/Staff Approval</h5>
 
                               <a href="user_faculty.php" class="btn btn-primary">
                                    Back</a>
@@ -35,7 +35,7 @@ include('./includes/sidebar.php');
                                    <table id="myDataTable" class="table table-bordered table-striped table-sm">
                                         <thead>
                                              <tr>
-                                                  <th>Username</th>
+                                                  <th>QR Code</th>
                                                   <th>Full Name</th>
                                                   <th>Department</th>
                                                   <th>Action</th>
@@ -43,7 +43,7 @@ include('./includes/sidebar.php');
                                         </thead>
                                         <tbody>
                                              <?php
-                                             $query = "SELECT * FROM user WHERE role_as = 'faculty' AND status = 'pending' ORDER BY user_id ASC";
+                                             $query = "SELECT * FROM faculty WHERE (role_as = 'faculty' OR role_as = 'staff') AND status = 'pending' ORDER BY faculty_id ASC";
                                              $query_run = mysqli_query($con, $query);
                                              
                                              if(mysqli_num_rows($query_run))
@@ -57,7 +57,7 @@ include('./includes/sidebar.php');
                                                        <center>
                                                             <?php if($user['qr_code'] != ""): ?>
                                                             <img src="../qrcodes/<?php echo $user['qr_code']; ?>"
-                                                                 alt="" width="150px" height="150px">
+                                                                 alt="" width="100px" height="100px">
                                                             <?php else: ?>
                                                             <img src="uploads/books_img/book_image.jpg" alt=""
                                                                  width="200px" height="250px">
@@ -75,8 +75,8 @@ include('./includes/sidebar.php');
 
                                                   <td class=" justify-content-center">
                                                        <form action="user_faculty_code.php" method="POST">
-                                                            <input type="hidden" name="user_id"
-                                                                 value="<?= $user['user_id']; ?>">
+                                                            <input type="hidden" name="faculty_id"
+                                                                 value="<?= $user['faculty_id']; ?>">
                                                             <input type="submit" name="approved" value="Approve"
                                                                  class="btn btn-success">
                                                             <input type="submit" name="deny" value="Deny"

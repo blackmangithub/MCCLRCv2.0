@@ -9,7 +9,7 @@ if (isset($_POST['text'])) {
     $student_query_run = mysqli_query($con, $student_query);
 
     // Query to select faculty based on username
-    $faculty_query = "SELECT * FROM user WHERE username = '$qr_code'";
+    $faculty_query = "SELECT * FROM faculty WHERE username = '$qr_code'";
     $faculty_query_run = mysqli_query($con, $faculty_query);
 
     $date_log = date("Y-m-d");

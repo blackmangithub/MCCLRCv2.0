@@ -26,9 +26,9 @@ include('includes/sidebar.php');
                <?php
                if(isset($_GET['id']))
                {
-                    $user_id = mysqli_real_escape_string($con, $_GET['id']);
+                    $faculty_id = mysqli_real_escape_string($con, $_GET['id']);
 
-               $query = "SELECT * FROM user WHERE user_id = '$user_id'";
+               $query = "SELECT * FROM faculty WHERE faculty_id = '$faculty_id'";
                $query_run = mysqli_query($con, $query);
                 
                if(mysqli_num_rows($query_run) > 0)
@@ -44,7 +44,7 @@ include('includes/sidebar.php');
                          <center>
                                    <?php if($user['qr_code'] != ""): ?>
                                    <img src="../qrcodes/<?php echo $user['qr_code']; ?>" alt=""
-                                        width="200px" height="150px">
+                                        width="150px" height="150px">
                                    <?php else: ?>
                                    <img src="assets/img/admin.png" class="rounded-circle" alt="" width="250px"
                                         height="250px">

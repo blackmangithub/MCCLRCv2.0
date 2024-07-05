@@ -2,186 +2,135 @@
 include('authentication.php');
 include('includes/header.php'); 
 include('./includes/sidebar.php'); 
-
 ?>
 
-
 <main id="main" class="main">
-     <div class="pagetitle">
-          <h1>Circulation</h1>
-          <nav>
-               <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="circulation.php">Circulation</a></li>
-                    <li class="breadcrumb-item active">Faculty Staff Borrow Book</li>
-               </ol>
-          </nav>
-     </div>
-     <section class="section ">
-          <div class="row">
-               <div class="col-lg-12">
-                    <div class="card">
-                         <div class="card-header text-bg-primary">
-                              <i class="bi bi-book"></i> Borrow Book
-                         </div>
-                         <div class="card-body">
-                              <div class="row d-flex justify-content-center">
-                                   <div class="col-12 col-md-4 mt-4">
-                                        <form action="" method="GET">
-                                             <div class="input-group mb-3 input-group-sm">
+    <div class="pagetitle">
+        <h1>Circulation</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                <li class="breadcrumb-item"><a href="circulation.php">Circulation</a></li>
+                <li class="breadcrumb-item active">Faculty Staff Borrow Book</li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section ">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header text-bg-primary">
+                        <i class="bi bi-book"></i> Borrow Book
+                    </div>
+                    <div class="card-body">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-12 col-md-4 mt-4">
+                                <form action="" method="GET">
+                                    <div class="input-group mb-3 input-group-sm">
+                                        <input type="text" name="firstname" value="<?php if(isset($_GET['firstname'])){echo $_GET['firstname'];}?>" class="form-control" placeholder="Enter Faculty First Name" aria-label="Firstname" aria-describedby="basic-addon1" autofocus required>
+                                        <button type="submit" class="input-group-text bg-primary text-white" id="basic-addon1">Search First Name</button>
+                                    </div>
+                                </form>
+                            </div>
 
-                                                  <!-- <span class="input-group-text bg-primary text-white"
-                                                  id="basic-addon1">SEARCH ID</span> -->
-                                                  <input type="text" name="employee_id_no"
-                                                       value="<?php if(isset($_GET['employee_id_no'])){echo $_GET['employee_id_no'];}?>"
-                                                       class="form-control" placeholder="Enter Employee ID"
-                                                       aria-label="Username" aria-describedby="basic-addon1" autofocus
-                                                       required>
-                                                  <button class="input-group-text bg-primary text-white"
-                                                       id="basic-addon1">Search Employee ID</button>
-                                             </div>
+                            <?php
+                            if(isset($_GET['firstname'])) {
+                                $firstname = mysqli_real_escape_string($con, $_GET['firstname']);
 
-                                             <!-- <div class="col-md-3 mt-3">
-                                             <button type="submit" name="submit_borrower"
-                                                  class="btn btn-primary">Submit</button>
-                                        </div> -->
-                                        </form>
-                                   </div>
+                                $query = "SELECT * FROM faculty WHERE firstname='$firstname'";
+                                $query_run = mysqli_query($con, $query);
 
-                                   <?php
-                                  if(isset($_GET['employee_id_no']))
-                                  {
-                                   $employee_id_no = $_GET['employee_id_no'];
-
-                                   $query = "SELECT * FROM faculty WHERE employee_id_no='$employee_id_no'";
-                                   $query_run = mysqli_query($con, $query);
-
-                                   if(mysqli_num_rows($query_run) > 0)
-                                   {
-                                        foreach($query_run as $row)
-                                        {
-                                             // echo $row['employee_id_no'];
-                                             $employee_id = $_GET['employee_id_no'];
-                                                  echo ('<script> location.href="circulation_faculty_borrowing.php?employee_id='.$employee_id.'";</script');
-                                             
+                                if(mysqli_num_rows($query_run) > 0) {
+                                    foreach($query_run as $row) {
+                                        // Redirect to the borrowing page with the employee_id parameter
+                                        $firstname = $row['firstname'];
+                                        echo ('<script> location.href="circulation_faculty_borrowing.php?firstname='.$firstname.'";</script>');
+                                    }
+                                } else {
+                                    echo ('<script> location.href="circulation_faculty_borrow.php";</script>');
+                                    $_SESSION['message_error'] = 'No Faculty Found';
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header text-dark fw-semibold">
+                        Recent Borrowed Books
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive mt-3">
+                            <table id="myDataTable" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Barcode</th>
+                                        <th>Borrower Name</th>
+                                        <th>Title</th>
+                                        <th>Date Borrowed</th>
+                                        <th>Due Date</th>
+                                        <th>Date Returned</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $borrow_query = mysqli_query($con,"SELECT * FROM borrow_book LEFT JOIN book ON borrow_book.book_id = book.book_id LEFT JOIN faculty ON borrow_book.faculty_id = faculty.faculty_id WHERE borrowed_status = 'borrowed' ORDER BY borrow_book.borrow_book_id DESC");
+                                    $borrow_count = mysqli_num_rows($borrow_query);
+                                    while($borrow_row = mysqli_fetch_array($borrow_query)){
+                                        $id = $borrow_row ['borrow_book_id'];
+                                        $book_id = $borrow_row ['book_id'];
+                                        $faculty_id = $borrow_row ['faculty_id'];
+                                    ?>
+                                    <?php
+                                    if(isset($faculty_id))
+                                    {
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <center>
+                                                <?php if($borrow_row['book_image'] != ""): ?>
+                                                <img src="../uploads/books_img/<?php echo $borrow_row['book_image']; ?>" alt="" width="80px" height="80px">
+                                                <?php else: ?>
+                                                <img src="../uploads/books_img/book_image.jpg" alt="" width="80px" height="80px">
+                                                <?php endif; ?>
+                                            </center>
+                                        </td>
+                                        <td><?php echo $borrow_row['barcode']; ?></td>
+                                        <td style="text-transform: capitalize"><?php echo $borrow_row['firstname']." ".$borrow_row['lastname']; ?></td>
+                                        <td style="text-transform: capitalize"><?php echo $borrow_row['title']; ?></td>
+                                        <td><?php echo date("M d, Y h:i:s a",strtotime($borrow_row['date_borrowed'])); ?></td>
+                                        <td><?php echo date("M d, Y h:i:s a",strtotime($borrow_row['due_date'])); ?></td>
+                                        <td><?php echo ($borrow_row['date_returned'] == "0000-00-00 00:00:00") ? "Pending" : date("M d, Y h:m:s a",strtotime($borrow_row['date_returned'])); ?></td>
+                                        <?php
+                                        if ($borrow_row['borrowed_status'] != 'returned') {
+                                            echo "<td class='alert alert-success'>".$borrow_row['borrowed_status']."</td>";
+                                        } else {
+                                            echo "<td  class='alert alert-danger'>".$borrow_row['borrowed_status']."</td>";
                                         }
-                                   }
-                                   else
-                                   {
-                                        $_SESSION['message_error'] = 'No ID Found';
-                                        // echo ('<script> location.href="circulation_borrow.php";</script');
-                                        
-                                        
-                                        
-                                   }
-                                  }
-
-
-
-                                       
-                                   ?>
-
-
-
-                              </div>
-                         </div>
-                         <div class="card-footer">
-
-
-                         </div>
+                                        ?>
+                                    </tr>
+                                    <?php }  } 
+                                    if ($borrow_count <= 0){
+                                        echo '
+                                            <table style="float:right;">
+                                                <tr>
+                                                    <td style="padding:10px;" class="alert alert-danger">No Books Borrowed at this Moment</td>
+                                                </tr>
+                                            </table>
+                                        ';
+                                    } ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="card">
-                         <div class="card-header text-dark fw-semibold ">
-                              Recent Borrowed Books
-                         </div>
-                         <div class="card-body">
-                              <div class="table-responsive mt-3">
-                                   <table id="myDataTable" cellpadding="0" cellspacing="0" border="0"
-                                        class="table table-striped table-bordered" id="example">
-
-                                        <thead>
-                                             <tr>
-                                                  <th>Image</th>
-                                                  <th>Barcode</th>
-                                                  <th>Borrower Name</th>
-                                                  <th>Title</th>
-                                                  <th>Date Borrowed</th>
-                                                  <th>Due Date</th>
-                                                  <th>Date Returned</th>
-                                                  <th>Status</th>
-                                             </tr>
-                                        </thead>
-                                        <tbody>
-
-                                             <?php
-								$borrow_query = mysqli_query($con,"SELECT * FROM borrow_book
-									LEFT JOIN book ON borrow_book.book_id = book.book_id 
-									LEFT JOIN faculty ON borrow_book.faculty_id = faculty.faculty_id 
-									WHERE borrowed_status = 'borrowed'
-									ORDER BY borrow_book.borrow_book_id DESC");
-								$borrow_count = mysqli_num_rows($borrow_query);
-								while($borrow_row = mysqli_fetch_array($borrow_query)){
-									$id = $borrow_row ['borrow_book_id'];
-									$book_id = $borrow_row ['book_id'];
-									$faculty_id = $borrow_row ['faculty_id'];
-							?>
-                                             <?php
-                                                       if(isset($faculty_id))
-                                                       {
-                                                       ?>
-                                             <tr>
-
-                                                  <td>
-                                                       <center>
-                                                            <?php if($borrow_row['book_image'] != ""): ?>
-                                                            <img src="../uploads/books_img/<?php echo $borrow_row['book_image']; ?>"
-                                                                 alt="" width="80px" height="80px">
-                                                            <?php else: ?>
-                                                            <img src="../uploads/books_img/book_image.jpg" alt=""
-                                                                 width="80px" height="80px">
-                                                            <?php endif; ?>
-                                                       </center>
-                                                  </td>
-                                                  <td><?php echo $borrow_row['barcode']; ?></td>
-                                                  <td style="text-transform: capitalize">
-                                                       <?php echo $borrow_row['firstname']." ".$borrow_row['lastname']; ?>
-                                                  </td>
-                                                  <td style="text-transform: capitalize">
-                                                       <?php echo $borrow_row['title']; ?></td>
-                                                  <td><?php echo date("M d, Y h:i:s a",strtotime($borrow_row['date_borrowed'])); ?>
-                                                  </td>
-                                                  <td><?php echo date("M d, Y h:i:s a",strtotime($borrow_row['due_date'])); ?>
-                                                  </td>
-                                                  <td><?php echo ($borrow_row['date_returned'] == "0000-00-00 00:00:00") ? "Pending" : date("M d, Y h:m:s a",strtotime($borrow_row['date_returned'])); ?>
-                                                  </td>
-                                                  <?php
-									if ($borrow_row['borrowed_status'] != 'returned') {
-										echo "<td class='alert alert-success'>".$borrow_row['borrowed_status']."</td>";
-									} else {
-										echo "<td  class='alert alert-danger'>".$borrow_row['borrowed_status']."</td>";
-									}
-								?>
-                                             </tr>
-                                             <?php }  } 
-							if ($borrow_count <= 0){
-								echo '
-									<table style="float:right;">
-										<tr>
-											<td style="padding:10px;" class="alert alert-danger">No Books Borrowed at this Moment</td>
-										</tr>
-									</table>
-								';
-							} 							
-							?>
-                                        </tbody>
-                                   </table>
-                              </div>
-                         </div>
-                         <div class="card-footer"></div>
-                    </div>
-               </div>
-          </div>
-     </section>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <?php 

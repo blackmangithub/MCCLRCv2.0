@@ -33,7 +33,7 @@ include('./includes/sidebar.php');
     Faculty Approval
     <?php
         // Example query to count pending student approvals
-$sql = "SELECT COUNT(*) AS pending_student_count FROM user WHERE role_as = 'faculty' AND status = 'pending'";
+$sql = "SELECT COUNT(*) AS pending_student_count FROM faculty WHERE (role_as = 'faculty' OR role_as = 'staff') AND status = 'pending'";
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 $pendingStudentCount = $row['pending_student_count'];
@@ -61,7 +61,7 @@ $pendingStudentCount = $row['pending_student_count'];
                                         </thead>
                                         <tbody>
                                              <?php
-                                             $query = "SELECT * FROM user WHERE status = 'approved' AND role_as = 'faculty' ORDER BY user_id ASC";
+                                             $query = "SELECT * FROM faculty WHERE status = 'approved' AND (role_as = 'faculty' OR role_as = 'staff') ORDER BY faculty_id ASC";
                                              $query_run = mysqli_query($con, $query);
                                              
                                              if(mysqli_num_rows($query_run))
@@ -81,7 +81,7 @@ $pendingStudentCount = $row['pending_student_count'];
                                                   <td class=" justify-content-center">
                                                        <div class="btn-group" style="background: #DFF6FF;  ">
                                                             <!-- View Student Action-->
-                                                            <a href="user_faculty_view.php?id=<?=$user['user_id']; ?>"
+                                                            <a href="user_faculty_view.php?id=<?=$user['faculty_id']; ?>"
                                                                  name=""
                                                                  class="viewBookBtn btn btn-sm  border text-primary"
                                                                  data-bs-toggle="tooltip" data-bs-placement="bottom"
@@ -91,7 +91,7 @@ $pendingStudentCount = $row['pending_student_count'];
                                                             <!-- Delete Student Action-->
                                                             <form action="user_faculty_code.php" method="POST">
                                                                  <button type="submit" name="delete_faculty"
-                                                                      value="<?=$user['user_id'];?>"
+                                                                      value="<?=$user['faculty_id'];?>"
                                                                       class="btn btn-sm  border text-danger"
                                                                       data-bs-toggle="tooltip"
                                                                       data-bs-placement="bottom" title="Delete Faculty Staff">

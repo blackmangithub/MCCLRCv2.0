@@ -21,7 +21,7 @@ if(isset($_POST['register_btn'])) {
     $role_as = mysqli_real_escape_string($con, $_POST['role']);
 
     // Validate mandatory fields
-    if(empty($lastname) || empty($firstname) || empty($gender) || empty($birthdate) || empty($address) || empty($cell_no) || empty($email) || empty($course) || empty($student_id_no) || empty($password) || empty($cpassword) || empty($role_as)) {
+    if(empty($lastname) || empty($firstname) || empty($gender) || empty($birthdate) || empty($address) || empty($cell_no) || empty($email) || empty($student_id_no) || empty($password) || empty($cpassword) || empty($role_as)) {
         $_SESSION['message_error'] = "Please fill up all fields";
         header("Location: signup.php");
         exit(0);
@@ -38,8 +38,8 @@ if(isset($_POST['register_btn'])) {
     $check_query = "";
     if ($role_as == 'student') {
         $check_query = "SELECT student_id_no FROM user WHERE student_id_no = '$student_id_no'";
-    } elseif ($role_as == 'faculty') {
-        $check_query = "SELECT username FROM user WHERE username = '$student_id_no'"; // Assuming username is used for faculty
+    } elseif ($role_as == 'faculty' || $role_as == 'staff') {
+        $check_query = "SELECT username FROM faculty WHERE username = '$student_id_no'"; // Assuming username is used for faculty
     }
     $check_query_run = mysqli_query($con, $check_query);
     if(mysqli_num_rows($check_query_run) > 0) {
@@ -55,8 +55,8 @@ if(isset($_POST['register_btn'])) {
     $insert_query = "";
     if($role_as == 'student') {
         $insert_query = "INSERT INTO user (lastname, firstname, middlename, gender, course, address, cell_no, birthdate, email, year_level, student_id_no, password, role_as, status, user_added) VALUES ('$lastname', '$firstname', '$middlename', '$gender', '$course', '$address', '$cell_no', '$birthdate', '$email', '$year_level', '$student_id_no', '$hashed_password', '$role_as', 'pending', NOW())";
-    } elseif($role_as == 'faculty') {
-        $insert_query = "INSERT INTO user (lastname, firstname, middlename, gender, course, address, cell_no, birthdate, email, year_level, username, password, role_as, status, user_added) VALUES ('$lastname', '$firstname', '$middlename', '$gender', '$course', '$address', '$cell_no', '$birthdate', '$email', '$year_level', '$student_id_no', '$hashed_password', '$role_as', 'pending', NOW())";
+    } elseif($role_as == 'faculty' || $role_as == 'staff') {
+        $insert_query = "INSERT INTO faculty (lastname, firstname, middlename, gender, course, address, cell_no, birthdate, email, username, password, role_as, status, faculty_added) VALUES ('$lastname', '$firstname', '$middlename', '$gender', '$course', '$address', '$cell_no', '$birthdate', '$email', '$student_id_no', '$hashed_password', '$role_as', 'pending', NOW())";
     }
 
     if(mysqli_query($con, $insert_query)) {
@@ -71,8 +71,8 @@ if(isset($_POST['register_btn'])) {
         $update_query = "";
         if($role_as == 'student') {
             $update_query = "UPDATE user SET qr_code = '$qrimage' WHERE student_id_no = '$student_id_no'";
-        } elseif($role_as == 'faculty') {
-            $update_query = "UPDATE user SET qr_code = '$qrimage' WHERE username = '$student_id_no'";
+        } elseif($role_as == 'faculty' || $role_as == 'staff') {
+            $update_query = "UPDATE faculty SET qr_code = '$qrimage' WHERE username = '$student_id_no'";
         }
 
         if(mysqli_query($con, $update_query)) {

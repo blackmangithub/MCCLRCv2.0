@@ -22,20 +22,26 @@
                </a>
           </li>
           <li class="nav-item">
-    <a class="nav-link collapsed<?=$page == 'users.php' || 
+    <a class="nav-link collapsed<?= ($page == 'users.php' || 
         $page == 'user_student.php' || 
         $page == 'user_student_add.php' || 
         $page == 'user_student_view.php' || 
         $page == 'user_student_edit.php' || 
         $page == 'user_faculty.php' || 
-        $page == 'user_student_approval.php' ? 'active': '' ?>"
+        $page == 'user_student_approval.php') ? ' active' : '' ?>"
         href="users.php">
         <i class="bi bi-people"></i><span>Users</span>
         <?php
-            $sql = "SELECT COUNT(*) AS pending_count FROM user WHERE status = 'pending'";
-            $result = mysqli_query($con, $sql);
-            $row = mysqli_fetch_assoc($result);
-            $pendingCount = $row['pending_count'];
+            $user_sql = "SELECT COUNT(*) AS pending_count FROM user WHERE status = 'pending'";
+            $faculty_sql = "SELECT COUNT(*) AS pending_count FROM faculty WHERE status = 'pending'";
+
+            $user_result = mysqli_query($con, $user_sql);
+            $faculty_result = mysqli_query($con, $faculty_sql);
+
+            $user_row = mysqli_fetch_assoc($user_result);
+            $faculty_row = mysqli_fetch_assoc($faculty_result);
+
+            $pendingCount = $user_row['pending_count'] + $faculty_row['pending_count'];
 
             if ($pendingCount > 0) {
                 echo '<span class="badge bg-danger">' . $pendingCount . '</span>';

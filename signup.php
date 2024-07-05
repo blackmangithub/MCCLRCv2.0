@@ -1,79 +1,71 @@
 <?php 
 session_start();
 
-//if(isset($_SESSION['auth']))
-//{
-//  $_SESSION['message_error'] = "You are already logged in";
-//  header("Location: index.php");
-//  exit(0);
-//}
-
 include('./admin/config/dbcon.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="icon" href="./assets/img/mcc-logo.png">
-     <title>MCC Learning Resource Center</title>
-     <style>
-          #year_levelField{
-               display: none;
-          }
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./assets/img/mcc-logo.png">
+    <title>MCC Learning Resource Center</title>
+    <style>
+        #year_levelField{
+            display: none;
+        }
 
-          /* Custom styles for toggle password icon */
-.toggle-password {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #777; /* Adjust color as needed */
-}
+        /* Custom styles for toggle password icon */
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777; /* Adjust color as needed */
+        }
 
-.toggle-password-icon {
-    font-size: 16px; /* Adjust icon size */
-}
+        .toggle-password-icon {
+            font-size: 16px; /* Adjust icon size */
+        }
 
-/* Adjust icon color when hovered */
-.toggle-password:hover .toggle-password-icon {
-    color: #333;
-}
+        /* Adjust icon color when hovered */
+        .toggle-password:hover .toggle-password-icon {
+            color: #333;
+        }
 
-.invalid-feedback {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-    display: none; /* Initially hide the feedback */
-}
+        .invalid-feedback {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none; /* Initially hide the feedback */
+        }
 
-.is-invalid {
-    border: 1px solid red; /* Example border color for invalid input */
-}
+        .is-invalid {
+            border: 1px solid red; /* Example border color for invalid input */
+        }
 
-.field {
-    margin-bottom: 15px;
-    position: relative; /* Ensure relative positioning for proper absolute positioning */
-}
+        .field {
+            margin-bottom: 15px;
+            position: relative; /* Ensure relative positioning for proper absolute positioning */
+        }
 
-.invalid-feedback {
-    position: absolute;
-    bottom: -20px; /* Adjust the position as needed */
-    left: 0;
-    display: none; /* Show the feedback message when invalid */
-}
+        .invalid-feedback {
+            position: absolute;
+            bottom: -20px; /* Adjust the position as needed */
+            left: 0;
+            display: none; /* Show the feedback message when invalid */
+        }
 
-.warning {
-     font-size: 11px;
-     position: relative;
-     top: -40px;
-}
-     </style>
+        .warning {
+            font-size: 11px;
+            position: relative;
+            top: -40px;
+        }
+    </style>
 </head>
-
 
 <!-- Alertify JS link -->
 <link rel="stylesheet" href="assets/css/alertify.min.css" />
@@ -82,324 +74,323 @@ include('./admin/config/dbcon.php');
 <!-- Custom CSS links -->
 <link rel="stylesheet" href="assets/css/signup.css">
 
-
 <body>
 
-     <div class="container">
-          <header>
-               <h5>SIGN<span>UP</span></h5>
-          </header>
-          <!-- Multi Step Form start -->
-          <div class="progress-bar">
-               <div class="step">
-                    <p>Personal</p>
-                    <div class="bullet">
-                         <span>1</span>
-                    </div>
-                    <div class="check fas fa-check"></div>
-               </div>
-               <div class="step hide">
-                    <p>Birth</p>
-                    <div class="bullet">
-                         <span>2</span>
-                    </div>
-                    <div class="check fas fa-check"></div>
-               </div>
-               <div class="step">
-                    <p>Contact</p>
-                    <div class="bullet">
-                         <span>3</span>
-                    </div>
-                    <div class="check fas fa-check"></div>
-               </div>
-               <div class="step hide">
-                    <p>Contact</p>
-                    <div class="bullet">
-                         <span>4</span>
-                    </div>
-                    <div class="check fas fa-check"></div>
-               </div>
-               <div class="step">
-                    <p>Accounts</p>
-                    <div class="bullet">
-                         <span>5</span>
-                    </div>
-                    <div class="check fas fa-check"></div>
-               </div>
-          </div>
+    <div class="container">
+        <header>
+            <h5>SIGN<span>UP</span></h5>
+        </header>
+        <!-- Multi Step Form start -->
+        <div class="progress-bar">
+            <div class="step">
+                <p>Personal</p>
+                <div class="bullet">
+                    <span>1</span>
+                </div>
+                <div class="check fas fa-check"></div>
+            </div>
+            <div class="step hide">
+                <p>Birth</p>
+                <div class="bullet">
+                    <span>2</span>
+                </div>
+                <div class="check fas fa-check"></div>
+            </div>
+            <div class="step">
+                <p>Contact</p>
+                <div class="bullet">
+                    <span>3</span>
+                </div>
+                <div class="check fas fa-check"></div>
+            </div>
+            <div class="step hide">
+                <p>Contact</p>
+                <div class="bullet">
+                    <span>4</span>
+                </div>
+                <div class="check fas fa-check"></div>
+            </div>
+            <div class="step">
+                <p>Accounts</p>
+                <div class="bullet">
+                    <span>5</span>
+                </div>
+                <div class="check fas fa-check"></div>
+            </div>
+        </div>
 
+        <!-- Multi Step Form end -->
+        <div class="form-outer">
+            <form action="./signupcode.php" method="POST" enctype="multipart/form-data">
+                <!-- First Slide Page start-->
+                <div class="page slide-page">
+                    <div class="title">Personal Details:</div>
 
-          <!-- Multi Step Form end -->
-          <div class="form-outer">
-               <form action="./signupcode.php" method="POST" enctype="multipart/form-data">
-                    <!-- First Slide Page start-->
-                    <div class="page slide-page">
-                         <div class="title">Personal Details:</div>
-
-                         <div class="field">
-                         <div class="label">Lastname</div>
-                         <input type="text" name="lastname" id="lastname" />
-                         <div class="invalid-feedback">
-                              Last name must start with a capital letter.
-                         </div>
-                         </div>
-
-                         <div class="field">
-                         <div class="label">Firstname</div>
-                         <input type="text" name="firstname" id="firstname" />
-                         <div class="invalid-feedback">
-                              First name must start with a capital letter.
-                         </div>
-                         </div>
-
-                         <div class="field">
-                         <div class="label">Middlename <span style="font-weight:200;color:gray;font-size:13px;">(optional)</span></div>
-                         <input type="text" name="middlename" id="middlename" />
-                         <div class="invalid-feedback">
-                              Middle name must start with a capital letter.
-                         </div>
-                         </div>
-
-                         <div class="field option">
-                              <button class="firstNext next">Next</button>
-                              <p>Already have an account? <a href="login.php">Login</a></p>
-                         </div>
-                    </div>
-                    <!-- First Slide Page end-->
-
-                    <!-- Second Slide Page start-->
-                    <div class="page">
-
-                         <div class="field">
-                              <div class="label" for="type">User Type</div>
-                              <select name="role" id="role">
-                                   <option value="" disabled selected>--Select Type--</option>
-                                   <option value="student">Student</option>
-                                   <option value="faculty">Faculty</option>
-                              </select>
-                         </div>
-
-                         <div class="field">
-                              <div class="label">Birthdate</div>
-                              <input type="date" name="birthdate" />
-                         </div>
-
-                         <div class="field">
-                              <div class="label">Address</div>
-                              <input type="text" name="address" />
-                         </div>
-
-                         <div class="field btns">
-                              <button class="prev-1 prev">Previous</button>
-                              <button class="next-1 next">Next</button>
-                         </div>
-                    </div>
-                    <!-- Second Slide Page end-->
-
-                    <!-- Third Slide Page start-->
-                    <div class="page">
                     <div class="field">
-                              <div class="label" for="gender">Gender</div>
-                              <select name="gender" id="gender">
-                                   <option value="" disabled selected>--Select Gender--</option>
-                                   <option value="Male">Male</option>
-                                   <option value="Female">Female</option>
-                              </select>
-                         </div>
-
-                         <div class="field" id="year_levelField">
-                              <div class="label" for="course">Year Level</div>
-                              <select name="year_level" id="year_level">
-                                   <option value="" disabled selected>--Select Year Level--</option>
-                                   <option value="4th year">4th year</option>
-                                   <option value="3rd year">3rd year</option>
-                                   <option value="2nd year">2nd year</option>
-                                   <option value="1st year">1st year</option>
-                              </select>
-                         </div>
-
-                         <div class="field">
-                              <div class="label" for="course" id="courseLabel">Course</div>
-                              <select name="course" id="course">
-                                   <option value="" id="optionLabel" disabled selected>--Select Course--</option>
-                                   <option value="BSIT">BSIT</option>
-                                   <option value="BSED">BSED</option>
-                                   <option value="BEED">BEED</option>
-                                   <option value="BSBA">BSBA</option>
-                                   <option value="BSHM">BSHM</option>
-                              </select>
-                         </div>
-
-                         <div class="field btns">
-                              <button class="prev-2 prev">Previous</button>
-                              <button class="next-2 next">Next</button>
-                         </div>
+                        <div class="label">Lastname</div>
+                        <input type="text" name="lastname" id="lastname" />
+                        <div class="invalid-feedback">
+                            Last name must start with a capital letter.
+                        </div>
                     </div>
-                    <!-- Third Slide Page end-->
 
-                    <!-- Fourth Slide Page start-->
-                    <div class="page">
-                         <div class="title hides">Contact Info</div>
+                    <div class="field">
+                        <div class="label">Firstname</div>
+                        <input type="text" name="firstname" id="firstname" />
+                        <div class="invalid-feedback">
+                            First name must start with a capital letter.
+                        </div>
+                    </div>
 
-                         <div class="field">
-                              <div class="label">Email</div>
-                              <input type="email" placeholder="example@gmail.com" name="email" />
-                         </div>
+                    <div class="field">
+                        <div class="label">Middlename <span style="font-weight:200;color:gray;font-size:13px;">(optional)</span></div>
+                        <input type="text" name="middlename" id="middlename" />
+                        <div class="invalid-feedback">
+                            Middle name must start with a capital letter.
+                        </div>
+                    </div>
 
-                         <div class="field">
-        <div class="label">Cellphone No.</div>
-        <input type="text" id="cell_no" name="cell_no" class="format_number" maxlength="11" placeholder="09xxxxxxxxx" oninput="validateCellphone(this)">
+                    <div class="field option">
+                        <button class="firstNext next">Next</button>
+                        <p>Already have an account? <a href="login.php">Login</a></p>
+                    </div>
+                </div>
+                <!-- First Slide Page end-->
+
+                <!-- Second Slide Page start-->
+                <div class="page">
+
+                    <div class="field">
+                        <div class="label" for="type">User Type</div>
+                        <select name="role" id="role">
+                            <option value="" disabled selected>--Select Type--</option>
+                            <option value="student">Student</option>
+                            <option value="faculty">Faculty</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Birthdate</div>
+                        <input type="date" name="birthdate" />
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Address</div>
+                        <input type="text" name="address" />
+                    </div>
+
+                    <div class="field btns">
+                        <button class="prev-1 prev">Previous</button>
+                        <button class="next-1 next">Next</button>
+                    </div>
+                </div>
+                <!-- Second Slide Page end-->
+
+                <!-- Third Slide Page start-->
+                <div class="page">
+                    <div class="field">
+                        <div class="label" for="gender">Gender</div>
+                        <select name="gender" id="gender">
+                            <option value="" disabled selected>--Select Gender--</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="field" id="year_levelField">
+                        <div class="label" for="course">Year Level</div>
+                        <select name="year_level" id="year_level">
+                            <option value="" disabled selected>--Select Year Level--</option>
+                            <option value="4th year">4th year</option>
+                            <option value="3rd year">3rd year</option>
+                            <option value="2nd year">2nd year</option>
+                            <option value="1st year">1st year</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <div class="label" for="course" id="courseLabel">Course</div>
+                        <select name="course" id="course">
+                            <option value="" id="optionLabel" disabled selected>--Select Course--</option>
+                            <option value="BSIT">BSIT</option>
+                            <option value="BSED">BSED</option>
+                            <option value="BEED">BEED</option>
+                            <option value="BSBA">BSBA</option>
+                            <option value="BSHM">BSHM</option>
+                        </select>
+                    </div>
+
+                    <div class="field btns">
+                        <button class="prev-2 prev">Previous</button>
+                        <button class="next-2 next">Next</button>
+                    </div>
+                </div>
+                <!-- Third Slide Page end-->
+
+                <!-- Fourth Slide Page start-->
+                <div class="page">
+                    <div class="title hides">Contact Info</div>
+
+                    <div class="field">
+                        <div class="label">Email</div>
+                        <input type="email" placeholder="example@gmail.com" name="email" />
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Cellphone No.</div>
+                        <input type="text" id="cell_no" name="cell_no" class="format_number" maxlength="11" placeholder="09xxxxxxxxx" oninput="validateCellphone(this)">
+                    </div>
+                    <span id="warning_message" style="color:red;" class="warning"></span>
+
+                    <div class="field btns">
+                        <button class="prev-3 prev">Previous</button>
+                        <button class="next-3 next">Next</button>
+                    </div>
+                </div>
+                <!-- Fourth Slide Page end-->
+
+                <!-- Fifth Slide Page start-->
+                <div class="page">
+                    <div class="title">Login Details:</div>
+
+                    <div class="field">
+                        <div class="label" id="stud_idLabel">Student ID No.</div>
+                        <input type="text" name="student_id_no" id="student_id_no" maxlength="9" oninput="formatStudentID()">
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Password</div>
+                        <input type="password" name="password" id="passwordInput" oninput="validatePassword(this)">
+                        <span class="toggle-password" onclick="togglePasswordVisibility()">
+                            <i class="fas fa-eye toggle-password-icon"></i>
+                        </span>
+                        <div id="passwordLengthFeedback" class="invalid-feedback">
+                            Password must be at least 8 characters long.
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Confirm Password</div>
+                        <input type="password" name="cpassword" id="confirmPasswordInput">
+                        <span class="toggle-password" onclick="toggleConfirmPasswordVisibility()">
+                            <i class="fas fa-eye toggle-password-icon"></i>
+                        </span>
+                    </div>
+
+                    <div class="field btns">
+                        <button class="prev-4 prev">Previous</button>
+                        <button type="submit" class="submit" name="register_btn">Submit</button>
+                    </div>
+                </div>
+                <!-- Fifth Slide Page end-->
+            </form>
+        </div>
     </div>
-    <span id="warning_message" style="color:red;" class="warning"></span>
 
+    <!-- Format Number  -->
+    <script src="assets/js/format_number.js"></script>
 
-                         <div class="field btns">
-                              <button class="prev-3 prev">Previous</button>
-                              <button class="next-3 next">Next</button>
-                         </div>
-                    </div>
-                    <!-- Fourth Slide Page end-->
+    <!-- Font Awesome Link -->
+    <script src="assets/js/kit.fontawesome.js"></script>
 
-                    <!-- Fifth Slide Page start-->
-                    <div class="page">
-                         <div class="title">Login Details:</div>
+    <!-- Alertify JS link -->
+    <script src="assets/js/alertify.min.js"></script>
 
+    <!-- Custom JS link -->
+    <script src="assets/js/script.js"></script>
 
-
-                         <div class="field">
-                    <div class="label" id="stud_idLabel">Student ID No.</div>
-                    <input type="text" name="student_id_no" id="student_id_no" maxlength="9" oninput="formatStudentID(this)">
-                </div>
-                <div class="field">
-                    <div class="label">Password</div>
-                    <input type="password" name="password" id="passwordInput" oninput="validatePassword(this)">
-                    <span class="toggle-password" toggle="#passwordInput">
-                        <i class="fas fa-eye toggle-password-icon"></i>
-                    </span>
-                    <div id="passwordLengthFeedback" class="invalid-feedback">
-                        Password must be at least 8 characters long.
-                    </div>
-                </div>
-
-                         <div class="field">
-                              <div class="label">Confirm Password</div>
-                              <input type="password" name="cpassword" id="confirmPasswordInput" />
-                              <span class="toggle-password" toggle="#confirmPasswordInput">
-                                   <i class="fas fa-eye toggle-password-icon"></i>
-                              </span>
-                         </div>
-
-                         <div class="field btns">
-                              <button class="prev-4 prev">Previous</button>
-                              <button type="submit" class="submit" name="register_btn">Submit</button>
-                         </div>
-                    </div>
-                    <!-- Fifth Slide Page end-->
-               </form>
-          </div>
-     </div>
-
-     <!-- Format Number  -->
-     <script src="assets/js/format_number.js"></script>
-
-     <!-- Font Awesome Link -->
-     <script src="assets/js/kit.fontawesome.js"></script>
-
-     <!-- Alertify JS link -->
-     <script src="assets/js/alertify.min.js"></script>
-
-     <!-- Custom JS link -->
-     <script src="assets/js/script.js"></script>
-
-     <script>
-          function togglePasswordVisibility() {
-               const passwordInput = document.getElementById('password');
-               const passwordIcon = document.querySelector('.toggle-password-icon');
-               if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    passwordIcon.classList.remove('fa-eye');
-                    passwordIcon.classList.add('fa-eye-slash');
-               } else {
-                    passwordInput.type = 'password';
-                    passwordIcon.classList.remove('fa-eye-slash');
-                    passwordIcon.classList.add('fa-eye');
-               }
-          }
-
-          function toggleConfirmPasswordVisibility() {
-               const passwordInput = document.getElementById('confirm-password');
-               const passwordIcon = document.querySelector('.toggle-password-icon');
-               if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    passwordIcon.classList.remove('fa-eye');
-                    passwordIcon.classList.add('fa-eye-slash');
-               } else {
-                    passwordInput.type = 'password';
-                    passwordIcon.classList.remove('fa-eye-slash');
-                    passwordIcon.classList.add('fa-eye');
-               }
-          }
-
-          function formatCellphone(cell) {
-               const cleaned = cell.value.replace(/\D/g, '');
-               const match = cleaned.match(/^(\d{4})(\d{3})(\d{4})$/);
-               if (match) {
-                    cell.value = `(${match[1]}) ${match[2]}-${match[3]}`;
-               }
-          }
-
-          function formatStudentID() {
-    const studentIDInput = document.getElementById('student_id_no');
-    const roleSelect = document.getElementById('role');
-    const selectedRole = roleSelect.value;
-
-    if (selectedRole === 'student') {
-        let studentID = studentIDInput.value.replace(/\D/g, ''); // Remove non-numeric characters
-
-        // Format based on the length of studentID
-        if (studentID.length > 4) {
-            studentID = studentID.slice(0, 4) + '-' + studentID.slice(4); // Format as YYYY-XXXX
-        } else if (studentID.length > 0) {
-            studentID = studentID.slice(0, 4); // If less than 4 characters, keep as is (possibly incomplete)
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const passwordIcon = document.querySelector('.toggle-password-icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            }
         }
 
-        studentIDInput.value = studentID; // Update the input value
-    }
-}
+        function toggleConfirmPasswordVisibility() {
+            const passwordInput = document.getElementById('confirmPasswordInput');
+            const passwordIcon = document.querySelector('.toggle-password-icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            }
+        }
 
-          document.getElementById('role').addEventListener('change', function () {
-               const yearLevelField = document.getElementById('year_levelField');
-               const stud_idLabel = document.getElementById('stud_idLabel');
-               const roleSelect = document.getElementById('role');
-               const studentIDInput = document.getElementById('student_id_no');
-               const selectedRole = roleSelect.value;
+        function formatStudentID() {
+            const studentIDInput = document.getElementById('student_id_no');
+            const roleSelect = document.getElementById('role');
+            const selectedRole = roleSelect.value;
 
-               if (selectedRole === 'student') {
-                    yearLevelField.style.display = 'block';
-                    stud_idLabel.textContent = 'Student ID No.';
-                    studentIDInput.value = ''; // Clear the input value
-               } else if (selectedRole === 'faculty') {
-                    yearLevelField.style.display = 'none';
-                    stud_idLabel.textContent = 'Faculty Username';
-                    studentIDInput.value = ''; // Clear the input value
-               }
-          });
+            if (selectedRole === 'student') {
+                let studentID = studentIDInput.value.replace(/\D/g, ''); // Remove non-numeric characters
 
-          function validateCellphone(input) {
-               const value = input.value;
-               const warningMessage = document.getElementById('warning_message');
+                // Format based on the length of studentID
+                if (studentID.length > 4) {
+                    studentID = studentID.slice(0, 4) + '-' + studentID.slice(4); // Format as YYYY-XXXX
+                } else if (studentID.length > 0) {
+                    studentID = studentID.slice(0, 4); // If less than 4 characters, keep as is (possibly incomplete)
+                }
 
-               if (!/^09\d{9}$/.test(value)) {
-                    input.classList.add('is-invalid');
-                    warningMessage.textContent = "Invalid phone number. Please enter an 11-digit phone number starting with '09'.";
-               } else {
-                    input.classList.remove('is-invalid');
-                    warningMessage.textContent = '';
-               }
-          }
-     </script>
+                studentIDInput.value = studentID; // Update the input value
+            }
+        }
 
-     <?php include('message.php'); ?>
+        document.getElementById('role').addEventListener('change', function () {
+            const yearLevelField = document.getElementById('year_levelField');
+            const stud_idLabel = document.getElementById('stud_idLabel');
+            const studentIDInput = document.getElementById('student_id_no');
+            const selectedRole = this.value;
+
+            if (selectedRole === 'student') {
+                yearLevelField.style.display = 'block';
+                stud_idLabel.textContent = 'Student ID No.';
+                studentIDInput.value = ''; // Clear the input value
+            } else if (selectedRole === 'faculty') {
+                yearLevelField.style.display = 'none';
+                stud_idLabel.textContent = 'Faculty Username';
+                studentIDInput.value = ''; // Clear the input value
+            }
+        });
+
+        function validateCellphone(input) {
+            const value = input.value;
+            const warningMessage = document.getElementById('warning_message');
+
+            if (!/^09\d{9}$/.test(value)) {
+                input.classList.add('is-invalid');
+                warningMessage.textContent = "Invalid phone number. Please enter an 11-digit phone number starting with '09'.";
+            } else {
+                input.classList.remove('is-invalid');
+                warningMessage.textContent = '';
+            }
+        }
+
+        function validatePassword(input) {
+            const passwordLengthFeedback = document.getElementById('passwordLengthFeedback');
+            if (input.value.length < 8) {
+                input.classList.add('is-invalid');
+                passwordLengthFeedback.style.display = 'block';
+            } else {
+                input.classList.remove('is-invalid');
+                passwordLengthFeedback.style.display = 'none';
+            }
+        }
+    </script>
+
+    <?php include('message.php'); ?>
 </body>
 
 </html>

@@ -4,9 +4,9 @@ include('authentication.php');
 
 if(isset($_POST['deny']))
 {
-     $student_id = $_POST['user_id'];
+     $faculty_id = $_POST['faculty_id'];
 
-     $query= "DELETE FROM user WHERE user_id = '$student_id'";
+     $query= "DELETE FROM faculty WHERE faculty_id = '$faculty_id'";
      $query_run = mysqli_query($con, $query);
 
      if($query_run)
@@ -28,9 +28,9 @@ if(isset($_POST['deny']))
 // Student Approval
 if(isset($_POST['approved']))
 {
-     $student_id = $_POST['user_id'];
+     $faculty_id = $_POST['faculty_id'];
 
-     $query= "UPDATE user SET status = 'approved' WHERE user_id = '$student_id'";
+     $query= "UPDATE faculty SET status = 'approved' WHERE faculty_id = '$faculty_id'";
      $query_run = mysqli_query($con, $query);
 
      if($query_run)
@@ -51,8 +51,8 @@ if(isset($_POST['approved']))
 // Delete Action
 if(isset($_POST['delete_faculty']))
 {
-     $user_id = mysqli_real_escape_string($con, $_POST['delete_faculty']);
-     $query = "DELETE FROM user WHERE user_id ='$user_id'";
+     $faculty_id = mysqli_real_escape_string($con, $_POST['delete_faculty']);
+     $query = "DELETE FROM faculty WHERE faculty_id ='$faculty_id'";
      $query_run = mysqli_query($con, $query);
 
      if($query_run)

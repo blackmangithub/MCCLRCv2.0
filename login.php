@@ -83,6 +83,7 @@ include('./admin/config/dbcon.php');
                                              <option value="" disabled selected>Select Role</option>
                                              <option value="student">Student</option>
                                              <option value="faculty">Faculty</option>
+                                             <option value="staff">Staff</option>
                                         </select>
                                         <div class="invalid-feedback">Please select your role.</div>
                                    </div>

@@ -7,7 +7,8 @@ if(empty($_SESSION['auth'])){
   header('Location: home.php');
   exit(0);
 }
-if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty")
+
+if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" && $_SESSION['auth_role'] != "staff")
 {
   header("Location:index.php");
   exit(0);
@@ -15,10 +16,12 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty")
 
 if (isset($_SESSION['auth_stud']['stud_id']))
 {
-     $id_session=$_SESSION['auth_stud']['stud_id'];
+     $id_session = $_SESSION['auth_stud']['stud_id'];
 }
 
 $name_session = $_SESSION['auth_stud']['stud_name']; 
+
+$table = $_SESSION['auth_role'] == "student" ? "user" : "faculty";
 ?>
 
 <style>
@@ -46,7 +49,7 @@ $name_session = $_SESSION['auth_stud']['stud_name'];
                          <div class="row">
                               <div class="col-xl-4">
                                    <?php
-                                   $query = "SELECT * FROM user WHERE user_id = '$id_session'";
+                                   $query = "SELECT * FROM $table WHERE ".($table == 'user' ? 'user_id' : 'faculty_id')." = '$id_session'";
                                    $query_run = mysqli_query($con, $query);
                                    $row = mysqli_fetch_array($query_run);
                                    ?>
@@ -81,8 +84,6 @@ $name_session = $_SESSION['auth_stud']['stud_name'];
                                              <div class="tab-content pt-2">
                                                   <div class="tab-pane fade show active profile-edit pt-3" id="profile-edit">
                                                        <?php
-                                                       $query = "SELECT * FROM user WHERE user_id= '$id_session' ";
-                                                       $query_run = mysqli_query($con, $query);
                                                        if(mysqli_num_rows($query_run))
                                                        {
                                                             foreach($query_run as $user)
@@ -183,7 +184,7 @@ $name_session = $_SESSION['auth_stud']['stud_name'];
                                                                  </div>
                                                             </div>
                                                             <div class="text-center">
-                                                                 <button type="submit" name="change_password" class="btn btn-primary">Change Password</button>
+                                                                 <button type="submit" name="password_update" class="btn btn-primary">Change Password</button>
                                                             </div>
                                                        </form>
                                                   </div>

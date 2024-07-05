@@ -69,7 +69,7 @@ $pendingStudentCount = $row['pending_student_count'];
                                                   <h2>Faculty Staff</h2>
                                                   <?php
                     // Example query to count pending student approvals
-$sql = "SELECT COUNT(*) AS pending_faculty_count FROM user WHERE role_as = 'faculty' AND status = 'pending'";
+$sql = "SELECT COUNT(*) AS pending_faculty_count FROM faculty WHERE (role_as = 'faculty' OR role_as = 'staff') AND status = 'pending'";
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 $pendingFacultyCount = $row['pending_faculty_count'];
@@ -222,7 +222,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                        <div class="card-body">
                                                             <h5 class="card-title my-0 pb-0">BSIT</h5>
                                                             <?php
-                                                                 $query = "SELECT * FROM user WHERE status='approved' AND role_as='faculty' AND course='BSIT'";
+                                                                 $query = "SELECT * FROM faculty WHERE status='approved' AND (role_as = 'faculty' OR role_as = 'staff') AND course='BSIT'";
                                                                  $query_run = mysqli_query($con, $query); 
                                                                  
                                                                  if($total_bsit = mysqli_num_rows($query_run))
@@ -246,7 +246,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                        <div class="card-body">
                                                             <h5 class="card-title  my-0 pb-0">BSBA</h5>
                                                             <?php
-                                                                 $query = "SELECT * FROM user WHERE status='approved' AND role_as='faculty' AND course='BSBA'";
+                                                                 $query = "SELECT * FROM faculty WHERE status='approved' AND (role_as = 'faculty' OR role_as = 'staff') AND course='BSBA'";
                                                                  $query_run = mysqli_query($con, $query); 
                                                                  
                                                                  if($total_bsba = mysqli_num_rows($query_run))
@@ -270,7 +270,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                        <div class="card-body">
                                                             <h5 class="card-title  my-0 pb-0">BSHM</h5>
                                                             <?php
-                                                                 $query = "SELECT * FROM user WHERE status='approved' AND role_as='faculty' AND course='BSHM'";
+                                                                 $query = "SELECT * FROM faculty WHERE status='approved' AND (role_as = 'faculty' OR role_as = 'staff') AND course='BSHM'";
                                                                  $query_run = mysqli_query($con, $query); 
                                                                  
                                                                  if($total_bshm = mysqli_num_rows($query_run))
@@ -294,7 +294,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                        <div class="card-body">
                                                             <h5 class="card-title  my-0 pb-0">BSED</h5>
                                                             <?php
-                                                                 $query = "SELECT * FROM user WHERE status='approved' AND role_as='faculty' AND course='BSED'";
+                                                                 $query = "SELECT * FROM faculty WHERE status='approved' AND (role_as = 'faculty' OR role_as = 'staff') AND course='BSED'";
                                                                  $query_run = mysqli_query($con, $query); 
                                                                  
                                                                  if($total_bsed = mysqli_num_rows($query_run))
@@ -318,7 +318,7 @@ $pendingFacultyCount = $row['pending_faculty_count'];
                                                        <div class="card-body">
                                                             <h5 class="card-title  my-0 pb-0">BEED</h5>
                                                             <?php
-                                                                 $query = "SELECT * FROM user WHERE status='approved' AND role_as='faculty' AND course='BEED'";
+                                                                 $query = "SELECT * FROM faculty WHERE status='approved' AND (role_as = 'faculty' OR role_as = 'staff') AND course='BEED'";
                                                                  $query_run = mysqli_query($con, $query); 
                                                                  
                                                                  if($total_beed = mysqli_num_rows($query_run))
