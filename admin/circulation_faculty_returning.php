@@ -33,7 +33,7 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                     </div>
                     <div class="card-body">
                         <?php
-                        if($faculty_row) {
+                        if ($faculty_row) {
                         ?>
                         <div class="text-muted mt-3">Faculty/Staff Name&nbsp;: &nbsp;<span
                                 class="h5 text-primary p-0 m-0 text-uppercase fw-semibold"><?php echo $faculty_row['firstname'].' '.$faculty_row['middlename'].' '.$faculty_row['lastname'];?></span>
@@ -60,7 +60,6 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                                         <th>Date Borrowed</th>
                                         <th>Due Date</th>
                                         <th>Penalty</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -119,94 +118,30 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                                         <td><?php echo date("M d, Y ", strtotime($borrow_row['date_borrowed'])); ?></td>
                                         <td><?php echo date('M d, Y ', strtotime($borrow_row['due_date'])) ?></td>
                                         <td><?php echo $penalty; ?></td>
-                                        <td>
-                                            <form method="post" action="">
-                                                <input type="hidden" name="date_returned" class="new_text" id="sd" value="<?php echo $date_returned ?>" size="16" maxlength="10" />
-                                                <input type="hidden" name="faculty_id" value="<?php echo $borrow_row['faculty_id']; ?>">
-                                                <input type="hidden" name="borrow_book_id" value="<?php echo $borrow_row['borrow_book_id']; ?>">
-                                                <input type="hidden" name="book_id" value="<?php echo $borrow_row['book_id']; ?>">
-                                                <input type="hidden" name="date_borrowed" value="<?php echo $borrow_row['date_borrowed']; ?>">
-                                                <input type="hidden" name="due_date" value="<?php echo $borrow_row['due_date']; ?>">
-                                                <button type="submit" name="return" class="btn btn-danger">Return</button>
-                                            </form>
-                                        </td>
                                     </tr>
                                     <?php 
                                         }
                                     } else {
                                         echo '
-                                        <table style="width:100%;">
-                                            <tr>
-                                                <td style="padding:10px;" class="alert alert-danger text-center">No books borrowed</td>
-                                            </tr>
-                                        </table>
+                                        <tr>
+                                            <td colspan="9" class="alert alert-danger text-center">No books borrowed</td>
+                                        </tr>
                                         ';
-                                    }
-                                    ?>
-                                    <?php
-                                    if (isset($_POST['return'])) {
-                                        $faculty_id = $_POST['faculty_id'];
-                                        $borrow_book_id = $_POST['borrow_book_id'];
-                                        $book_id = $_POST['book_id'];
-                                        $date_borrowed = $_POST['date_borrowed'];
-                                        $due_date = $_POST['due_date'];
-                                        $date_returned = $_POST['date_returned']; 
-                                    
-                                        mysqli_query($con, "UPDATE book SET status = 'Available' WHERE book_id = '$book_id'");
-                                    
-                                        $timezone = "Asia/Manila";
-                                        if (function_exists('date_default_timezone_set')) {
-                                            date_default_timezone_set($timezone);
-                                        }
-                                        $cur_date = date("Y-m-d");
-                                        $date_returned_now = date("Y-m-d");
-                                    
-                                        // Adjust due date to exclude Sundays
-                                        $adjusted_due_date = strtotime($due_date);
-                                        while (date('N', $adjusted_due_date) == 7) { // N returns 7 for Sunday
-                                            $adjusted_due_date = strtotime("+1 day", $adjusted_due_date);
-                                        }
-                                        $due_date = date("Y-m-d", $adjusted_due_date);
-                                    
-                                        if ($date_returned_now > $due_date) {
-                                            $penalty = 0;
-                                            $current_date = strtotime($due_date);
-                                            $end_date = strtotime($date_returned_now);
-                                    
-                                            while ($current_date < $end_date) {
-                                                $current_date = strtotime("+1 day", $current_date);
-                                                if (date('N', $current_date) != 7) { // N returns 7 for Sunday
-                                                    $penalty += 5;
-                                                }
-                                            }
-                                        } else {
-                                            $penalty = 'No Penalty';
-                                        }
-                                    
-                                        mysqli_query($con, "UPDATE borrow_book SET borrowed_status = 'returned', date_returned = '$date_returned_now', book_penalty = '$penalty' WHERE borrow_book_id = '$borrow_book_id' AND faculty_id = '$faculty_id' AND book_id = '$book_id'");
-                                    
-                                        mysqli_query($con, "INSERT INTO return_book (faculty_id, book_id, date_borrowed, due_date, date_returned, book_penalty)
-                                        VALUES ('$faculty_id', '$book_id', '$date_borrowed', '$due_date', '$date_returned_now', '$penalty')");
-                                    
-                                        if ($penalty === 'No Penalty') {
-                                            echo '<script>location.href="return_faculty_slip.php?firstname='.$firstname.'";</script>';
-                                        } else {
-                                            echo '<script>location.href="acknowledgement_receipt_print.php?firstname='.$firstname.'";</script>';
-                                        }
-                                    
-                                        $report_history1 = mysqli_query($con, "SELECT * FROM admin WHERE admin_id = '$id_session'");
-                                        $report_history_row1 = mysqli_fetch_array($report_history1);
-                                        $admin_row1 = $report_history_row1['firstname']." ".$report_history_row1['middlename']." ".$report_history_row1['lastname'];
-                                    
-                                        mysqli_query($con, "INSERT INTO report (book_id, faculty_id, admin_name, detail_action, date_transaction)
-                                        VALUES ('$book_id', '$faculty_id', '$admin_row1', 'Returned Book', NOW())");
                                     }
                                     ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="card-footer"></div>
+                    <div class="card-footer">
+                        <?php if ($borrow_count > 0): ?>
+                        <form method="post" action="">
+                            <input type="hidden" name="date_returned" class="new_text" id="sd" value="<?php echo date("Y-m-d"); ?>" size="16" maxlength="10" />
+                            <input type="hidden" name="faculty_id" value="<?php echo $faculty_row['faculty_id']; ?>">
+                            <button type="submit" name="return" class="btn btn-danger">Return All Books</button>
+                        </form>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
