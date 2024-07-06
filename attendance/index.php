@@ -1,3 +1,8 @@
+<?php
+session_start();
+include('../admin/config/dbcon.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -66,7 +71,6 @@
 </head>
 
 <body>
-     <?php include('config/dbcon.php'); ?>
      <header id="header" class="header fixed-top d-flex align-items-center">
           <!-- Logo -->
           <div class="d-flex align-items-center">

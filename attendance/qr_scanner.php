@@ -31,7 +31,7 @@
             </a>
         </div>
         <div class="d-flex align-items-center">
-        <a href="attendance_list.php" class="btn btn-primary position-relative mx-5">
+        <a href="index.php" class="btn btn-primary position-relative mx-5">
                 Back
                 </a>
 </div>
