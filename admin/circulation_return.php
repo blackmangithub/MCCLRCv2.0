@@ -38,7 +38,7 @@ include('./includes/sidebar.php');
                                                        aria-label="Username" aria-describedby="basic-addon1" autofocus
                                                        required>
                                                   <button class="input-group-text bg-primary text-white"
-                                                       id="basic-addon1">Search Student ID</button>
+                                                       id="basic-addon1">Search</button>
                                              </div>
 
                                              <!-- <div class="col-md-3 mt-3">

@@ -45,9 +45,9 @@ if (isset($_SESSION['auth_admin']['admin_id']))
 
  }
 
-$employee_id = $_GET['employee_id'];
+$firstname = $_GET['firstname'];
 
-$user_query = mysqli_query($con,"SELECT * FROM faculty WHERE employee_id_no = '$employee_id' ");
+$user_query = mysqli_query($con,"SELECT * FROM faculty WHERE firstname = '$firstname' ");
 $user_row = mysqli_fetch_array($user_query);
 
     $return_query= mysqli_query($con,"SELECT * FROM return_book 
@@ -68,9 +68,9 @@ $user_row = mysqli_fetch_array($user_query);
 
         $title = $return_row['title'];
         $author = $return_row['author'];
-        $date_borrowed = date("M d, Y h:m:s a",strtotime($return_row['date_borrowed']));
-        $due_date = date("M d, Y h:m:s a",strtotime($return_row['due_date']));
-        $date_returned = date("M d, Y h:m:s a",strtotime($return_row['date_returned']));
+        $date_borrowed = date("M d, Y",strtotime($return_row['date_borrowed']));
+        $due_date = date("M d, Y",strtotime($return_row['due_date']));
+        $date_returned = date("M d, Y",strtotime($return_row['date_returned']));
 
         $pdf->setFont('Helvetica', '', '12');
         $pdf->Cell(0, 10, 'This to acknowledge that '.$borrower, 0, 1, 'C', 0, '', false, 'M', 'M' );

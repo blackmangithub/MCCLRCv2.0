@@ -174,7 +174,7 @@ $faculty_row = mysqli_fetch_array($faculty_query);
 
                                                        mysqli_query($con, "INSERT INTO report (book_id, faculty_id, admin_name, detail_action, date_transaction) VALUES ('$book_id', '$faculty_id', '$admin_row', 'Borrowed Book', NOW())");
 
-                                                       echo "<script>alert('Book Borrowed Successfully'); window.location='circulation_faculty_borrowing.php?faculty_id=".$faculty_id."'</script>";
+                                                       echo "<script>alert('Book Borrowed Successfully'); window.location='circulation_faculty_borrow.php?faculty_id=".$faculty_id."'</script>";
                                                   }
                                              }
                                              ?>
