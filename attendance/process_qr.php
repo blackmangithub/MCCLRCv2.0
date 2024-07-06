@@ -1,5 +1,5 @@
 <?php
-include('config/dbcon.php');
+include('../admin/config/dbcon.php');
 
 if (isset($_POST['text'])) {
     $qr_code = $_POST['text'];
@@ -28,7 +28,7 @@ if (isset($_POST['text'])) {
             $log_update_query_run = mysqli_query($con, $log_update_query);
 
             if ($log_update_query_run) {
-                header("Location:attendance_list.php");
+                header("Location:index.php");
                 exit();
             } else {
                 header("Location:qr_scanner.php");
@@ -46,7 +46,7 @@ if (isset($_POST['text'])) {
             $log_insert_query_run = mysqli_query($con, $log_insert_query);
 
             if ($log_insert_query_run) {
-                header("Location:attendance_list.php");
+                header("Location:index.php");
                 exit();
             } else {
                 header("Location:qr_scanner.php");
@@ -67,7 +67,7 @@ if (isset($_POST['text'])) {
             $log_update_query_run = mysqli_query($con, $log_update_query);
 
             if ($log_update_query_run) {
-                header("Location:attendance_list.php");
+                header("Location:index.php");
                 exit();
             } else {
                 header("Location:qr_scanner.php");
@@ -84,7 +84,7 @@ if (isset($_POST['text'])) {
             $log_insert_query_run = mysqli_query($con, $log_insert_query);
 
             if ($log_insert_query_run) {
-                header("Location:attendance_list.php");
+                header("Location:index.php");
                 exit();
             } else {
                 header("Location:qr_scanner.php");
