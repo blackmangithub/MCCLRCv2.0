@@ -1,147 +1,152 @@
-<?php
-// error_reporting(E_ALL ^ E_NOTICE);
-
- // Include the main TCPDF library (search for installation path).
- require('config/dbcon.php');
-require_once('tcpdf/tcpdf.php');
-
-
-
-
-
-// create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-$pdf->setPrintHeader(false);
-$pdf->setPrintFooter(false);
-// ---------------------------------------------------------
-
-
-// Add a page
-// This method has several options, check the source code documentation for more information.
-$pdf->AddPage();
-
-// set JPEG quality
-$pdf->setJPEGQuality(75);
-
-
-// Image method signature:
-// Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false)
-$pdf->Image('images/image_demo.jpg', 15, 140, 75, 113, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
-
-
-$pdf->Ln(15);
-$pdf->setFont('Helvetica', '', '12');
-$pdf->Cell(180, 15, 'Date : '.date("M d, Y"), 0, 1, 'R', 0, '', 0, false, 'M', 'M');
-$pdf->Ln(15);
-
-$pdf->setFont('Helvetica', 'B', '13');
-$pdf->Cell(0, 10, 'RETURN SLIP', 0, 1, 'C', 0, '', false, 'M', 'M' );
-$pdf->Ln(15);
-
-if (isset($_SESSION['auth_admin']['admin_id']))
-{
-     $id_session=$_SESSION['auth_admin']['admin_id'];
-
- }
+<?php 
+include('authentication.php');
 
 $student_id = $_GET['student_id'];
+$book_ids = explode(',', $_GET['book_ids']);
 
-$user_query = mysqli_query($con,"SELECT * FROM user WHERE student_id_no = '$student_id' ");
+$user_query = mysqli_query($con, "SELECT * FROM user WHERE student_id_no = '$student_id' ");
 $user_row = mysqli_fetch_array($user_query);
 
-    $return_query= mysqli_query($con,"SELECT * FROM return_book 
-        LEFT JOIN book ON return_book.book_id = book.book_id 
-        LEFT JOIN user ON return_book.user_id = user.user_id 
-        WHERE return_book.return_book_id order by return_book.return_book_id DESC") or die (mysqli_error());
-        if($return_query)
-        {
-
-      
-        $return_row = mysqli_fetch_array($return_query);
-
-
-
-        $borrower = $user_row['firstname'].' '.$user_row['middlename'].' '.$user_row['lastname'];
-        $penalty = 'Php '.$return_row['book_penalty'];
-
-
-        $title = $return_row['title'];
-        $author = $return_row['author'];
-        $date_borrowed = date("M d, Y",strtotime($return_row['date_borrowed']));
-        $due_date = date("M d, Y",strtotime($return_row['due_date']));
-        $date_returned = date("M d, Y",strtotime($return_row['date_returned']));
-
-        $pdf->setFont('Helvetica', '', '12');
-        $pdf->Cell(0, 10, 'This to acknowledge that '.$borrower, 0, 1, 'C', 0, '', false, 'M', 'M' );
-        $pdf->Cell(0, 10, 'has return the following books bellow: ', 0, 1, 'C', 0, '', false, 'M', 'M');
-
-
-$pdf->Ln(10);
-$tbl = <<<EOD
-        <table border="1" cellpading="2">
-        <tr>
-            <th colspan="5"  align="center" style="font-size:10px; font-weight:bold;" >BORROWED BOOK DETAILS</th>
-        </tr>
-        <tr>
-            <td width="40%" style="font-size:10px; text-align:center; vertical-align:middle; ">Title</td>
-            <td width="15%" style="font-size:10px; text-align:center; vertical-align:middle; ">Author</td>
-            <td width="15%" style="font-size:10px; text-align:center; vertical-align:middle; ">Date Borrowed</td>
-            <td width="15%" style="font-size:10px; text-align:center; vertical-align:middle; ">Due Date</td>
-            <td width="15%" style="font-size:10px; text-align:center; vertical-align:middle; ">Date Returned</td>
-        </tr>
-        <tr>
-            <td width="40%" style="font-size:10px; text-align:center; vertical-align:middle; ">$title</td>
-            <td width="15%" style="font-size:10px; text-align:center; vertical-align:middle; ">$author</td>
-            <td width="15%" style="font-size:10px; text-align:center; vertical-align:middle; ">$date_borrowed</td>
-            <td width="15%" style="font-size:10px; text-align:center; vertical-align:middle; ">$due_date</td>
-            <td width="15%" style="font-size:10px; text-align:center; vertical-align:middle; ">$date_returned</td>        
-        </tr>
-        
-        </table>
-        EOD;
-
-
-
-       
-    //     $return_query= mysqli_query($con,"select * from return_book 
-    //     LEFT JOIN book ON return_book.book_id = book.book_id 
-    //     LEFT JOIN user ON return_book.user_id = user.user_id 
-    //     where return_book.return_book_id order by return_book.return_book_id DESC") or die (mysqli_error());
-
-    //     if($return_query)
-    //     {
-    //         while($row = mysqli_fetch_assoc($return_query))
-    //         {
-                    
-           
-       
-        // $tbl .= <<<EOD 
-        // <tr>
-        //     <td width="16.66%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;"></td>
-        //     <td width="16.66%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Author</td>
-        //     <td width="16.66%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Date Borrowed</td>
-        //     <td width="16.66%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Due Date</td>
-        //     <td width="16.66%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Date Returned</td>
-        //     <td width="16.66%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Penalty</td>
-        // </tr>
-        
-        // EOD;
-        //     }
-    }
-$pdf->writeHTML($tbl, true, false, false, false, '');
-
-$pdf->Ln(20);
-$pdf->setFont('Helvetica', '', '12');
-$pdf->Cell(180, 15, '________________', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
-$pdf->Cell(180, 15, 'Signature       ', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
-// ---------------------------------------------------------
-
-// Close and output PDF document
-// This method has several options, check the source code documentation for more information.
-$pdf->Output('penalty_receipt.pdf', 'I');
-
-//============================================================+
-// END OF FILE
-//============================================================+
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8" />
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <meta name="robots" content="noindex, nofollow" />
+     <link rel="icon" href="./assets/img/mcc-logo.png">
+     <link href="https://fonts.gstatic.com" rel="preconnect" />
+     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i"
+          rel="stylesheet" />
+     <!-- Bootstrap CSS -->
+     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+     <!-- Boxicons Icon -->
+     <link href="assets/css/boxicons.min.css" rel="stylesheet" />
+
+     <!-- Remixicon Icon -->
+     <link href="assets/css/remixicon.css" rel="stylesheet" />
+
+     <!-- Bootstrap Icon -->
+     <link rel="stylesheet" href="assets/font/bootstrap-icons.css">
+
+     <!-- Alertify JS link -->
+     <link rel="stylesheet" href="assets/css/alertify.min.css" />
+     <link rel="stylesheet" href="assets/css/alertify.bootstraptheme.min.css" />
+     <!-- Datatables -->
+     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+     <link rel="stylesheet" href="assets/css/dataTables.bootstrap5.min.css">
+
+     <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+     <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css" />
+
+     <!-- Custom CSS -->
+     <link href="assets/css/style.css" rel="stylesheet" />
+
+     <!-- Animation -->
+     <link rel="stylesheet" href="https://www.cssportal.com/css-loader-generator/" />
+     <!-- Loader -->
+     <link rel="stylesheet" href="https://www.cssportal.com/css-loader-generator/" />
+
+     <link rel="stylesheet" href="assets/css/bootstrap-datepicker.min.css">
+     
+     <style>
+         @media print {
+             .print-button {
+                 display: none;
+             }
+             #back {
+                display: none;
+             }
+             @page {
+                 margin: 0;
+             }
+             body {
+                 margin: 0;
+                 padding: 20px;
+             }
+         }
+     </style>
+
+</head>
+
+<body>
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                    <div class="text-start mt-3">
+                    <a href="circulation_return.php" id="back" class="btn btn-primary">Back</a>
+                    </div>
+                        <div class="text-end mt-5">
+                            <h5>Date: <?php echo date('F d, Y'); ?></h5>
+                        </div>
+                        <div class="text-center mt-5">
+                            <h4 style="font-weight:bold;">Return Slip</h4>
+                        </div>
+                        <div class="text-center mt-5">
+                            <h5>This to acknowledge that <span style="font-weight: 700;"><?php echo $user_row['firstname'].' '.$user_row['middlename'].' '.$user_row['lastname']; ?></span>
+                        <br>has returned the following books below:</h5>
+                        </div>
+                        <div class="table-responsive mt-5">
+                            <table border="1" cellpadding="2" class="table">
+                                <thead>
+                                <tr>
+                                    <th colspan="5" style="font-size:15px; font-weight:bold;text-align:center;" >BORROWED BOOK DETAILS</th>
+                                </tr>
+                                <tr>
+                                    <th style="font-size:15px;">Title</th>
+                                    <th style="font-size:15px;">Author</th>
+                                    <th style="font-size:15px;">Date Borrowed</th>
+                                    <th style="font-size:15px;">Due Date</th>
+                                    <th style="font-size:15px;">Date Returned</th>
+                                    
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    foreach ($book_ids as $book_id) {
+                                        $return_query = mysqli_query($con, "SELECT * FROM return_book LEFT JOIN book ON return_book.book_id = book.book_id WHERE return_book.book_id = '$book_id' AND return_book.user_id = '".$user_row['user_id']."'");
+                                        $return_row = mysqli_fetch_array($return_query);
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $return_row['title']; ?></td>
+                                        <td style="text-transform: capitalize"><?php echo $return_row['author']; ?></td>
+                                        <td><?php echo date("M d, Y", strtotime($return_row['date_borrowed'])); ?></td>
+                                        <td><?php echo date("M d, Y", strtotime($return_row['due_date'])); ?></td>
+                                        <td><?php echo date("M d, Y", strtotime($return_row['date_returned'])); ?></td>
+                                        
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col text-end">
+                                <p>__________________________</p>
+                                <p style="margin-right: 50px;">Signature</p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-5">
+                            <button onclick="window.print()" class="btn btn-primary print-button">Print</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<?php 
+include('./includes/script.php');
+include('./message.php');   
+?>
+</body>
+</html>

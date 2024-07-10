@@ -41,7 +41,7 @@ if (isset($_SESSION['auth_admin']['admin_id']))
 
                          <i class="bi bi-bell"></i>
                          <?php
-                                             $query = "SELECT COUNT(DISTINCT user_id) AS total_borrowers FROM holds WHERE hold_status = ''";
+                                             $query = "SELECT COUNT(DISTINCT user_id) AS total_borrowers FROM holds WHERE hold_status = 'Hold'";
                                              $query_run = mysqli_query($con, $query);
                                              
                                              if ($query_run) {
@@ -65,9 +65,9 @@ if (isset($_SESSION['auth_admin']['admin_id']))
                     $query_notif = "SELECT user.user_id, user.firstname, user.lastname, 
                     COUNT(holds.hold_id) AS num_hold_books
              FROM user
-             LEFT JOIN holds ON user.user_id = holds.user_id AND holds.hold_status = ''
+             LEFT JOIN holds ON user.user_id = holds.user_id AND holds.hold_status = 'Hold'
              LEFT JOIN book ON holds.book_id = book.book_id
-             WHERE holds.hold_status = ''
+             WHERE holds.hold_status = 'Hold'
              GROUP BY user.user_id, user.firstname, user.lastname
              ORDER BY holds.hold_id DESC";
 $query_run = mysqli_query($con, $query_notif);
@@ -76,7 +76,7 @@ if(mysqli_num_rows($query_run) > 0 ) {
      // Fetch additional details if needed for each user
      $hold_books_query = "SELECT * FROM holds 
                           LEFT JOIN book ON holds.book_id = book.book_id
-                          WHERE holds.user_id = {$holdlist['user_id']} AND holds.hold_status = ''";
+                          WHERE holds.user_id = {$holdlist['user_id']} AND holds.hold_status = 'Hold'";
      $hold_books_result = mysqli_query($con, $hold_books_query);
                     ?>
                          <li>

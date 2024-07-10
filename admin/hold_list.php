@@ -111,9 +111,9 @@ include('./includes/sidebar.php');
 								$borrow_query = mysqli_query($con,"SELECT user.user_id, user.firstname, user.lastname,
                                         COUNT(holds.hold_id) AS num_hold_books 
                                         FROM user
-                                        LEFT JOIN holds ON user.user_id = holds.user_id AND holds.hold_status = ''
+                                        LEFT JOIN holds ON user.user_id = holds.user_id AND holds.hold_status = 'Hold'
                                         LEFT JOIN book ON holds.book_id = book.book_id
-                                        WHERE holds.hold_status = ''
+                                        WHERE holds.hold_status = 'Hold'
                                         GROUP BY user.user_id, user.firstname, user.lastname
                                         ORDER BY holds.hold_id DESC");
 								$borrow_count = mysqli_num_rows($borrow_query);
@@ -121,7 +121,7 @@ include('./includes/sidebar.php');
                                                  // Fetch additional details if needed for each user
                                                  $hold_books_query = "SELECT * FROM holds 
                                                                       LEFT JOIN book ON holds.book_id = book.book_id
-                                                                      WHERE holds.user_id = {$holdlist['user_id']} AND holds.hold_status = ''";
+                                                                      WHERE holds.user_id = {$holdlist['user_id']} AND holds.hold_status = 'Hold'";
                                                  $hold_books_result = mysqli_query($con, $hold_books_query);
                                                  $user_id = $holdlist['user_id'];
 							?>

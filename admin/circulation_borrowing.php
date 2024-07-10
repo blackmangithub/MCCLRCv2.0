@@ -82,7 +82,6 @@ $user_row = mysqli_fetch_array($user_query);
                                                        <th>Author</th>
                                                        <th>Copyright Date</th>
                                                        <th>Publisher</th>
-                                                       <th>Copy</th>
                                                        <th>Barcode</th>
                                                        <th>Action</th>
 
@@ -138,7 +137,6 @@ $user_row = mysqli_fetch_array($user_query);
                                                        <td><?php echo $book_row['author'] ?></td>
                                                        <td><?php echo $book_row['copyright_date'] ?></td>
                                                        <td><?php echo $book_row['publisher'] ?></td>
-                                                       <td><?php echo $book_row['copy'] ?></td>
                                                        <td><?php echo $book_row['barcode']?></td>
                                                        <td><button name="borrow" class="btn btn-primary"><i
                                                                       class="fa fa-check"></i> Borrow</button></td>
@@ -154,11 +152,11 @@ $user_row = mysqli_fetch_array($user_query);
 							
 							$timezone = "Asia/Manila";
 							if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
-							$cur_date = date("Y-m-d H:i:s");
-							$date_borrowed = date("Y-m-d H:i:s");
+							$cur_date = date("Y-m-d");
+							$date_borrowed = date("Y-m-d");
 							$due_date = strtotime($cur_date);
 							$due_date = strtotime("+".$allowable_days_row['no_of_days']." day", $due_date);
-							$due_date = date('Y-m-d H:i:s', $due_date);
+							$due_date = date('Y-m-d', $due_date);
 							
 							?>
                                              <input type="hidden" name="due_date" class="new_text" id="sd"
@@ -172,52 +170,61 @@ $user_row = mysqli_fetch_array($user_query);
                                              $book_id = $_POST['book_id'];
                                              $date_borrowed = $_POST['date_borrowed'];
                                              $due_date = $_POST['due_date'];
+
+                                             // Fetch the book details
+                                             $book_details_query = mysqli_query($con, "SELECT title, category_id FROM book WHERE book_id = $book_id");
+                                             $book_details = mysqli_fetch_assoc($book_details_query);
+                                             $book_title = $book_details['title'];
+                                             $category_id = $book_details['category_id'];
                                              
-                                             // Fetch the category_id of the book
-                                             $category_query = mysqli_query($con, "SELECT category_id FROM book WHERE book_id = $book_id");
-                                             $category_data = mysqli_fetch_assoc($category_query);
-                                             $category_id = $category_data['category_id'];
-                                         
-                                             // Determine due date based on category_id
-                                             if ($category_id == 5) {
-                                                 // Category 5 due date is 7 days
-                                                 $due_date = date('Y-m-d', strtotime($date_borrowed . ' + 7 days'));
-                                             } elseif ($category_id == 1 || $category_id == 2) {
-                                                 // Category 1 or 2 due date is 3 days
-                                                 $due_date = date('Y-m-d', strtotime($date_borrowed . ' + 3 days'));
-                                             }
-                                         
-                                             // Continue with your existing logic
-                                             $trapBookCount = mysqli_query($con, "SELECT count(*) AS books_allowed FROM borrow_book WHERE user_id = '$user_id' AND borrowed_status = 'borrowed'");
-                                             $countBorrowed = mysqli_fetch_assoc($trapBookCount);
-                                             
-                                             $bookCountQuery = mysqli_query($con, "SELECT count(*) AS book_count FROM borrow_book WHERE user_id = '$user_id' AND borrowed_status = 'borrowed' AND book_id = $book_id");
-                                             $bookCount = mysqli_fetch_assoc($bookCountQuery);
-                                             
-                                             $allowed_book_query = mysqli_query($con, "SELECT * FROM allowed_book ORDER BY allowed_book_id DESC");
-                                             $allowed = mysqli_fetch_assoc($allowed_book_query);
-                                             
-                                             if ($countBorrowed['books_allowed'] == $allowed['qntty_books']) {
-                                                 echo "<script>alert(' ".$allowed['qntty_books']." ".'Books Allowed per User!'." '); window.location='circulation_borrowing.php?student_id=".$student_id."'</script>";
-                                             } elseif ($bookCount['book_count'] == 1) {
-                                                 echo "<script>alert('Book Already Borrowed!'); window.location='circulation_borrowing.php?student_id=".$student_id."'</script>";
+                                             // Check if the user has already borrowed a book with the same title
+                                             $title_check_query = mysqli_query($con, "SELECT * FROM borrow_book 
+                                                 INNER JOIN book ON borrow_book.book_id = book.book_id 
+                                                 WHERE borrow_book.user_id = '$user_id' AND book.title = '$book_title' AND borrow_book.borrowed_status = 'borrowed'");
+                                             if (mysqli_num_rows($title_check_query) > 0) {
+                                                 echo "<script>alert('You have already borrowed a book with the same title!'); window.location='circulation_borrowing.php?student_id=".$student_id."'</script>";
                                              } else {
-                                                 mysqli_query($con, "UPDATE book SET status = 'Unavailable' WHERE book_id = '$book_id' ");
+                                                 // Determine due date based on category_id
+                                                 if ($category_id == 5) {
+                                                     // Category 5 due date is 7 days
+                                                     $due_date = date('Y-m-d', strtotime($date_borrowed . ' + 7 days'));
+                                                 } elseif ($category_id == 1 || $category_id == 2) {
+                                                     // Category 1 or 2 due date is 3 days
+                                                     $due_date = date('Y-m-d', strtotime($date_borrowed . ' + 3 days'));
+                                                 }
+                                             
+                                                 // Continue with your existing logic
+                                                 $trapBookCount = mysqli_query($con, "SELECT count(*) AS books_allowed FROM borrow_book WHERE user_id = '$user_id' AND borrowed_status = 'borrowed'");
+                                                 $countBorrowed = mysqli_fetch_assoc($trapBookCount);
                                                  
-                                                 mysqli_query($con, "INSERT INTO borrow_book(user_id, book_id, date_borrowed, due_date, borrowed_status)
-                                                 VALUES ('$user_id', '$book_id', '$date_borrowed', '$due_date', 'borrowed')");
+                                                 $bookCountQuery = mysqli_query($con, "SELECT count(*) AS book_count FROM borrow_book WHERE user_id = '$user_id' AND borrowed_status = 'borrowed' AND book_id = $book_id");
+                                                 $bookCount = mysqli_fetch_assoc($bookCountQuery);
                                                  
-                                                 $report_history = mysqli_query($con, "SELECT * FROM admin WHERE admin_id = $id_session ");
-                                                 $report_history_row = mysqli_fetch_array($report_history);
-                                                 $admin_row = $report_history_row['firstname'] . " " . $report_history_row['middlename'] . " " . $report_history_row['lastname'];	
+                                                 $allowed_book_query = mysqli_query($con, "SELECT * FROM allowed_book ORDER BY allowed_book_id DESC");
+                                                 $allowed = mysqli_fetch_assoc($allowed_book_query);
                                                  
-                                                 mysqli_query($con, "INSERT INTO report 
-                                                 (book_id, user_id, admin_name, detail_action, date_transaction)
-                                                 VALUES ('$book_id', '$user_id', '$admin_row', 'Borrowed Book', NOW())");
-                                                 
-                                                 echo "<script>alert('Book Borrowed Successfully'); window.location='circulation_borrowing.php?student_id=".$student_id."'</script>";
+                                                 if ($countBorrowed['books_allowed'] == $allowed['qntty_books']) {
+                                                     echo "<script>alert(' ".$allowed['qntty_books']." ".'Books Allowed per User!'." '); window.location='circulation_borrowing.php?student_id=".$student_id."'</script>";
+                                                 } elseif ($bookCount['book_count'] == 1) {
+                                                     echo "<script>alert('Book Already Borrowed!'); window.location='circulation_borrowing.php?student_id=".$student_id."'</script>";
+                                                 } else {
+                                                     mysqli_query($con, "UPDATE book SET status = 'Unavailable' WHERE book_id = '$book_id' ");
+                                                     
+                                                     mysqli_query($con, "INSERT INTO borrow_book(user_id, book_id, date_borrowed, due_date, borrowed_status)
+                                                     VALUES ('$user_id', '$book_id', '$date_borrowed', '$due_date', 'borrowed')");
+                                                     
+                                                     $report_history = mysqli_query($con, "SELECT * FROM admin WHERE admin_id = $id_session ");
+                                                     $report_history_row = mysqli_fetch_array($report_history);
+                                                     $admin_row = $report_history_row['firstname'] . " " . $report_history_row['middlename'] . " " . $report_history_row['lastname'];	
+                                                     
+                                                     mysqli_query($con, "INSERT INTO report 
+                                                     (book_id, user_id, admin_name, detail_action, date_transaction)
+                                                     VALUES ('$book_id', '$user_id', '$admin_row', 'Borrowed Book', NOW())");
+                                                     
+                                                     echo "<script>alert('Book Borrowed Successfully'); window.location='circulation_borrowing.php?student_id=".$student_id."'</script>";
+                                                 }
                                              }
-							?>
+								?>
                                              <script>
                                              window.location =
                                                   "circulation_borrowing.php?student_id=<?php echo $student_id ?>";

@@ -1,107 +1,146 @@
-<?php
-// error_reporting(E_ALL ^ E_NOTICE);
-
-// Include the main TCPDF library (search for installation path).
-require('config/dbcon.php');
-require_once('tcpdf/tcpdf.php');
-
-// Create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-$pdf->setPrintHeader(false);
-$pdf->setPrintFooter(false);
-// ---------------------------------------------------------
-
-// Add a page
-$pdf->AddPage();
-
-// Set JPEG quality
-$pdf->setJPEGQuality(75);
-
-// Insert an image (change as needed)
-$pdf->Image('images/image_demo.jpg', 15, 140, 75, 113, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
-
-$pdf->Ln(15);
-$pdf->setFont('Helvetica', '', '12');
-$pdf->Cell(180, 15, 'Date : ' . date("M d, Y"), 0, 1, 'R', 0, '', 0, false, 'M', 'M');
-$pdf->Ln(15);
-
-$pdf->setFont('Helvetica', 'B', '13');
-$pdf->Cell(0, 10, 'RETURN SLIP', 0, 1, 'C', 0, '', false, 'M', 'M');
-$pdf->Ln(15);
-
-// Fetch faculty member details
-if (isset($_SESSION['auth_admin']['admin_id'])) {
-    $id_session = $_SESSION['auth_admin']['admin_id'];
-}
+<?php 
+include('authentication.php');
 
 $firstname = $_GET['firstname'];
-$user_query = mysqli_query($con, "SELECT * FROM faculty WHERE firstname = '$firstname' ");
-$user_row = mysqli_fetch_array($user_query);
+$book_ids = explode(',', $_GET['book_ids']);
 
-// Fetch all books returned by the faculty member
-$return_query = mysqli_query($con, "SELECT * FROM return_book 
-    LEFT JOIN book ON return_book.book_id = book.book_id 
-    LEFT JOIN faculty ON return_book.faculty_id = faculty.faculty_id 
-    WHERE faculty.firstname = '$firstname' 
-    ORDER BY return_book.return_book_id DESC") or die(mysqli_error($con));
+// Prevent SQL injection
+$firstname_safe = mysqli_real_escape_string($con, $firstname);
 
-// Check if there are returned books
-if (mysqli_num_rows($return_query) > 0) {
-    $pdf->setFont('Helvetica', '', '12');
-    $pdf->Cell(0, 10, 'This is to acknowledge that ' . $user_row['firstname'] . ' ' . $user_row['middlename'] . ' ' . $user_row['lastname'], 0, 1, 'C', 0, '', false, 'M', 'M');
-    $pdf->Cell(0, 10, 'has returned the following books:', 0, 1, 'C', 0, '', false, 'M', 'M');
+$user_query = mysqli_query($con, "SELECT * FROM faculty WHERE firstname = '$firstname_safe'");
+$faculty_row = mysqli_fetch_array($user_query);
 
-    $pdf->Ln(10);
-    $tbl = <<<EOD
-    <table border="1" cellpadding="2">
-    <tr>
-        <th width="40%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Title</th>
-        <th width="15%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Author</th>
-        <th width="15%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Date Borrowed</th>
-        <th width="15%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Due Date</th>
-        <th width="15%" style="font-size:10px; text-align:center; vertical-align:middle; font-weight:bold;">Date Returned</th>
-    </tr>
-    EOD;
-
-    // Loop through each returned book and add to the table
-    while ($return_row = mysqli_fetch_array($return_query)) {
-        $title = $return_row['title'];
-        $author = $return_row['author'];
-        $date_borrowed = date("M d, Y", strtotime($return_row['date_borrowed']));
-        $due_date = date("M d, Y", strtotime($return_row['due_date']));
-        $date_returned = date("M d, Y", strtotime($return_row['date_returned']));
-
-        $tbl .= <<<EOD
-        <tr>
-            <td style="font-size:10px; text-align:center; vertical-align:middle;">$title</td>
-            <td style="font-size:10px; text-align:center; vertical-align:middle;">$author</td>
-            <td style="font-size:10px; text-align:center; vertical-align:middle;">$date_borrowed</td>
-            <td style="font-size:10px; text-align:center; vertical-align:middle;">$due_date</td>
-            <td style="font-size:10px; text-align:center; vertical-align:middle;">$date_returned</td>
-        </tr>
-        EOD;
-    }
-
-    $tbl .= '</table>';
-
-    // Add the HTML table to the PDF
-    $pdf->writeHTML($tbl, true, false, false, false, '');
-} else {
-    $pdf->setFont('Helvetica', '', '12');
-    $pdf->Cell(0, 10, 'No books returned by ' . $user_row['firstname'] . ' ' . $user_row['middlename'] . ' ' . $user_row['lastname'], 0, 1, 'C', 0, '', false, 'M', 'M');
-}
-
-$pdf->Ln(20);
-$pdf->setFont('Helvetica', '', '12');
-$pdf->Cell(180, 15, '________________', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
-$pdf->Cell(180, 15, 'Signature', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
-// ---------------------------------------------------------
-
-// Close and output PDF document
-$pdf->Output('penalty_receipt.pdf', 'I');
-
-//============================================================+
-// END OF FILE
-//============================================================+
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8" />
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <meta name="robots" content="noindex, nofollow" />
+     <link rel="icon" href="./assets/img/mcc-logo.png">
+     <link href="https://fonts.gstatic.com" rel="preconnect" />
+     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i"
+          rel="stylesheet" />
+     <!-- Bootstrap CSS -->
+     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+     <!-- Boxicons Icon -->
+     <link href="assets/css/boxicons.min.css" rel="stylesheet" />
+
+     <!-- Remixicon Icon -->
+     <link href="assets/css/remixicon.css" rel="stylesheet" />
+
+     <!-- Bootstrap Icon -->
+     <link rel="stylesheet" href="assets/font/bootstrap-icons.css">
+
+     <!-- Alertify JS link -->
+     <link rel="stylesheet" href="assets/css/alertify.min.css" />
+     <link rel="stylesheet" href="assets/css/alertify.bootstraptheme.min.css" />
+     <!-- Datatables -->
+     <link rel="stylesheet" href="assets/css/dataTables.bootstrap5.min.css">
+
+     <!-- Custom CSS -->
+     <link href="assets/css/style.css" rel="stylesheet" />
+
+     <!-- Bootstrap Datepicker -->
+     <link rel="stylesheet" href="assets/css/bootstrap-datepicker.min.css">
+
+     <style>
+         @media print {
+             .print-button {
+                 display: none;
+             }
+             #back {
+                display: none;
+             }
+             @page {
+                 margin: 0;
+             }
+             body {
+                 margin: 0;
+                 padding: 20px;
+             }
+         }
+     </style>
+
+</head>
+
+<body>
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                    <div class="text-start mt-3">
+                    <a href="circulation_faculty_return.php" id="back" class="btn btn-primary">Back</a>
+                    </div>
+                        <div class="text-end mt-5">
+                            <h5>Date: <?php echo date('F d, Y'); ?></h5>
+                        </div>
+                        <div class="text-center mt-5">
+                            <h4 style="font-weight:bold;">Return Slip</h4>
+                        </div>
+                        <div class="text-center mt-5">
+                            <h5>This to acknowledge that <span style="font-weight: 700;"><?php echo htmlspecialchars($faculty_row['firstname'].' '.$faculty_row['middlename'].' '.$faculty_row['lastname']); ?></span>
+                            <br>has returned the following books below:</h5>
+                        </div>
+                        <div class="table-responsive mt-5">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Date Borrowed</th>
+                                    <th>Due Date</th>
+                                    <th>Date Returned</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    foreach ($book_ids as $book_id) {
+                                        // Prevent SQL injection
+                                        $book_id_safe = mysqli_real_escape_string($con, $book_id);
+
+                                        $return_query = mysqli_query($con, "SELECT * FROM return_book LEFT JOIN book ON return_book.book_id = book.book_id WHERE return_book.book_id = '$book_id_safe' AND return_book.faculty_id = '".$faculty_row['faculty_id']."'");
+                                        $return_row = mysqli_fetch_array($return_query);
+                                        if ($return_row) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($return_row['title']); ?></td>
+                                        <td><?php echo htmlspecialchars($return_row['author']); ?></td>
+                                        <td><?php echo date("M d, Y", strtotime($return_row['date_borrowed'])); ?></td>
+                                        <td><?php echo date("M d, Y", strtotime($return_row['due_date'])); ?></td>
+                                        <td><?php echo date("M d, Y", strtotime($return_row['date_returned'])); ?></td>
+                                    </tr>
+                                    <?php 
+                                        }
+                                    } 
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col text-end">
+                                <p>__________________________</p>
+                                <p style="margin-right: 50px;">Signature</p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-5">
+                            <button onclick="window.print()" class="btn btn-primary print-button">Print</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <?php 
+    include('./includes/script.php');
+    include('./message.php');   
+    ?>
+</body>
+</html>
