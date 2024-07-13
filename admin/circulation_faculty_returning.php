@@ -9,8 +9,12 @@ if (isset($_SESSION['auth_admin']['admin_id'])) {
 
 $firstname = $_GET['firstname'];
 
-$faculty_query = mysqli_query($con, "SELECT * FROM faculty WHERE firstname = '$firstname' ");
-$faculty_row = mysqli_fetch_array($faculty_query);
+$faculty_query = "SELECT * FROM faculty WHERE firstname = ?";
+$faculty_stmt = $con->prepare($faculty_query);
+$faculty_stmt->bind_param("s", $firstname);
+$faculty_stmt->execute();
+$faculty_result = $faculty_stmt->get_result();
+$faculty_row = $faculty_result->fetch_assoc();
 ?>
 
 <main id="main" class="main">
@@ -31,22 +35,17 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                     <div class="card-header d-flex justify-content-between">
                         <div class="col-12 col-md-6 mt-2">
                             <!-- Form to handle book return -->
-                            <form method="post" action="">
-                                <input type="hidden" name="date_returned" class="new_text" id="sd" value="<?php echo date('Y-m-d'); ?>" size="16" maxlength="10" />
+                            <form method="post" action="" onsubmit="return validateForm()">
+                                <input type="hidden" name="date_returned" value="<?php echo date('Y-m-d'); ?>" />
                                 <input type="hidden" name="faculty_id" value="<?php echo $faculty_row['faculty_id']; ?>">
-                            </form>
                         </div>
                     </div>
                     <div class="card-body">
                         <?php
-                        $query = "SELECT * FROM faculty WHERE firstname = '$firstname'";
-                        $query_run = mysqli_query($con, $query);
-
-                        if ($query_run) {
-                            $row = mysqli_fetch_array($query_run);
+                        if ($faculty_result->num_rows > 0) {
                         ?>
-                        <div class="text-muted mt-3">Student Name&nbsp;: &nbsp;<span class="h5 text-primary p-0 m-0 text-uppercase fw-semibold"><?php echo $row['firstname'].' '.$row['middlename'].' '.$row['lastname']; ?></span></div>
-                        <div class="text-muted">Course&emsp;&emsp;&emsp;&ensp;&nbsp;:&ensp;<span class="text-dark"><?php echo $row['course']; ?></span></div>
+                        <div class="text-muted mt-3">Faculty/Staff Name&nbsp;: &nbsp;<span class="h5 text-primary p-0 m-0 text-uppercase fw-semibold"><?php echo $faculty_row['firstname'].' '.$faculty_row['middlename'].' '.$faculty_row['lastname']; ?></span></div>
+                        <div class="text-muted">Department&emsp;&emsp;&emsp;&ensp;&nbsp;:&ensp;<span class="text-dark"><?php echo $faculty_row['course']; ?></span></div>
                         <?php
                         } else {
                             echo "No rows returned";
@@ -54,7 +53,6 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                         ?>
 
                         <div class="table-responsive">
-                            <form method="post" action="">
                                 <table class="table">
                                     <thead class="border-top border-dark border-opacity-25">
                                         <tr>
@@ -72,32 +70,36 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                                     </thead>
                                     <tbody>
                                         <?php 
-                                        $borrow_query = mysqli_query($con, "SELECT * FROM borrow_book LEFT JOIN book ON borrow_book.book_id = book.book_id WHERE faculty_id = '".$faculty_row['faculty_id']."' && borrowed_status = 'borrowed' ORDER BY borrow_book_id DESC");
-                                        $borrow_count = mysqli_num_rows($borrow_query);
+                                        $borrow_query = "SELECT * FROM borrow_book LEFT JOIN book ON borrow_book.book_id = book.book_id WHERE faculty_id = ? AND borrowed_status = 'borrowed' ORDER BY borrow_book_id DESC";
+                                        $borrow_stmt = $con->prepare($borrow_query);
+                                        $borrow_stmt->bind_param("i", $faculty_row['faculty_id']);
+                                        $borrow_stmt->execute();
+                                        $borrow_result = $borrow_stmt->get_result();
+                                        $borrow_count = $borrow_result->num_rows;
 
-                                        while ($borrow_row = mysqli_fetch_array($borrow_query)) {
+                                        while ($borrow_row = $borrow_result->fetch_assoc()) {
                                             $due_date = $borrow_row['due_date'];
 
                                             $timezone = "Asia/Manila";
-                                            if (function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
+                                            date_default_timezone_set($timezone);
                                             $cur_date = date("Y-m-d");
                                             $date_returned = date("Y-m-d");
 
                                             // Exclude Sundays from due date calculation
                                             $adjusted_due_date = strtotime($due_date);
-                                            while (date('N', $adjusted_due_date) == 7) { // N returns 7 for Sunday
+                                            while (date('N', $adjusted_due_date) == 7) {
                                                 $adjusted_due_date = strtotime("+1 day", $adjusted_due_date);
                                             }
                                             $due_date = date("Y-m-d", $adjusted_due_date);
 
+                                            $penalty = 0;
                                             if ($date_returned > $due_date) {
-                                                $penalty = 0;
                                                 $current_date = strtotime($due_date);
                                                 $end_date = strtotime($date_returned);
 
                                                 while ($current_date < $end_date) {
                                                     $current_date = strtotime("+1 day", $current_date);
-                                                    if (date('N', $current_date) != 7) { // N returns 7 for Sunday
+                                                    if (date('N', $current_date) != 7) {
                                                         $penalty += 5;
                                                     }
                                                 }
@@ -107,7 +109,7 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                                         ?>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="selected_books[]" value="<?php echo $borrow_row['book_id']; ?>">
+                                                <input type="checkbox" name="selected_books[]" value="<?php echo $borrow_row['borrow_book_id']; ?>">
                                             </td>
                                             <td>
                                                 <center>
@@ -126,13 +128,6 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                                             <td><?php echo date("M d, Y ", strtotime($borrow_row['date_borrowed'])); ?></td>
                                             <td><?php echo date('M d, Y ', strtotime($borrow_row['due_date'])); ?></td>
                                             <td><?php echo $penalty; ?></td>
-                                                <!-- Form to handle individual book return -->
-                                                <form method="post" action="">
-                                                    <input type="hidden" name="book_id" value="<?php echo $borrow_row['book_id']; ?>">
-                                                    <input type="hidden" name="borrow_book_id" value="<?php echo $borrow_row['borrow_book_id']; ?>">
-                                                    <input type="hidden" name="date_returned" class="new_text" id="sd" value="<?php echo date('Y-m-d'); ?>" size="16" maxlength="10" />
-                                                    <input type="hidden" name="faculty_id" value="<?php echo $faculty_row['faculty_id']; ?>">
-                                                </form>
                                         </tr>
                                         <?php 
                                         }
@@ -153,6 +148,8 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                                 </div>
                             </form>
                         </div>
+                    </div>
+                    <div class="card-footer">
                     </div>
                 </div>
             </div>
@@ -176,56 +173,49 @@ include('./includes/footer.php');
 include('./includes/script.php');
 include('./message.php');   
 
-if (isset($_POST['return']) || isset($_POST['return_individual']) || isset($_POST['return_selected'])) {
+if (isset($_POST['return_selected'])) {
     $faculty_id = $_POST['faculty_id'];
     $date_returned = $_POST['date_returned'];
-    $return_all = isset($_POST['return']);
-    $return_selected = isset($_POST['return_selected']);
+    $selected_books = $_POST['selected_books'];
+    $book_ids_str = implode(",", $selected_books);
+    $borrow_query = "SELECT * FROM borrow_book WHERE faculty_id = ? AND borrowed_status = 'borrowed' AND borrow_book_id IN ($book_ids_str)";
+    $borrow_stmt = $con->prepare($borrow_query);
+    $borrow_stmt->bind_param("i", $faculty_id);
+    $borrow_stmt->execute();
+    $borrow_result = $borrow_stmt->get_result();
+
     $book_ids = [];
-
-    // Fetch all borrowed books for the user, individual book, or selected books
-    if ($return_all) {
-        $borrow_query = mysqli_query($con, "SELECT * FROM borrow_book WHERE faculty_id = '$faculty_id' AND borrowed_status = 'borrowed'");
-    } elseif ($return_selected) {
-        $selected_books = $_POST['selected_books'];
-        $book_ids_str = implode(",", $selected_books);
-        $borrow_query = mysqli_query($con, "SELECT * FROM borrow_book WHERE faculty_id = '$faculty_id' AND borrowed_status = 'borrowed' AND book_id IN ($book_ids_str)");
-    } else {
-        $book_id = $_POST['book_id'];
-        $borrow_book_id = $_POST['borrow_book_id'];
-        $borrow_query = mysqli_query($con, "SELECT * FROM borrow_book WHERE faculty_id = '$faculty_id' AND borrowed_status = 'borrowed' AND book_id = '$book_id' AND borrow_book_id = '$borrow_book_id'");
-    }
-
-    while ($borrow_row = mysqli_fetch_array($borrow_query)) {
+    while ($borrow_row = $borrow_result->fetch_assoc()) {
         $borrow_book_id = $borrow_row['borrow_book_id'];
         $book_id = $borrow_row['book_id'];
         $date_borrowed = $borrow_row['date_borrowed'];
         $due_date = $borrow_row['due_date'];
 
-        mysqli_query($con, "UPDATE book SET status = 'Available' WHERE book_id = '$book_id'");
+        $book_update_query = "UPDATE book SET status = 'Available' WHERE book_id = ?";
+        $book_update_stmt = $con->prepare($book_update_query);
+        $book_update_stmt->bind_param("i", $book_id);
+        $book_update_stmt->execute();
 
         $timezone = "Asia/Manila";
-        if (function_exists('date_default_timezone_set')) {
-            date_default_timezone_set($timezone);
-        }
+        date_default_timezone_set($timezone);
         $cur_date = date("Y-m-d");
         $date_returned_now = date("Y-m-d");
 
         // Adjust due date to exclude Sundays
         $adjusted_due_date = strtotime($due_date);
-        while (date('N', $adjusted_due_date) == 7) { // N returns 7 for Sunday
+        while (date('N', $adjusted_due_date) == 7) {
             $adjusted_due_date = strtotime("+1 day", $adjusted_due_date);
         }
         $due_date = date("Y-m-d", $adjusted_due_date);
 
+        $penalty = 0;
         if ($date_returned > $due_date) {
-            $penalty = 0;
             $current_date = strtotime($due_date);
             $end_date = strtotime($date_returned);
 
             while ($current_date < $end_date) {
                 $current_date = strtotime("+1 day", $current_date);
-                if (date('N', $current_date) != 7) { // N returns 7 for Sunday
+                if (date('N', $current_date) != 7) {
                     $penalty += 5;
                 }
             }
@@ -233,23 +223,36 @@ if (isset($_POST['return']) || isset($_POST['return_individual']) || isset($_POS
             $penalty = 'No Penalty';
         }
 
-        mysqli_query($con, "UPDATE borrow_book SET borrowed_status = 'returned', date_returned = '$date_returned_now', book_penalty = '$penalty' WHERE borrow_book_id = '$borrow_book_id' AND faculty_id = '$faculty_id' AND book_id = '$book_id'");
+        $borrow_update_query = "UPDATE borrow_book SET borrowed_status = 'returned', date_returned = ?, book_penalty = ? WHERE borrow_book_id = ? AND faculty_id = ? AND book_id = ?";
+        $borrow_update_stmt = $con->prepare($borrow_update_query);
+        $borrow_update_stmt->bind_param("siiii", $date_returned_now, $penalty, $borrow_book_id, $faculty_id, $book_id);
+        $borrow_update_stmt->execute();
 
-        mysqli_query($con, "INSERT INTO return_book (faculty_id, book_id, date_borrowed, due_date, date_returned, book_penalty) VALUES ('$faculty_id', '$book_id', '$date_borrowed', '$due_date', '$date_returned_now', '$penalty')");
+        $return_insert_query = "INSERT INTO return_book (faculty_id, book_id, date_borrowed, due_date, date_returned, book_penalty) VALUES (?, ?, ?, ?, ?, ?)";
+        $return_insert_stmt = $con->prepare($return_insert_query);
+        $return_insert_stmt->bind_param("iisssi", $faculty_id, $book_id, $date_borrowed, $due_date, $date_returned_now, $penalty);
+        $return_insert_stmt->execute();
 
-        $book_ids[] = $book_id;
+        $book_ids[] = $borrow_book_id;
 
-        $report_history1 = mysqli_query($con, "SELECT * FROM admin WHERE admin_id = '$id_session'");
-        $report_history_row1 = mysqli_fetch_array($report_history1);
+        $report_history_query = "SELECT * FROM admin WHERE admin_id = ?";
+        $report_history_stmt = $con->prepare($report_history_query);
+        $report_history_stmt->bind_param("i", $id_session);
+        $report_history_stmt->execute();
+        $report_history_result = $report_history_stmt->get_result();
+        $report_history_row1 = $report_history_result->fetch_assoc();
         $admin_row1 = $report_history_row1['firstname']." ".$report_history_row1['middlename']." ".$report_history_row1['lastname'];
 
-        mysqli_query($con, "INSERT INTO report (book_id, faculty_id, admin_name, detail_action, date_transaction) VALUES ('$book_id', '$faculty_id', '$admin_row1', 'Returned Book', NOW())");
+        $report_insert_query = "INSERT INTO report (book_id, faculty_id, admin_name, detail_action, date_transaction) VALUES (?, ?, ?, 'Returned Book', NOW())";
+        $report_insert_stmt = $con->prepare($report_insert_query);
+        $report_insert_stmt->bind_param("iis", $book_id, $faculty_id, $admin_row1);
+        $report_insert_stmt->execute();
     }
 
     if ($penalty === 'No Penalty') {
-        echo '<script>location.href="return_faculty_slip.php?firstname='.$firstname.'&book_ids='.implode(',', $book_ids).'";</script>';
+        echo '<script>location.href="return_faculty_slip.php?firstname='.$firstname.'&borrow_book_id='.implode(',', $book_ids).'";</script>';
     } else {
-        echo '<script>location.href="acknowledgement_receipt_print_faculty.php?firstname='.$firstname.'&book_ids='.implode(',', $book_ids).'";</script>';
+        echo '<script>location.href="acknowledgement_receipt_print_faculty.php?firstname='.$firstname.'&borrow_book_id='.implode(',', $book_ids).'";</script>';
     }
 }
 ?>

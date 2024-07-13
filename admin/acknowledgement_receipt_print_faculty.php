@@ -2,14 +2,13 @@
 include('authentication.php');
 
 $firstname = $_GET['firstname'];
-$book_ids = explode(',', $_GET['book_ids']);
+$book_ids = explode(',', $_GET['borrow_book_id']);
 
-// Prevent SQL injection
-$firstname_safe = mysqli_real_escape_string($con, $firstname);
-
-$user_query = mysqli_query($con, "SELECT * FROM faculty WHERE firstname = '$firstname_safe'");
-$faculty_row = mysqli_fetch_array($user_query);
-
+$faculty_query = $con->prepare("SELECT * FROM faculty WHERE firstname = ?");
+$faculty_query->bind_param("s", $firstname);
+$faculty_query->execute();
+$faculty_result = $faculty_query->get_result();
+$faculty_row = $faculty_result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -39,23 +38,33 @@ $faculty_row = mysqli_fetch_array($user_query);
      <!-- Alertify JS link -->
      <link rel="stylesheet" href="assets/css/alertify.min.css" />
      <link rel="stylesheet" href="assets/css/alertify.bootstraptheme.min.css" />
-     
      <!-- Datatables -->
+     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
      <link rel="stylesheet" href="assets/css/dataTables.bootstrap5.min.css">
-     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
-     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css" />
+
+     <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" />
+     <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css" />
 
      <!-- Custom CSS -->
      <link href="assets/css/style.css" rel="stylesheet" />
 
-     <!-- Bootstrap Datepicker -->
-     <link rel="stylesheet" href="assets/css/bootstrap-datepicker.min.css">
+     <!-- Animation -->
+     <link rel="stylesheet" href="https://www.cssportal.com/css-loader-generator/" />
+     <!-- Loader -->
+     <link rel="stylesheet" href="https://www.cssportal.com/css-loader-generator/" />
 
+     <link rel="stylesheet" href="assets/css/bootstrap-datepicker.min.css">
+     
      <style>
          @media print {
              .print-button {
                  display: none;
              }
+             #back {
+                display: none;
+            }
              @page {
                  margin: 0;
              }
@@ -73,11 +82,10 @@ $faculty_row = mysqli_fetch_array($user_query);
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card">
                     <div class="card-body">
-                        <div class="text-start mt-3">
-                            <a href="circulation_faculty_return.php" class="btn btn-primary">Back</a>
-                        </div>
+                    <div class="text-start mt-3">
+                    <a href="circulation_faculty_return.php" id="back" style="margin-left:20px;" class="btn btn-primary">Back</a>
+                    </div>
                         <div class="text-end mt-5">
                             <h5>Date: <?php echo date('F d, Y'); ?></h5>
                         </div>
@@ -85,42 +93,54 @@ $faculty_row = mysqli_fetch_array($user_query);
                             <h4 style="font-weight:bold;">Return Slip</h4>
                         </div>
                         <div class="text-center mt-5">
-                            <h5>This is to acknowledge that <span style="font-weight: 700;"><?php echo htmlspecialchars($faculty_row['firstname'].' '.$faculty_row['middlename'].' '.$faculty_row['lastname']); ?></span>
-                                <br>has returned the following books:</h5>
+                            <h5>This to acknowledge that <span style="font-weight: 700;"><?php echo $faculty_row['firstname'].' '.$faculty_row['middlename'].' '.$faculty_row['lastname']; ?></span>
+                        <br>has returned the following books below:</h5>
                         </div>
                         <div class="table-responsive mt-5">
-                            <table class="table table-bordered">
+                            <table border="2" cellpadding="2" class="table table-bordered">
                                 <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Author</th>
-                                        <th>Date Borrowed</th>
-                                        <th>Due Date</th>
-                                        <th>Date Returned</th>
-                                        <th>Penalty</th>
-                                    </tr>
+                                <tr>
+                                    <th colspan="5" style="font-size:15px; font-weight:bold;text-align:center;" >BORROWED BOOK DETAILS</th>
+                                </tr>
+                                <tr>
+                                    <th style="font-size:15px;">Title</th>
+                                    <th style="font-size:15px;">Author</th>
+                                    <th style="font-size:15px;">Date Borrowed</th>
+                                    <th style="font-size:15px;">Due Date</th>
+                                    <th style="font-size:15px;">Date Returned</th>
+                                    <th style="font-size:15px;">Penalty</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
+                                <?php 
                                     foreach ($book_ids as $book_id) {
-                                        // Prevent SQL injection
-                                        $book_id_safe = mysqli_real_escape_string($con, $book_id);
-
-                                        $return_query = mysqli_query($con, "SELECT * FROM return_book LEFT JOIN book ON return_book.book_id = book.book_id WHERE return_book.book_id = '$book_id_safe' AND return_book.faculty_id = '".$faculty_row['faculty_id']."'");
-                                        $return_row = mysqli_fetch_array($return_query);
-                                        if ($return_row) {
+                                        $return_query = $con->prepare("
+                                            SELECT book.title, book.author, borrow_book.date_borrowed, borrow_book.due_date, borrow_book.date_returned, borrow_book.book_penalty 
+                                            FROM borrow_book 
+                                            LEFT JOIN book ON borrow_book.book_id = book.book_id
+                                            WHERE borrow_book.borrow_book_id = ? AND borrow_book.faculty_id = ?
+                                        ");
+                                        $return_query->bind_param("ii", $book_id, $faculty_row['faculty_id']);
+                                        $return_query->execute();
+                                        $return_result = $return_query->get_result();
+                                        
+                                        if ($return_result->num_rows > 0) {
+                                            while ($return_row = $return_result->fetch_assoc()) {
                                     ?>
                                     <tr>
                                         <td><?php echo htmlspecialchars($return_row['title']); ?></td>
-                                        <td><?php echo htmlspecialchars($return_row['author']); ?></td>
+                                        <td style="text-transform: capitalize"><?php echo htmlspecialchars($return_row['author']); ?></td>
                                         <td><?php echo date("M d, Y", strtotime($return_row['date_borrowed'])); ?></td>
                                         <td><?php echo date("M d, Y", strtotime($return_row['due_date'])); ?></td>
                                         <td><?php echo date("M d, Y", strtotime($return_row['date_returned'])); ?></td>
-                                        <td><?php echo $return_row['book_penalty']; ?></td>
+                                        <td><?php echo htmlspecialchars($return_row['book_penalty']);?></td>
                                     </tr>
                                     <?php 
+                                            }
+                                        } else {
+                                            echo '<tr><td colspan="5" class="text-center">No return records found for this book</td></tr>';
                                         }
-                                    } 
+                                    }
                                     ?>
                                 </tbody>
                             </table>
@@ -134,17 +154,15 @@ $faculty_row = mysqli_fetch_array($user_query);
                         <div class="text-center mt-5">
                             <button onclick="window.print()" class="btn btn-primary print-button">Print</button>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
+</main>
 
-    <!-- Scripts -->
-    <?php 
-    include('./includes/script.php');
-    include('./message.php');   
-    ?>
+<?php 
+include('./includes/script.php');
+include('./message.php');   
+?>
 </body>
-
 </html>

@@ -2,11 +2,13 @@
 include('authentication.php');
 
 $student_id = $_GET['student_id'];
-$book_ids = explode(',', $_GET['book_ids']);
+$book_ids = explode(',', $_GET['borrow_book_id']);
 
-$user_query = mysqli_query($con, "SELECT * FROM user WHERE student_id_no = '$student_id' ");
-$user_row = mysqli_fetch_array($user_query);
-
+$user_query = $con->prepare("SELECT * FROM user WHERE student_id_no = ?");
+$user_query->bind_param("s", $student_id);
+$user_query->execute();
+$user_result = $user_query->get_result();
+$user_row = $user_result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +62,9 @@ $user_row = mysqli_fetch_array($user_query);
              .print-button {
                  display: none;
              }
+             #back {
+                display: none;
+            }
              @page {
                  margin: 0;
              }
@@ -77,10 +82,9 @@ $user_row = mysqli_fetch_array($user_query);
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card">
                     <div class="card-body">
                     <div class="text-start mt-3">
-                    <a href="circulation_return.php" class="btn btn-primary">Back</a>
+                    <a href="circulation_return.php" id="back" style="margin-left:20px;" class="btn btn-primary">Back</a>
                     </div>
                         <div class="text-end mt-5">
                             <h5>Date: <?php echo date('F d, Y'); ?></h5>
@@ -93,7 +97,7 @@ $user_row = mysqli_fetch_array($user_query);
                         <br>has returned the following books below:</h5>
                         </div>
                         <div class="table-responsive mt-5">
-                            <table border="1" cellpadding="2" class="table">
+                            <table border="2" cellpadding="2" class="table table-bordered">
                                 <thead>
                                 <tr>
                                     <th colspan="5" style="font-size:15px; font-weight:bold;text-align:center;" >BORROWED BOOK DETAILS</th>
@@ -108,20 +112,36 @@ $user_row = mysqli_fetch_array($user_query);
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
+                                <?php 
                                     foreach ($book_ids as $book_id) {
-                                        $return_query = mysqli_query($con, "SELECT * FROM return_book LEFT JOIN book ON return_book.book_id = book.book_id WHERE return_book.book_id = '$book_id' AND return_book.user_id = '".$user_row['user_id']."'");
-                                        $return_row = mysqli_fetch_array($return_query);
+                                        $return_query = $con->prepare("
+                                            SELECT book.title, book.author, borrow_book.date_borrowed, borrow_book.due_date, borrow_book.date_returned, borrow_book.book_penalty 
+                                            FROM borrow_book 
+                                            LEFT JOIN book ON borrow_book.book_id = book.book_id
+                                            WHERE borrow_book.borrow_book_id = ? AND borrow_book.user_id = ?
+                                        ");
+                                        $return_query->bind_param("ii", $book_id, $user_row['user_id']);
+                                        $return_query->execute();
+                                        $return_result = $return_query->get_result();
+                                        
+                                        if ($return_result->num_rows > 0) {
+                                            while ($return_row = $return_result->fetch_assoc()) {
                                     ?>
                                     <tr>
-                                        <td><?php echo $return_row['title']; ?></td>
-                                        <td style="text-transform: capitalize"><?php echo $return_row['author']; ?></td>
+                                        <td><?php echo htmlspecialchars($return_row['title']); ?></td>
+                                        <td style="text-transform: capitalize"><?php echo htmlspecialchars($return_row['author']); ?></td>
                                         <td><?php echo date("M d, Y", strtotime($return_row['date_borrowed'])); ?></td>
                                         <td><?php echo date("M d, Y", strtotime($return_row['due_date'])); ?></td>
                                         <td><?php echo date("M d, Y", strtotime($return_row['date_returned'])); ?></td>
-                                        <td><?php echo $return_row['book_penalty']; ?></td>
+                                        <td><?php echo htmlspecialchars($return_row['book_penalty']);?></td>
                                     </tr>
-                                    <?php } ?>
+                                    <?php 
+                                            }
+                                        } else {
+                                            echo '<tr><td colspan="5" class="text-center">No return records found for this book</td></tr>';
+                                        }
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
@@ -134,7 +154,6 @@ $user_row = mysqli_fetch_array($user_query);
                         <div class="text-center mt-5">
                             <button onclick="window.print()" class="btn btn-primary print-button">Print</button>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
