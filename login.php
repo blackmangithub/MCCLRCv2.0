@@ -73,7 +73,7 @@ include('./admin/config/dbcon.php');
                                         </h4>
                                         <h1 class="m-0"><strong>MCC</strong></h1>
                                         <p class="fs-4 fw-semibold text-info">Learning Resource Center</p>
-                                        <p class="m-0">Student Login</p>
+                                        <p class="m-0">Login Form</p>
                                    </center>
                               </div>
                               <form action="logincode.php" method="POST" class="needs-validation" novalidate>
@@ -108,14 +108,14 @@ include('./admin/config/dbcon.php');
                                    </div>
                                    <div class="d-grid gap-2 md-3">
                                         <button type="submit" name="login_btn"
-                                             class="btn btn-info text-light font-weight-bolder btn-lg">Login</button>
+                                             class="btn btn-primary text-light font-weight-bolder btn-lg">Login</button>
                                         <div class="text-center mb-3">
                                              <p>
                                                   Don't have an account?
-                                                  <a href="./signup.php" class="text-info">Signup</a>
+                                                  <a href="./signup.php" class="text-primary">Signup</a>
                                              </p>
                                              <p>
-                                                  <a href="reset-password.php" class="text-info">Forgot Password?</a>
+                                                  <a href="password-reset.php" class="text-primary">Forgot Password?</a>
                                              </p>
                                         </div>
                                    </div>

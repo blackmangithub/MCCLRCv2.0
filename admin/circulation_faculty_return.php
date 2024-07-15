@@ -129,8 +129,8 @@ include('./includes/sidebar.php');
                                                   </td>
                                                   <td>
                                                        <?php if ($return_row['book_penalty'] != 'No Penalty'): ?>
-                                                       <div class="alert alert-warning" style="width:100px;">
-                                                            Php <?php echo $return_row['book_penalty']; ?>.00
+                                                       <div>
+                                                            ₱ <?php echo $return_row['book_penalty']; ?>.00
                                                        </div>
                                                        <?php else: ?>
                                                        <?php echo $return_row['book_penalty']; ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2024 at 08:04 PM
+-- Generation Time: Jul 15, 2024 at 08:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,7 +48,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `firstname`, `middlename`, `lastname`, `email`, `address`, `phone_number`, `password`, `confirm_password`, `admin_image`, `admin_type`, `role_as`, `admin_added`) VALUES
-(13, 'Relinas', '', 'Jabal-balili', 'admin@gmail.com', 'address', '09123456789', '21232f297a57a5a743894a0e4a801fc3', '21232f297a57a5a743894a0e4a801fc3', '1670055503.png', '', 1, '2022-11-30 01:17:21'),
+(13, 'Relina', '', 'Jabal-balili', 'admin@gmail.com', 'address', '09123456789', '21232f297a57a5a743894a0e4a801fc3', '21232f297a57a5a743894a0e4a801fc3', '1670055503.png', '', 1, '2022-11-30 01:17:21'),
 (35, 'Emelen', '', 'Bayon-on', 'emelenbayon-on@gmail.com', 'Maricaban, Santa Fe, Cebu', '(+63) 9342-167-893', '0f420395018d23a2200007ad2fd37e84', '0f420395018d23a2200007ad2fd37e84', '1670213672.jpg', '', 1, '2022-12-06 22:55:14');
 
 -- --------------------------------------------------------
@@ -102,82 +102,6 @@ CREATE TABLE `barcode` (
   `suf_barcode` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data for table `barcode`
---
-
-INSERT INTO `barcode` (`barcode_id`, `pre_barcode`, `mid_barcode`, `suf_barcode`) VALUES
-(1, 'MCC', 2, 'LRC'),
-(2, 'MCC', 2, 'LRC'),
-(3, 'MCC', 2, 'LRC'),
-(4, 'MCC', 2, 'LRC'),
-(5, 'MCC', 2, 'LRC'),
-(6, 'MCC', 2, 'LRC'),
-(7, 'MCC', 2, 'LRC'),
-(8, 'MCC', 2, 'LRC'),
-(9, 'MCC', 2, 'LRC'),
-(10, 'MCC', 2, 'LRC'),
-(11, 'MCC', 2, 'LRC'),
-(12, 'MCC', 2, 'LRC'),
-(13, 'MCC', 2, 'LRC'),
-(14, 'MCC', 2, 'LRC'),
-(15, 'MCC', 2, 'LRC'),
-(16, 'MCC', 2, 'LRC'),
-(17, 'MCC', 2, 'LRC'),
-(18, 'MCC', 2, 'LRC'),
-(19, 'MCC', 2, 'LRC'),
-(20, 'MCC', 3, 'LRC'),
-(21, 'MCC', 4, 'LRC'),
-(22, 'MCC', 5, 'LRC'),
-(23, 'MCC', 6, 'LRC'),
-(24, 'MCC', 7, 'LRC'),
-(25, 'MCC', 8, 'LRC'),
-(26, 'MCC', 9, 'LRC'),
-(27, 'MCC', 10, 'LRC'),
-(28, 'MCC', 11, 'LRC'),
-(29, 'MCC', 12, 'LRC'),
-(30, 'MCC', 13, 'LRC'),
-(31, 'MCC', 14, 'LRC'),
-(32, 'MCC', 15, 'LRC'),
-(33, 'MCC', 16, 'LRC'),
-(34, 'MCC', 17, 'LRC'),
-(35, 'MCC', 18, 'LRC'),
-(36, 'MCC', 19, 'LRC'),
-(37, 'MCC', 20, 'LRC'),
-(38, 'MCC', 21, 'LRC'),
-(39, 'MCC', 22, 'LRC'),
-(40, 'MCC', 23, 'LRC'),
-(41, 'MCC', 24, 'LRC'),
-(42, 'MCC', 25, 'LRC'),
-(43, 'MCC', 26, 'LRC'),
-(44, 'MCC', 27, 'LRC'),
-(45, 'MCC', 28, 'LRC'),
-(46, 'MCC', 29, 'LRC'),
-(47, 'MCC', 30, 'LRC'),
-(48, 'MCC', 31, 'LRC'),
-(49, 'MCC', 32, 'LRC'),
-(50, 'MCC', 33, 'LRC'),
-(51, 'MCC', 34, 'LRC'),
-(52, 'MCC', 35, 'LRC'),
-(53, 'MCC', 36, 'LRC'),
-(54, 'MCC', 37, 'LRC'),
-(55, 'MCC', 38, 'LRC'),
-(56, 'MCC', 39, 'LRC'),
-(57, 'MCC', 40, 'LRC'),
-(58, 'MCC', 41, 'LRC'),
-(59, 'MCC', 42, 'LRC'),
-(60, 'MCC', 43, 'LRC'),
-(61, 'MCC', 44, 'LRC'),
-(62, 'MCC', 45, 'LRC'),
-(63, 'MCC', 46, 'LRC'),
-(64, 'MCC', 47, 'LRC'),
-(65, 'MCC', 48, 'LRC'),
-(66, 'MCC', 49, 'LRC'),
-(67, 'MCC', 0, 'LRC'),
-(68, 'MCC', 0, 'LRC'),
-(69, 'MCC', 0, 'LRC'),
-(70, 'MCC', 0, 'LRC');
-
 -- --------------------------------------------------------
 
 --
@@ -195,7 +119,6 @@ CREATE TABLE `book` (
   `publisher` varchar(50) NOT NULL,
   `place_publication` varchar(50) NOT NULL,
   `isbn` varchar(50) NOT NULL,
-  `copy` int(20) NOT NULL,
   `barcode` varchar(50) NOT NULL,
   `book_image` varchar(100) NOT NULL,
   `date_added` datetime NOT NULL,
@@ -206,9 +129,11 @@ CREATE TABLE `book` (
 -- Dumping data for table `book`
 --
 
-INSERT INTO `book` (`book_id`, `call_number`, `accession_number`, `title`, `category_id`, `author`, `copyright_date`, `publisher`, `place_publication`, `isbn`, `copy`, `barcode`, `book_image`, `date_added`, `status`) VALUES
-(83, '25325423', '2414', 'ffsdfsdf', 1, 'fgdsgfg', '43r252', 'dgdgd', 'dgegwg', '3252354325', 2, 'MCC2414LRC', '1719934889.jpg', '2024-07-02 23:41:29', 'Available'),
-(84, '25325423', '23432', 'ffsdfsdf', 1, 'fgdsgfg', '43r252', 'dgdgd', 'dgegwg', '3252354325', 2, 'MCC23432LRC', '1719934889.jpg', '2024-07-02 23:41:30', 'Available');
+INSERT INTO `book` (`book_id`, `call_number`, `accession_number`, `title`, `category_id`, `author`, `copyright_date`, `publisher`, `place_publication`, `isbn`, `barcode`, `book_image`, `date_added`, `status`) VALUES
+(93, '1234', '1234', 'Computer Programming', 1, 'Rich', '2021', 'Mann', 'Kingdom', '12345678', 'MCC-LRC1234', '1719979739.jpg', '2024-07-03 12:08:59', 'Available'),
+(94, '1234', '5678', 'Computer Programming', 1, 'Rich', '2021', 'Mann', 'Kingdom', '12345678', 'MCC-LRC5678', '1719979739.jpg', '2024-07-03 12:08:59', 'Available'),
+(95, '5678', '8765', 'C# Programming', 5, 'Black', '2021', 'Mann', 'Clover', '123456789', 'MCC-LRC8765', '1719979865.jfif', '2024-07-03 12:11:05', 'Available'),
+(96, '5678', '4321', 'C# Programming', 5, 'Black', '2021', 'Mann', 'Clover', '123456789', 'MCC-LRC4321', '1719979865.jfif', '2024-07-03 12:11:05', 'Available');
 
 -- --------------------------------------------------------
 
@@ -225,16 +150,9 @@ CREATE TABLE `borrow_book` (
   `due_date` datetime NOT NULL,
   `date_returned` datetime NOT NULL,
   `borrowed_status` varchar(100) NOT NULL,
-  `book_penalty` varchar(100) NOT NULL
+  `book_penalty` varchar(100) NOT NULL,
+  `accession_number` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `borrow_book`
---
-
-INSERT INTO `borrow_book` (`borrow_book_id`, `user_id`, `faculty_id`, `book_id`, `date_borrowed`, `due_date`, `date_returned`, `borrowed_status`, `book_penalty`) VALUES
-(587, 84, 0, 55, '2024-07-02 15:12:08', '2024-07-05 15:12:08', '2024-07-02 15:13:24', 'returned', 'No Penalty'),
-(588, 84, 0, 55, '2024-07-02 15:17:34', '2024-07-05 15:17:34', '2024-07-02 15:23:15', 'returned', 'No Penalty');
 
 -- --------------------------------------------------------
 
@@ -253,7 +171,7 @@ CREATE TABLE `category` (
 
 INSERT INTO `category` (`category_id`, `classname`) VALUES
 (1, 'Filipiniana Section'),
-(2, 'Foreign Section'),
+(2, 'Circulation Section'),
 (3, 'Reserved Section'),
 (4, 'Periodical Section'),
 (5, 'Fiction Section');
@@ -266,36 +184,33 @@ INSERT INTO `category` (`category_id`, `classname`) VALUES
 
 CREATE TABLE `faculty` (
   `faculty_id` int(11) NOT NULL,
-  `employee_id_no` varchar(45) NOT NULL,
+  `faculty_log_id` int(11) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `middlename` varchar(50) NOT NULL,
-  `lastname` varchar(50) NOT NULL,
-  `nickname` varchar(45) NOT NULL,
   `gender` varchar(45) NOT NULL,
-  `department` varchar(45) NOT NULL,
-  `employment_status` varchar(45) NOT NULL,
+  `course` varchar(45) NOT NULL,
   `address` varchar(45) NOT NULL,
   `cell_no` varchar(25) NOT NULL,
   `birthdate` varchar(45) NOT NULL,
-  `contact_person` varchar(45) NOT NULL,
-  `contact_person_no` varchar(25) NOT NULL,
-  `username` varchar(45) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `role_as` tinyint(4) NOT NULL DEFAULT 0,
-  `status` tinyint(4) NOT NULL DEFAULT 0,
-  `faculty_added` datetime NOT NULL
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `cpassword` varchar(255) NOT NULL,
+  `role_as` varchar(50) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `faculty_added` datetime NOT NULL,
+  `qr_code` varchar(255) NOT NULL,
+  `reset_token` varchar(2) NOT NULL,
+  `token_expiry` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `faculty`
 --
 
-INSERT INTO `faculty` (`faculty_id`, `employee_id_no`, `firstname`, `middlename`, `lastname`, `nickname`, `gender`, `department`, `employment_status`, `address`, `cell_no`, `birthdate`, `contact_person`, `contact_person_no`, `username`, `email`, `role_as`, `status`, `faculty_added`) VALUES
-(6, '1234', 'Relina', '', 'Jabal-balili', '', 'Female', 'BSIT', '1234', 'Unknown', '(+63) 9123-456-789', '2022-12-12', 'Unknown', '(+63) 9123-456-789', 'Relina', 'relina@gmail.com', 0, 0, '2022-12-13 20:56:01'),
-(7, '124775567', 'Lovely', '', 'Umbao', 'Lovely', 'Female', 'BSED', 'none', 'Maalat, Madridejos, Cebu', '(+63) 9123-456-789', '2000-09-08', 'Umbao Lovely', '(+63) 9123-456-789', 'Lovely', 'lovelyumbao@gmail.com', 0, 0, '2022-12-15 21:42:29'),
-(8, '32544785', 'Manilyn', '', 'Galang', 'Manilyn', 'Female', 'BEED', 'none', 'Okoy, Santa Fe, Cebu', '(+63) 9123-456-789', '2000-03-06', 'Manilyn Galang', '(+63) 9123-456-789', 'Manilyn', 'manilyngalang@gmail.com', 0, 0, '2022-12-15 21:45:32'),
-(9, '27487585868', 'Jecel', '', 'Mancio', 'Jecel', 'Female', 'BSBA', 'none', 'Bunakan, Madridejos, Cebu', '(+63) 9123-456-789', '2000-07-08', 'Jecel Mancio', '(+63) 9123-456-789', 'Jecel', 'jecelmancio@gmail.com', 0, 0, '2022-12-15 21:47:41'),
-(10, '58573553', 'Rubelyns', '', 'Seville', 'Rubelyn', 'Female', 'BSHM', 'none', 'Mancilang, Madridejos, Cebu', '(+63) 9123-456-789', '2000-02-24', 'Rubelyn Seville', '(+63) 9123-456-789', 'Rubelyn', 'rubelynseville@gmail.com', 0, 0, '2022-12-15 21:50:00');
+INSERT INTO `faculty` (`faculty_id`, `faculty_log_id`, `lastname`, `firstname`, `middlename`, `gender`, `course`, `address`, `cell_no`, `birthdate`, `email`, `username`, `password`, `cpassword`, `role_as`, `status`, `faculty_added`, `qr_code`, `reset_token`, `token_expiry`) VALUES
+(12, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'bman23382@gmail.com', 'diovin', '$2y$10$P0Vma8o3xlHDPX50z1GGpOOzhmLXS9A13tcBsvuhuiSIbrnUlu.b.', '', 'faculty', 'approved', '2024-07-05 07:05:22', 'diovin.png', '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -307,6 +222,8 @@ CREATE TABLE `holds` (
   `hold_id` int(11) NOT NULL,
   `book_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `faculty_id` int(11) NOT NULL,
+  `accession_number` varchar(255) NOT NULL,
   `hold_status` varchar(50) NOT NULL,
   `hold_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -315,9 +232,8 @@ CREATE TABLE `holds` (
 -- Dumping data for table `holds`
 --
 
-INSERT INTO `holds` (`hold_id`, `book_id`, `user_id`, `hold_status`, `hold_date`) VALUES
-(60, 69, 87, '', '2024-07-02 15:04:59'),
-(61, 55, 87, '', '2024-07-02 15:08:29');
+INSERT INTO `holds` (`hold_id`, `book_id`, `user_id`, `faculty_id`, `accession_number`, `hold_status`, `hold_date`) VALUES
+(62, 0, 12, 0, '1234', 'Hold', '2024-07-06 20:00:42');
 
 -- --------------------------------------------------------
 
@@ -335,7 +251,7 @@ CREATE TABLE `penalty` (
 --
 
 INSERT INTO `penalty` (`penalty_id`, `penalty_amount`) VALUES
-(1, 20),
+(1, 5),
 (2, 20);
 
 -- --------------------------------------------------------
@@ -359,71 +275,175 @@ CREATE TABLE `report` (
 --
 
 INSERT INTO `report` (`report_id`, `book_id`, `user_id`, `faculty_id`, `admin_name`, `detail_action`, `date_transaction`) VALUES
-(1247, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-14 01:53:18'),
-(1248, 55, 44, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-14 01:53:57'),
-(1249, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-14 01:54:26'),
-(1250, 55, 44, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-14 01:55:02'),
-(1251, 56, 0, 6, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-14 01:56:23'),
-(1252, 56, 0, 6, 'Relina  Jabal-balili', 'Returned Book', '2022-12-14 01:56:45'),
-(1253, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-14 10:34:44'),
-(1254, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-14 10:36:46'),
-(1255, 55, 0, 6, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-14 10:37:53'),
-(1256, 55, 0, 6, 'Relina  Jabal-balili', 'Returned Book', '2022-12-14 10:38:12'),
-(1257, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-15 21:51:25'),
-(1258, 56, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-15 21:51:47'),
-(1259, 57, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-15 21:51:58'),
-(1260, 59, 45, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-15 21:53:08'),
-(1261, 66, 45, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-15 21:53:32'),
-(1262, 69, 45, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-15 21:53:51'),
-(1263, 69, 0, 6, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-15 21:55:13'),
-(1264, 57, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-20 22:11:58'),
-(1265, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-20 22:16:18'),
-(1266, 56, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-20 22:16:36'),
-(1267, 69, 45, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-22 00:08:33'),
-(1268, 59, 45, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-22 00:08:48'),
-(1269, 66, 45, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-22 00:09:04'),
-(1270, 69, 0, 6, 'Relina  Jabal-balili', 'Returned Book', '2022-12-15 23:40:14'),
-(1271, 55, 32, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 09:02:45'),
-(1272, 55, 31, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 11:00:06'),
-(1273, 65, 45, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 11:02:55'),
-(1274, 66, 45, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 11:03:40'),
-(1275, 57, 46, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 11:05:03'),
-(1276, 58, 47, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 11:06:09'),
-(1277, 59, 48, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 11:06:38'),
-(1278, 60, 50, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 11:07:15'),
-(1279, 61, 52, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 11:07:47'),
-(1280, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2022-12-16 15:19:48'),
-(1281, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-16 15:20:38'),
-(1282, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2022-12-16 15:20:40'),
-(1283, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-03-29 11:01:44'),
-(1284, 55, 0, 6, 'Relina  Jabal-balili', 'Borrowed Book', '2023-04-03 11:04:21'),
-(1285, 55, 0, 6, 'Relina  Jabal-balili', 'Returned Book', '2023-09-02 11:47:16'),
-(1286, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-09-02 11:48:49'),
-(1287, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-03-29 11:10:33'),
-(1288, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-03-29 11:11:33'),
-(1289, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-03-29 20:52:21'),
-(1290, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-03-29 20:54:45'),
-(1291, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-03-29 20:55:22'),
-(1292, 55, 0, 6, 'Relina  Jabal-balili', 'Borrowed Book', '2023-03-29 21:58:36'),
-(1293, 55, 0, 6, 'Relina  Jabal-balili', 'Returned Book', '2023-03-29 21:59:44'),
-(1294, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-04-02 22:03:03'),
-(1295, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-03-29 22:08:41'),
-(1296, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-04-03 22:10:00'),
-(1297, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-03-31 11:15:08'),
-(1298, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-03-31 11:35:25'),
-(1299, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-03-31 11:40:57'),
-(1300, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-04-04 13:01:45'),
-(1301, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-04-04 14:06:53'),
-(1302, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-04-04 14:07:09'),
-(1303, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-04-04 14:09:19'),
-(1304, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-04-05 16:23:00'),
-(1305, 55, 1, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2023-04-06 16:09:53'),
-(1306, 55, 1, 0, 'Relina  Jabal-balili', 'Returned Book', '2023-04-06 16:10:21'),
-(1307, 55, 1, 0, 'Relinas  Jabal-balili', 'Borrowed Book', '2023-04-08 08:25:48'),
-(1308, 55, 84, 0, 'Relinas  Jabal-balili', 'Borrowed Book', '2024-07-02 15:12:15'),
-(1309, 55, 84, 0, 'Relinas  Jabal-balili', 'Returned Book', '2024-07-02 15:13:24'),
-(1310, 55, 84, 0, 'Relinas  Jabal-balili', 'Borrowed Book', '2024-07-02 15:19:17'),
-(1311, 55, 84, 0, 'Relinas  Jabal-balili', 'Returned Book', '2024-07-02 15:23:15');
+(1338, 93, 0, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-05 08:42:13'),
+(1339, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 15:48:37'),
+(1340, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 15:49:27'),
+(1341, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 15:58:48'),
+(1342, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 16:00:10'),
+(1343, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 16:07:30'),
+(1344, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 16:07:42'),
+(1345, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 16:35:11'),
+(1346, 94, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 16:35:17'),
+(1347, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 16:35:24'),
+(1348, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 16:42:27'),
+(1349, 94, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 16:42:27'),
+(1350, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 16:42:28'),
+(1351, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 19:58:38'),
+(1352, 94, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 19:58:47'),
+(1353, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 20:01:50'),
+(1354, 94, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 20:01:51'),
+(1355, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 20:09:34'),
+(1356, 94, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 20:09:38'),
+(1357, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 20:09:51'),
+(1358, 94, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 20:09:51'),
+(1359, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 20:18:00'),
+(1360, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 20:18:25'),
+(1361, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 20:28:48'),
+(1362, 94, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 20:28:52'),
+(1363, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 20:31:35'),
+(1364, 94, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 20:31:36'),
+(1365, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 22:57:36'),
+(1366, 94, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 22:57:41'),
+(1367, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 22:58:03'),
+(1368, 94, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 22:58:03'),
+(1369, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 22:59:55'),
+(1370, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:00:03'),
+(1371, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:00:20'),
+(1372, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:00:21'),
+(1373, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:04:00'),
+(1374, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:04:05'),
+(1375, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:04:18'),
+(1376, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:04:18'),
+(1377, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:06:29'),
+(1378, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:06:32'),
+(1379, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:06:46'),
+(1380, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:06:46'),
+(1381, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:08:32'),
+(1382, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:08:37'),
+(1383, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:08:50'),
+(1384, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:08:51'),
+(1385, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:12:33'),
+(1386, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:12:37'),
+(1387, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:12:52'),
+(1388, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:12:52'),
+(1389, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:14:29'),
+(1390, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:14:34'),
+(1391, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:14:48'),
+(1392, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:14:48'),
+(1393, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:46:20'),
+(1394, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:46:24'),
+(1395, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:46:45'),
+(1396, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:46:45'),
+(1397, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:59:42'),
+(1398, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-06 23:59:47'),
+(1399, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-06 23:59:59'),
+(1400, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 00:00:00'),
+(1401, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 06:28:58'),
+(1402, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 06:29:02'),
+(1403, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 06:34:09'),
+(1404, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 06:34:09'),
+(1405, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 13:27:06'),
+(1406, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 13:27:10'),
+(1407, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 13:33:46'),
+(1408, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 13:33:46'),
+(1409, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 13:38:21'),
+(1410, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 13:38:25'),
+(1411, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 13:38:34'),
+(1412, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 13:38:34'),
+(1413, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 13:53:45'),
+(1414, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 13:53:50'),
+(1415, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 13:54:06'),
+(1416, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 13:54:06'),
+(1417, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 13:57:21'),
+(1418, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 13:57:24'),
+(1419, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 13:57:31'),
+(1420, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 13:57:31'),
+(1421, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 14:00:04'),
+(1422, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-07 14:00:11'),
+(1423, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 14:00:21'),
+(1424, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-07 14:00:21'),
+(1425, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 12:41:54'),
+(1426, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 12:42:01'),
+(1427, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 12:44:05'),
+(1428, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 12:44:05'),
+(1429, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 12:52:45'),
+(1430, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 12:52:49'),
+(1431, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 13:18:39'),
+(1432, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 13:18:39'),
+(1433, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 14:16:54'),
+(1434, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 14:16:58'),
+(1435, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-14 14:23:23'),
+(1436, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-19 14:34:28'),
+(1437, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 19:11:46'),
+(1438, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 19:18:14'),
+(1439, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 19:18:48'),
+(1440, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 19:20:48'),
+(1441, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 21:14:12'),
+(1442, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 21:14:22'),
+(1443, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 21:14:54'),
+(1444, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 21:14:54'),
+(1445, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 21:17:56'),
+(1446, 94, 85, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 21:18:34'),
+(1447, 94, 85, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 21:19:21'),
+(1448, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-09 21:20:06'),
+(1449, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 21:23:57'),
+(1450, 96, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-09 21:24:09'),
+(1451, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-10 20:41:32'),
+(1452, 96, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-10 21:07:18'),
+(1453, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-10 21:07:41'),
+(1454, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-10 21:08:11'),
+(1455, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-10 21:10:23'),
+(1456, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-10 21:14:26'),
+(1457, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-10 21:17:10'),
+(1458, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-10 21:46:00'),
+(1459, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-10 21:49:20'),
+(1460, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-15 21:55:08'),
+(1461, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-15 21:56:48'),
+(1462, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-20 22:02:32'),
+(1463, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-11 09:27:34'),
+(1464, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-11 09:28:16'),
+(1465, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-11 09:32:16'),
+(1466, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-16 09:35:17'),
+(1467, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-11 09:36:56'),
+(1468, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-11 09:37:46'),
+(1469, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-11 09:40:45'),
+(1470, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-11 09:41:15'),
+(1471, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-11 09:51:54'),
+(1472, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-11 10:15:27'),
+(1473, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-11 10:20:38'),
+(1474, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-11 10:20:51'),
+(1475, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-11 10:23:56'),
+(1476, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-11 10:24:15'),
+(1477, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 12:50:08'),
+(1478, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 12:51:11'),
+(1479, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-18 13:07:58'),
+(1480, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 13:08:31'),
+(1481, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-18 13:13:55'),
+(1482, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 13:14:16'),
+(1483, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:14:58'),
+(1484, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 13:15:26'),
+(1485, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:16:21'),
+(1486, 94, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:16:31'),
+(1487, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-13 13:17:02'),
+(1488, 94, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-13 13:17:02'),
+(1489, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:25:42'),
+(1490, 94, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:32:43'),
+(1491, 94, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-13 13:33:07'),
+(1492, 94, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:34:10'),
+(1493, 94, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-13 13:37:54'),
+(1494, 96, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:38:25'),
+(1495, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-13 13:38:37'),
+(1496, 96, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-13 13:38:38'),
+(1497, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:39:57'),
+(1498, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-13 13:43:36'),
+(1499, 93, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:47:34'),
+(1500, 93, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-13 13:49:45'),
+(1501, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-13 13:50:02'),
+(1502, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 13:50:58'),
+(1503, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-18 13:54:40'),
+(1504, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 13:54:54'),
+(1505, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-18 13:55:40'),
+(1506, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 13:55:48');
 
 -- --------------------------------------------------------
 
@@ -441,14 +461,6 @@ CREATE TABLE `return_book` (
   `date_returned` datetime NOT NULL,
   `book_penalty` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `return_book`
---
-
-INSERT INTO `return_book` (`return_book_id`, `user_id`, `faculty_id`, `book_id`, `date_borrowed`, `due_date`, `date_returned`, `book_penalty`) VALUES
-(627, 84, 0, 55, '2024-07-02 15:12:08', '2024-07-05 15:12:08', '2024-07-02 15:13:18', 'No Penalty'),
-(628, 84, 0, 55, '2024-07-02 15:17:34', '2024-07-05 15:17:34', '2024-07-02 15:22:56', 'No Penalty');
 
 -- --------------------------------------------------------
 
@@ -470,27 +482,22 @@ CREATE TABLE `user` (
   `email` varchar(50) NOT NULL,
   `year_level` varchar(45) NOT NULL,
   `student_id_no` varchar(45) NOT NULL,
-  `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `cpassword` varchar(255) NOT NULL,
   `role_as` varchar(50) NOT NULL,
   `status` varchar(50) NOT NULL,
   `user_added` datetime NOT NULL,
   `qr_code` varchar(255) NOT NULL,
-  `reset_token` varchar(100) NOT NULL,
-  `token_expiry` datetime NOT NULL
+  `verify_token` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `user_log_id`, `lastname`, `firstname`, `middlename`, `gender`, `course`, `address`, `cell_no`, `birthdate`, `email`, `year_level`, `student_id_no`, `username`, `password`, `cpassword`, `role_as`, `status`, `user_added`, `qr_code`, `reset_token`, `token_expiry`) VALUES
-(84, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'bman23382@gmail.com', '4th year', '2021-1055', '', '$2y$10$AYJwsS7T8yi1Vj1SdFNBOebvWM1UorXDjsJma.02uq4YsGaudnNTi', '', 'student', 'approved', '2024-07-01 20:04:19', '2021-1055.png', '', '0000-00-00 00:00:00'),
-(85, 0, 'Ofianga', 'Joana', '', 'Female', 'BSIT', 'Pili, Madridejos, Cebu', '09123456789', '2002-06-19', 'ofiangajoana22@gmail.com', '4th year', '2021-1181', '', '$2y$10$ceZfbQE.yM8052SZJvaGs.yzcOXfmr3mNHY1WOEtJR3nxT/MZ5naW', '', 'student', 'approved', '2024-07-01 20:53:47', '2021-1181.png', '', '0000-00-00 00:00:00'),
-(86, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'bman23382@gmail.com', '', '', 'diovin', '$2y$10$X2TKGGTDn0M7K5sjjtmYeOYTL8ZucnABKmVES0GqRd4TBV6sEzequ', '', 'faculty', 'approved', '2024-07-01 21:32:47', 'diovin.png', '', '0000-00-00 00:00:00'),
-(87, 0, 'Cahutay', 'Mayette', 'Dela Pena', 'Female', 'BSIT', 'Pili, Madridejos, Cebu', '09647364736', '2022-05-21', 'cahutaymayette2002@gmail.com', '4th year', '2021-1180', '', '$2y$10$sN3tYonteOFOcMYDJcGI0OhRyuBJXjx.U3V09yakqDPFJE/X2FOGq', '', 'student', 'approved', '2024-07-02 14:38:22', '2021-1180.png', '', '0000-00-00 00:00:00'),
-(88, 0, 'Mata', 'Romeo', '', 'Male', 'BSED', 'Patao, Bantayan, Cebu', '09675643353', '2002-12-12', 'mata@gmail.com', '4th year', '2021-1170', '', '$2y$10$CNbhgHwpuqW.oayUqA.q4.SvNbv8aO9AbAnf3xLlISlJvcR7f5MAy', '', 'student', 'approved', '2024-07-02 15:28:33', '2021-1170.png', '', '0000-00-00 00:00:00');
+INSERT INTO `user` (`user_id`, `user_log_id`, `lastname`, `firstname`, `middlename`, `gender`, `course`, `address`, `cell_no`, `birthdate`, `email`, `year_level`, `student_id_no`, `password`, `cpassword`, `role_as`, `status`, `user_added`, `qr_code`, `verify_token`) VALUES
+(84, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'richmann276@gmail.com', '4th year', '2021-1055', '$2y$10$AYJwsS7T8yi1Vj1SdFNBOebvWM1UorXDjsJma.02uq4YsGaudnNTi', '', 'student', 'approved', '2024-07-01 20:04:19', '2021-1055.png', '7026c9435805f100710e4f68feb93bc5'),
+(85, 0, 'Ofianga', 'Joana', '', 'Female', 'BSIT', 'Pili, Madridejos, Cebu', '09123456789', '2002-06-19', 'ofiangajoana22@gmail.com', '4th year', '2021-1181', '$2y$10$ceZfbQE.yM8052SZJvaGs.yzcOXfmr3mNHY1WOEtJR3nxT/MZ5naW', '', 'student', 'approved', '2024-07-01 20:53:47', '2021-1181.png', '');
 
 -- --------------------------------------------------------
 
@@ -517,10 +524,7 @@ CREATE TABLE `user_log` (
 --
 
 INSERT INTO `user_log` (`user_log_id`, `student_id`, `lastname`, `firstname`, `middlename`, `time_log`, `date_log`, `time_out`, `course`, `year_level`, `role`) VALUES
-(266, '2021-1055', 'Calatero', 'Diovin', 'Pasicaran', '18:14:48', '2024-07-02', '00:00:00', 'BSIT', '4th year', 'student'),
-(267, '2021-1181', 'Ofianga', 'Joana', '', '18:19:47', '2024-07-02', '00:00:00', 'BSIT', '4th year', 'student'),
-(268, 'diovin', 'Calatero', 'Diovin', 'Pasicaran', '18:20:01', '2024-07-02', '00:00:00', 'BSIT', 'faculty', 'faculty'),
-(269, '2021-1170', 'Mata', 'Romeo', '', '18:21:42', '2024-07-02', '00:00:00', 'BSED', '4th year', 'student');
+(271, '2021-1055', 'Calatero', 'Diovin', 'Pasicaran', '16:30:15', '2024-07-06', '16:31:12', 'BSIT', '4th year', 'student');
 
 -- --------------------------------------------------------
 
@@ -592,8 +596,7 @@ ALTER TABLE `book`
 ALTER TABLE `borrow_book`
   ADD PRIMARY KEY (`borrow_book_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `faculty_id` (`faculty_id`),
-  ADD KEY `book_id` (`book_id`);
+  ADD KEY `faculty_id` (`faculty_id`);
 
 --
 -- Indexes for table `category`
@@ -605,7 +608,8 @@ ALTER TABLE `category`
 -- Indexes for table `faculty`
 --
 ALTER TABLE `faculty`
-  ADD PRIMARY KEY (`faculty_id`);
+  ADD PRIMARY KEY (`faculty_id`),
+  ADD UNIQUE KEY `FOREIGN KEY` (`faculty_log_id`) USING BTREE;
 
 --
 -- Indexes for table `holds`
@@ -680,19 +684,19 @@ ALTER TABLE `allowed_days`
 -- AUTO_INCREMENT for table `barcode`
 --
 ALTER TABLE `barcode`
-  MODIFY `barcode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `barcode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `borrow_book`
 --
 ALTER TABLE `borrow_book`
-  MODIFY `borrow_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=589;
+  MODIFY `borrow_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=700;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -704,13 +708,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `faculty`
 --
 ALTER TABLE `faculty`
-  MODIFY `faculty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `faculty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `holds`
 --
 ALTER TABLE `holds`
-  MODIFY `hold_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `hold_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `penalty`
@@ -722,13 +726,13 @@ ALTER TABLE `penalty`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1312;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1507;
 
 --
 -- AUTO_INCREMENT for table `return_book`
 --
 ALTER TABLE `return_book`
-  MODIFY `return_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=629;
+  MODIFY `return_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=725;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -740,7 +744,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_log`
 --
 ALTER TABLE `user_log`
-  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=270;
+  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=272;
 
 --
 -- AUTO_INCREMENT for table `web_opac`

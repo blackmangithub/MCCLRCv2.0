@@ -24,6 +24,7 @@ $faculty_row = $faculty_result->fetch_assoc();
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                 <li class="breadcrumb-item"><a href="circulation.php">Circulation</a></li>
+                <li class="breadcrumb-item"><a href="circulation_faculty_return.php">Faculty/Staff Return Book</a></li>
                 <li class="breadcrumb-item active">Return Book</li>
             </ol>
         </nav>

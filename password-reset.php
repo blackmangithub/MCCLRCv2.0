@@ -62,10 +62,10 @@ session_start();
                                         <h4 class="m-0">
                                              Reset Your Password
                                         </h4>
-                                        <p class="fs-4 fw-semibold text-info">Enter your email to reset your password</p>
+                                        <p class="fs-4 fw-semibold text-primary">Enter your email to reset your password</p>
                                    </center>
                               </div>
-                              <form action="send-reset-link.php" method="POST" class="needs-validation" novalidate
+                              <form action="password-reset-code.php" method="POST" class="needs-validation" novalidate
                               style="margin-top:30px;">
                                    <div class="col-md-12">
                                         <div class="form-floating mb-3">
@@ -78,10 +78,19 @@ session_start();
                                         </div>
                                    </div>
                                    <div class="d-grid gap-2 md-3">
-                                        <button type="submit" name="reset_btn"
-                                             class="btn btn-info text-light font-weight-bolder btn-lg">Send Reset Link</button>
+                                        <button type="submit" name="password_reset_link"
+                                             class="btn btn-primary text-light font-weight-bolder btn-lg">Send Password Reset Link</button>
                                    </div>
                               </form>
+                              <?php
+                              if(isset($_SESSION['status']))
+                              {
+                                   ?>
+                                        <h5 class="text-success mt-2" style="font-weight:700;font-family:calibri;"><?= $_SESSION['status']; ?></h5>
+                                   <?php
+                                   unset($_SESSION['status']);
+                              }
+                              ?>
                          </div>
                     </div>
                </div>

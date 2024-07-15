@@ -106,7 +106,7 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                                                                  <div class="col-lg-3 col-md-4 fw-semibold text-primary">
                                                                       <form action="" method="POST">
                                                                            <input type="hidden" name="accession_number" value="<?=$book['accession_number']?>">
-                                                                           <button type="submit" name="hold" class="btn btn-primary px-4" <?= $unavailable_count > 0 ? '' : 'disabled' ?>>Hold</button>
+                                                                           <button type="submit" name="hold" class="btn btn-primary px-4" <?= $unavailable_count > 1 ? '' : 'disabled' ?>>Hold</button>
                                                                       </form>
                                                                  </div>
                                                             </div>
