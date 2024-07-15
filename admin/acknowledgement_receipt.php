@@ -95,9 +95,9 @@ $user_row = mysqli_fetch_array($user_query);
                                                   </td>
                                                   <?php
 								 if ($return_row['book_penalty'] != 'No Penalty'){
-									 echo "<td class='' style='width:100px;'>".date("M d, Y h:m:s a",strtotime($return_row['due_date']))."</td>";
+									 echo "<td class='' style='width:100px;'>".date("M d, Y",strtotime($return_row['due_date']))."</td>";
 								 }else {
-									 echo "<td>".date("M d, Y h:m:s a",strtotime($return_row['due_date']))."</td>";
+									 echo "<td>".date("M d, Y",strtotime($return_row['due_date']))."</td>";
 								 }
 								
 								?>

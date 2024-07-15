@@ -165,21 +165,21 @@ include('./includes/sidebar.php');
                                                        <?php echo $return_row['title']; ?></td>
                                                   <!---	<td style="text-transform: capitalize"><?php // echo $return_row['author']; ?></td>
 								<td><?php // echo $return_row['isbn']; ?></td>	-->
-                                                  <td><?php echo date("M d, Y h:i:s a",strtotime($return_row['date_borrowed'])); ?>
+                                                  <td><?php echo date("M d, Y",strtotime($return_row['date_borrowed'])); ?>
                                                   </td>
                                                   <?php
 								 if ($return_row['book_penalty'] != 'No Penalty'){
-									 echo "<td class='' style='width:100px;'>".date("M d, Y h:i:s a",strtotime($return_row['due_date']))."</td>";
+									 echo "<td class='' style='width:100px;'>".date("M d, Y",strtotime($return_row['due_date']))."</td>";
 								 }else {
-									 echo "<td>".date("M d, Y h:i:s a",strtotime($return_row['due_date']))."</td>";
+									 echo "<td>".date("M d, Y ",strtotime($return_row['due_date']))."</td>";
 								 }
 								
 								?>
                                                   <?php
 								 if ($return_row['book_penalty'] != 'No Penalty'){
-									 echo "<td class='' style='width:100px;'>".date("M d, Y h:i:s a",strtotime($return_row['date_returned']))."</td>";
+									 echo "<td class='' style='width:100px;'>".date("M d, Y",strtotime($return_row['date_returned']))."</td>";
 								 }else {
-									 echo "<td>".date("M d, Y h:i:s a",strtotime($return_row['date_returned']))."</td>";
+									 echo "<td>".date("M d, Y ",strtotime($return_row['date_returned']))."</td>";
 								 }
 								
 								?>

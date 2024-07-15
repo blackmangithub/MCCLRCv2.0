@@ -146,9 +146,9 @@ include('./includes/sidebar.php');
                                                   </td>
                                                   <td style="text-transform: capitalize">
                                                        <?php echo $borrow_row['title']; ?></td>
-                                                  <td><?php echo date("M d, Y h:i:s a",strtotime($borrow_row['date_borrowed'])); ?>
+                                                  <td><?php echo date("M d, Y",strtotime($borrow_row['date_borrowed'])); ?>
                                                   </td>
-                                                  <td><?php echo date("M d, Y h:i:s a",strtotime($borrow_row['due_date'])); ?>
+                                                  <td><?php echo date("M d, Y",strtotime($borrow_row['due_date'])); ?>
                                                   </td>
                                                   <td><?php echo ($borrow_row['date_returned'] == "0000-00-00 00:00:00") ? "Pending" : date("M d, Y h:m:s a",strtotime($borrow_row['date_returned'])); ?>
                                                   </td>
