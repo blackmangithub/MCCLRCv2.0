@@ -170,7 +170,7 @@ if(mysqli_num_rows($query_run) > 0 ) {
                               <hr class="dropdown-divider" />
                          </li>
                          <li>
-                              <form action="../allcode.php" method="POST">
+                              <form action="allcode.php" method="POST">
 
                                    <button class="dropdown-item d-flex align-items-center" name="logout_btn"
                                         type="submit">
