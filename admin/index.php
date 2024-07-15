@@ -76,7 +76,7 @@ include('./includes/sidebar.php');
                          <div class="col-xxl-4 col-md-4" data-aos="fade-down">
                               <div class="card info-card students-card border-3 border-top border-danger">
                                    <div class="card-body">
-                                        <h5 class="card-title">Faculty</h5>
+                                        <h5 class="card-title">Faculty/Staff</h5>
                                         <div class="d-flex align-items-center">
                                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                                   <i class="bi bi-people"></i>
