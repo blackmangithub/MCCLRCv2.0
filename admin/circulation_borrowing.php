@@ -24,6 +24,7 @@ $user_row = mysqli_fetch_array($user_query);
                <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                     <li class="breadcrumb-item"><a href="circulation.php">Circulation</a></li>
+                    <li class="breadcrumb-item"><a href="circulation_borrow.php">Student Borrow Book</a></li>
                     <li class="breadcrumb-item active">Borrow Book</li>
                </ol>
           </nav>

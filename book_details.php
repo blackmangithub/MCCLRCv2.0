@@ -28,18 +28,19 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                          <section class="section profile">
                               <div class="row">
                                    <?php
-                                   if(isset($_GET['id']))
+                                   if(isset($_GET['title']))
                                    {
-                                        $book_id = mysqli_real_escape_string($con, $_GET['id']);
+                                        $book_title = mysqli_real_escape_string($con, $_GET['title']);
 
                                         // Fetch book details
                                         $query = "SELECT 
-                                                     book.*, 
-                                                     COUNT(book.accession_number) AS copy_count, 
-                                                     SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count 
+                                                       book.*, 
+                                                       COUNT(book.accession_number) AS copy_count, 
+                                                       SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count 
                                                   FROM book 
-                                                  GROUP BY book.title 
-                                                  ORDER BY book.title DESC";
+                                                  WHERE title = '$book_title' 
+                                                  GROUP BY title 
+                                                  ORDER BY title DESC";
                                         $query_run = mysqli_query($con, $query);
 
                                         if(mysqli_num_rows($query_run) > 0)

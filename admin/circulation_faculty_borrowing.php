@@ -21,6 +21,7 @@ $faculty_row = mysqli_fetch_array($faculty_query);
                <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                     <li class="breadcrumb-item"><a href="circulation.php">Circulation</a></li>
+                    <li class="breadcrumb-item"><a href="circulation_faculty_borrow.php">Faculty Staff Borrow Book</a></li>
                     <li class="breadcrumb-item active">Borrow Book</li>
                </ol>
           </nav>
