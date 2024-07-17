@@ -21,7 +21,7 @@ function send_password_reset($get_name, $get_email, $token)
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'richmann276@gmail.com';
-        $mail->Password = 'richmann1234!?'; // Use an app-specific password
+        $mail->Password = 'higw jept zipw zrwn'; // Use an app-specific password
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
@@ -34,10 +34,11 @@ function send_password_reset($get_name, $get_email, $token)
         $mail->isHTML(true);
         $mail->Subject = 'Reset Password Notification';
         $mail->Body = "
+            <img src='assets/img/mcc-logo.png'>
             <h2>Hello</h2>
             <h3>You are receiving this email because we received a password reset request for your account.</h3>
             <br/><br/>
-            <a href='http://localhost/MCCLRCV2.0/password-change.php?token=$token&email=$get_email'>Click Me</a>
+            <button style='background-color: dodgerblue;border:none;border-radius:5px;padding:7px;'><a style='text-decoration:none;color:white;font-weight:800;' href='http://localhost/MCCLRCV2.0/password-change.php?token=$token&email=$get_email'>Click Me</a></button>
         ";
 
         $mail->send();

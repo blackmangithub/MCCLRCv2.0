@@ -4,6 +4,32 @@ include('includes/header.php');
 include('./includes/sidebar.php'); 
 
 ?>
+<style>
+        @media print {
+            .print-button {
+                display: none;
+            }
+            #myTab {
+               display: none;
+            }
+            .pagetitle{
+               display: none;
+            }
+            .card-header {
+               display: none;
+            }
+            .card {
+               box-shadow: none;
+            }
+            @page {
+                margin: 0;
+            }
+            body {
+                margin: 0;
+                padding: 20px;
+            }
+        }
+    </style>
 <main id="main" class="main" data-aos="fade-down">
 
      <div class="pagetitle">
@@ -50,7 +76,10 @@ include('./includes/sidebar.php');
                                         <div class="tab-pane fade show active" id="student-tab-pane">
                                              <table id="myDataTable" cellpadding="0" cellspacing="0" border="0"
                                                   class="table table-striped table-bordered">
-
+                                                  <div class="text-end mt-2">
+                                                       <button onclick="window.print()" class="btn btn-primary print-button">Print</button>
+                                                  </div>
+                                                  <br>
                                                   <thead>
                                                        <tr>
                                                             <th>Name</th>
@@ -96,7 +125,10 @@ include('./includes/sidebar.php');
 
                                              <table id="myDataTable2" cellpadding="0" cellspacing="0" border="0"
                                                   class="table table-striped table-bordered">
-
+                                                  <div class="text-end mt-2">
+                                                       <button onclick="window.print()" class="btn btn-primary print-button">Print</button>
+                                                  </div>
+                                                  <br>
                                                   <thead>
                                                        <tr>
                                                             <th>Name</th>

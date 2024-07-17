@@ -4,7 +4,6 @@ include('includes/navbar.php');
 include('admin/config/dbcon.php');
 
 if(empty($_SESSION['auth'])){
-    // $_SESSION['message_error'] = "<small>Login your Credentials to Access</small>";
     header('Location: home.php');
     exit(0);
 }
@@ -33,29 +32,31 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                             <div class="row mt-3">
 
                                 <?php
-                                $name_hold = $_SESSION['auth_stud']['stud_id'];
-                                $query = "SELECT * FROM holds LEFT JOIN book ON holds.book_id = book.book_id
-                                          WHERE user_id = '$name_hold' AND hold_status = '' ORDER BY hold_id DESC";
+                                $user_id = $_SESSION['auth_stud']['stud_id'];
+                                $role = $_SESSION['auth_role'];
+                                $query = "SELECT * FROM holds 
+                                          LEFT JOIN book ON holds.accession_number = book.accession_number
+                                          WHERE (user_id = '$user_id' OR faculty_id = '$user_id') AND hold_status = 'Hold' 
+                                          ORDER BY hold_id DESC";
 
                                 $query_run = mysqli_query($con, $query);
                                 $book_count = mysqli_num_rows($query_run); // Count the number of held books
 
                                 // Define maximum number of books a user can hold
-                                $max_books_hold = 3;
+                                $max_books_hold = 5;
 
                                 if($book_count > 0)
                                 {
-                                    echo '<h5 class="center">Hold books : '.$book_count.' '.'/'.' '.$max_books_hold.'</h5>'; // Display the count
+                                    echo '<h5 class="center">Hold books : '.$book_count.' / '.$max_books_hold.'</h5>'; // Display the count
                                     foreach($query_run as $hold)
                                     {
                                         $hold_book = $hold['hold_id'];
-                                        $book_hold = $hold['book_id'];
+                                        $book_hold = $hold['accession_number'];
                                 ?>
 
                                 <div class="col-lg-3 col-md-3 label text-center mb-3">
                                     <?php if($hold['book_image'] != ""): ?>
-                                    <img src="uploads/books_img/<?php echo $hold['book_image']?>" width="100px"
-                                        alt="">
+                                    <img src="uploads/books_img/<?php echo $hold['book_image']?>" width="100px" alt="">
                                     <?php else: ?>
                                     <img src="uploads/books_img/book_image.jpg" alt="">
                                     <?php endif; ?>
@@ -106,14 +107,6 @@ if(isset($_POST['cancel_hold']))
 
     if($query_run)
     {
-        $update_copies = mysqli_query($con,"SELECT * FROM book WHERE book_id = '$book_hold' ");
-        $copies_row= mysqli_fetch_assoc($update_copies);
-          
-        $book_copies = $copies_row['copy'];
-        $new_book_copies = $book_copies + 1;
-
-        mysqli_query($con,"UPDATE book SET copy = '$new_book_copies' where book_id = '$book_hold' ");
-
         echo "<script>alert('Book cancelled successfully'); window.location='hold.php'</script>";
     }
     else

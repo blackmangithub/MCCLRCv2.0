@@ -137,7 +137,7 @@ if(isset($_POST['hold'])) {
      $name_hold = $_SESSION['auth_stud']['stud_id'];
      
      // Check if the user already has a hold on the same book
-     $check_query = "SELECT * FROM holds WHERE accession_number = '$accession_number' AND user_id = '$name_hold'";
+     $check_query = "SELECT * FROM holds WHERE accession_number = '$accession_number' AND user_id = '$name_hold' OR faculty_id = '$name_hold'";
      $check_result = mysqli_query($con, $check_query);
      
      if(mysqli_num_rows($check_result) > 0) {
@@ -145,7 +145,7 @@ if(isset($_POST['hold'])) {
          echo "<script>alert('You already have a hold on this book!'); window.location='index.php'</script>";
      } else {
          // Check how many books the user already has on hold
-         $count_query = "SELECT COUNT(*) AS count_books FROM holds WHERE user_id = '$name_hold'";
+         $count_query = "SELECT COUNT(*) AS count_books FROM holds WHERE user_id = '$name_hold' OR faculty_id = '$name_hold'";
          $count_result = mysqli_query($con, $count_query);
          $count_row = mysqli_fetch_assoc($count_result);
          $current_hold_count = $count_row['count_books'];
@@ -155,7 +155,8 @@ if(isset($_POST['hold'])) {
              echo "<script>alert('You cannot hold more than 3 books!'); window.location='index.php'</script>";
          } else {
              // Insert new hold record
-             $query = "INSERT INTO holds (user_id, accession_number, hold_status, hold_date) VALUES ('$name_hold', '$accession_number', 'Hold', NOW())";
+             $query = "INSERT INTO holds (book_title, user_id, accession_number, hold_status, hold_date) VALUES ('$book_title','$name_hold', '$accession_number', 'Hold', NOW())";
+             $query = "INSERT INTO holds (book_title, faculty_id, accession_number, hold_status, hold_date) VALUES ('$book_title', '$name_hold', '$accession_number', 'Hold', NOW())";
              $query_run = mysqli_query($con, $query);
              
              if($query_run) {
