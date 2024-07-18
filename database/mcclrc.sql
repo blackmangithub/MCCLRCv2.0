@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2024 at 08:47 AM
+-- Generation Time: Jul 18, 2024 at 05:33 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -130,10 +130,10 @@ CREATE TABLE `book` (
 --
 
 INSERT INTO `book` (`book_id`, `call_number`, `accession_number`, `title`, `category_id`, `author`, `copyright_date`, `publisher`, `place_publication`, `isbn`, `barcode`, `book_image`, `date_added`, `status`) VALUES
-(93, '1234', '1234', 'Computer Programming', 1, 'Rich', '2021', 'Mann', 'Kingdom', '12345678', 'MCC-LRC1234', '1719979739.jpg', '2024-07-03 12:08:59', 'Available'),
-(94, '1234', '5678', 'Computer Programming', 1, 'Rich', '2021', 'Mann', 'Kingdom', '12345678', 'MCC-LRC5678', '1719979739.jpg', '2024-07-03 12:08:59', 'Available'),
-(95, '5678', '8765', 'C# Programming', 5, 'Black', '2021', 'Mann', 'Clover', '123456789', 'MCC-LRC8765', '1719979865.jfif', '2024-07-03 12:11:05', 'Available'),
-(96, '5678', '4321', 'C# Programming', 5, 'Black', '2021', 'Mann', 'Clover', '123456789', 'MCC-LRC4321', '1719979865.jfif', '2024-07-03 12:11:05', 'Available');
+(93, '1234', '1235', 'Computer Programming', 1, 'Rich', '2021', 'Mann', 'Kingdom', '12345678', 'MCC-LRC1235', '1719979739.jpg', '2024-07-03 12:08:59', 'Unavailable'),
+(94, '1234', '5678', 'Computer Programming', 1, 'Rich', '2021', 'Mann', 'Kingdom', '12345678', 'MCC-LRC5678', '1719979739.jpg', '2024-07-03 12:08:59', 'Unavailable'),
+(95, '5678', '8765', 'C# Programming', 5, 'Black', '2021', 'Mann', 'Clover', '123456789', 'MCC-LRC8765', '1719979865.jfif', '2024-07-03 12:11:05', 'Unavailable'),
+(96, '5678', '4321', 'C# Programming', 5, 'Black', '2021', 'Mann', 'Clover', '123456789', 'MCC-LRC4321', '1719979865.jfif', '2024-07-03 12:11:05', 'Unavailable');
 
 -- --------------------------------------------------------
 
@@ -153,6 +153,21 @@ CREATE TABLE `borrow_book` (
   `book_penalty` varchar(100) NOT NULL,
   `accession_number` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `borrow_book`
+--
+
+INSERT INTO `borrow_book` (`borrow_book_id`, `user_id`, `faculty_id`, `book_id`, `date_borrowed`, `due_date`, `date_returned`, `borrowed_status`, `book_penalty`, `accession_number`) VALUES
+(700, 84, 0, 93, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', 'returned', '0', ''),
+(701, 84, 0, 93, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', 'returned', '0', ''),
+(702, 85, 0, 94, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', 'returned', '0', ''),
+(703, 84, 0, 93, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', 'returned', '0', ''),
+(704, 85, 0, 94, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', 'returned', '0', ''),
+(705, 84, 0, 93, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-16 00:00:00', 'returned', '0', ''),
+(706, 85, 0, 94, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-16 00:00:00', 'returned', '0', ''),
+(707, 84, 0, 93, '2024-07-17 00:00:00', '2024-07-20 00:00:00', '2024-07-17 00:00:00', 'returned', '0', ''),
+(708, 84, 0, 93, '2024-07-17 00:00:00', '2024-07-20 00:00:00', '0000-00-00 00:00:00', 'borrowed', '', '');
 
 -- --------------------------------------------------------
 
@@ -220,20 +235,13 @@ INSERT INTO `faculty` (`faculty_id`, `faculty_log_id`, `lastname`, `firstname`, 
 
 CREATE TABLE `holds` (
   `hold_id` int(11) NOT NULL,
-  `book_id` int(11) NOT NULL,
+  `book_title` varchar(255) NOT NULL,
   `user_id` int(11) NOT NULL,
   `faculty_id` int(11) NOT NULL,
   `accession_number` varchar(255) NOT NULL,
   `hold_status` varchar(50) NOT NULL,
   `hold_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `holds`
---
-
-INSERT INTO `holds` (`hold_id`, `book_id`, `user_id`, `faculty_id`, `accession_number`, `hold_status`, `hold_date`) VALUES
-(62, 0, 12, 0, '1234', 'Hold', '2024-07-06 20:00:42');
 
 -- --------------------------------------------------------
 
@@ -443,7 +451,24 @@ INSERT INTO `report` (`report_id`, `book_id`, `user_id`, `faculty_id`, `admin_na
 (1503, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-18 13:54:40'),
 (1504, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 13:54:54'),
 (1505, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-18 13:55:40'),
-(1506, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 13:55:48');
+(1506, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-18 13:55:48'),
+(1507, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-15 15:20:58'),
+(1508, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-15 16:03:51'),
+(1509, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-15 16:04:09'),
+(1510, 94, 85, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-15 16:04:20'),
+(1511, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-15 16:04:52'),
+(1512, 94, 85, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-15 16:05:59'),
+(1513, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-15 17:05:40'),
+(1514, 94, 85, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-15 18:34:37'),
+(1515, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-15 21:26:17'),
+(1516, 94, 85, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-15 21:26:54'),
+(1517, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-15 21:29:23'),
+(1518, 94, 85, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-15 21:29:45'),
+(1519, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-16 12:23:42'),
+(1520, 94, 85, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-16 12:23:59'),
+(1521, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-17 15:44:37'),
+(1522, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-17 15:45:14'),
+(1523, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-17 15:50:11');
 
 -- --------------------------------------------------------
 
@@ -461,6 +486,20 @@ CREATE TABLE `return_book` (
   `date_returned` datetime NOT NULL,
   `book_penalty` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `return_book`
+--
+
+INSERT INTO `return_book` (`return_book_id`, `user_id`, `faculty_id`, `book_id`, `date_borrowed`, `due_date`, `date_returned`, `book_penalty`) VALUES
+(725, 84, 0, 93, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', '0'),
+(726, 84, 0, 93, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', '0'),
+(727, 85, 0, 94, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', '0'),
+(728, 84, 0, 93, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', '0'),
+(729, 85, 0, 94, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-15 00:00:00', '0'),
+(730, 84, 0, 93, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-16 00:00:00', '0'),
+(731, 85, 0, 94, '2024-07-15 00:00:00', '2024-07-18 00:00:00', '2024-07-16 00:00:00', '0'),
+(732, 84, 0, 93, '2024-07-17 00:00:00', '2024-07-20 00:00:00', '2024-07-17 00:00:00', '0');
 
 -- --------------------------------------------------------
 
@@ -496,8 +535,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_log_id`, `lastname`, `firstname`, `middlename`, `gender`, `course`, `address`, `cell_no`, `birthdate`, `email`, `year_level`, `student_id_no`, `password`, `cpassword`, `role_as`, `status`, `user_added`, `qr_code`, `verify_token`) VALUES
-(84, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'richmann276@gmail.com', '4th year', '2021-1055', '$2y$10$AYJwsS7T8yi1Vj1SdFNBOebvWM1UorXDjsJma.02uq4YsGaudnNTi', '', 'student', 'approved', '2024-07-01 20:04:19', '2021-1055.png', '7026c9435805f100710e4f68feb93bc5'),
-(85, 0, 'Ofianga', 'Joana', '', 'Female', 'BSIT', 'Pili, Madridejos, Cebu', '09123456789', '2002-06-19', 'ofiangajoana22@gmail.com', '4th year', '2021-1181', '$2y$10$ceZfbQE.yM8052SZJvaGs.yzcOXfmr3mNHY1WOEtJR3nxT/MZ5naW', '', 'student', 'approved', '2024-07-01 20:53:47', '2021-1181.png', '');
+(84, 0, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'bman23382@gmail.com', '4th year', '2021-1055', '$2y$10$AYJwsS7T8yi1Vj1SdFNBOebvWM1UorXDjsJma.02uq4YsGaudnNTi', '', 'student', 'approved', '2024-07-01 20:04:19', '2021-1055.png', 'e5088e4dfc5660259c62a77416170d95');
 
 -- --------------------------------------------------------
 
@@ -524,7 +562,9 @@ CREATE TABLE `user_log` (
 --
 
 INSERT INTO `user_log` (`user_log_id`, `student_id`, `lastname`, `firstname`, `middlename`, `time_log`, `date_log`, `time_out`, `course`, `year_level`, `role`) VALUES
-(271, '2021-1055', 'Calatero', 'Diovin', 'Pasicaran', '16:30:15', '2024-07-06', '16:31:12', 'BSIT', '4th year', 'student');
+(271, '2021-1055', 'Calatero', 'Diovin', 'Pasicaran', '16:30:15', '2024-07-06', '16:31:12', 'BSIT', '4th year', 'student'),
+(272, '2021-1055', 'Calatero', 'Diovin', 'Pasicaran', '15:54:12', '2024-07-17', '15:54:36', 'BSIT', '4th year', 'student'),
+(273, '2021-1055', 'Calatero', 'Diovin', 'Pasicaran', '15:54:59', '2024-07-17', '00:00:00', 'BSIT', '4th year', 'student');
 
 -- --------------------------------------------------------
 
@@ -596,7 +636,8 @@ ALTER TABLE `book`
 ALTER TABLE `borrow_book`
   ADD PRIMARY KEY (`borrow_book_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `faculty_id` (`faculty_id`);
+  ADD KEY `faculty_id` (`faculty_id`),
+  ADD KEY `borrow_book_ibfk_1` (`book_id`);
 
 --
 -- Indexes for table `category`
@@ -696,7 +737,7 @@ ALTER TABLE `book`
 -- AUTO_INCREMENT for table `borrow_book`
 --
 ALTER TABLE `borrow_book`
-  MODIFY `borrow_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=700;
+  MODIFY `borrow_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=709;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -714,7 +755,7 @@ ALTER TABLE `faculty`
 -- AUTO_INCREMENT for table `holds`
 --
 ALTER TABLE `holds`
-  MODIFY `hold_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `hold_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `penalty`
@@ -726,13 +767,13 @@ ALTER TABLE `penalty`
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1507;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1524;
 
 --
 -- AUTO_INCREMENT for table `return_book`
 --
 ALTER TABLE `return_book`
-  MODIFY `return_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=725;
+  MODIFY `return_book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=733;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -744,7 +785,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_log`
 --
 ALTER TABLE `user_log`
-  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=272;
+  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=274;
 
 --
 -- AUTO_INCREMENT for table `web_opac`

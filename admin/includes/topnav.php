@@ -21,7 +21,7 @@
                 <a class="nav-link nav-icon fs-4" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
                     <?php
-                    $query = "SELECT COUNT(*) AS total_borrowers FROM holds WHERE hold_status = 'Hold";
+                    $query = "SELECT COUNT(*) AS total_borrowers FROM holds WHERE hold_status = 'Hold'";
                     $query_run = mysqli_query($con, $query);
                     $total_borrowers = $query_run ? mysqli_fetch_assoc($query_run)['total_borrowers'] : 0;
                     echo '<span class="badge bg-primary badge-number">'.$total_borrowers.'</span>';
