@@ -140,7 +140,7 @@ if(isset($_POST['hold'])) {
      $check_query = "SELECT * FROM holds WHERE accession_number = '$accession_number' AND user_id = '$name_hold' OR faculty_id = '$name_hold'";
      $check_result = mysqli_query($con, $check_query);
      
-     if(mysqli_num_rows($check_result) > 0) {
+     if(mysqli_num_rows($check_result) > 1) {
          // User already has a hold on this book
          echo "<script>alert('You already have a hold on this book!'); window.location='index.php'</script>";
      } else {
@@ -155,19 +155,24 @@ if(isset($_POST['hold'])) {
              echo "<script>alert('You cannot hold more than 3 books!'); window.location='index.php'</script>";
          } else {
              // Insert new hold record
-             $query = "INSERT INTO holds (book_title, user_id, accession_number, hold_status, hold_date) VALUES ('$book_title','$name_hold', '$accession_number', 'Hold', NOW())";
-             $query = "INSERT INTO holds (book_title, faculty_id, accession_number, hold_status, hold_date) VALUES ('$book_title', '$name_hold', '$accession_number', 'Hold', NOW())";
-             $query_run = mysqli_query($con, $query);
-             
-             if($query_run) {
-                 // Successfully inserted hold record
-                 echo "<script>alert('Hold book Successfully'); window.location = 'index.php'</script>";
-             } else {
-                 // Insertion failed
-                 $_SESSION['message_error'] = 'Book not Hold';
-                 header("Location: index.php?search='$filtervalues'");
-                 exit(0);
-             }
+             // Decide which query to use based on the user role
+               if ($_SESSION['auth_role'] == "student") {
+                    $query = "INSERT INTO holds (book_title, user_id, accession_number, hold_status, hold_date) VALUES ('$book_title','$name_hold', '$accession_number', 'Hold', NOW())";
+               } elseif ($_SESSION['auth_role'] == "faculty" || $_SESSION['auth_role'] == "staff") {
+                    $query = "INSERT INTO holds (book_title, faculty_id, accession_number, hold_status, hold_date) VALUES ('$book_title', '$name_hold', '$accession_number', 'Hold', NOW())";
+               }
+               
+               $query_run = mysqli_query($con, $query);
+               
+               if ($query_run) {
+                    // Successfully inserted hold record
+                    echo "<script>alert('Hold book Successfully'); window.location = 'index.php'</script>";
+               } else {
+                    // Insertion failed
+                    $_SESSION['message_error'] = 'Book not Hold';
+                    header("Location: index.php?search='$filtervalues'");
+                    exit(0);
+               } 
          }
      }
  }

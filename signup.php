@@ -127,7 +127,7 @@ include('./admin/config/dbcon.php');
                     <div class="title">Personal Details:</div>
 
                     <div class="field">
-                        <div class="label">Lastname</div>
+                        <div class="label">Last Name</div>
                         <input type="text" name="lastname" id="lastname" />
                         <div class="invalid-feedback">
                             Last name must start with a capital letter.
@@ -135,7 +135,7 @@ include('./admin/config/dbcon.php');
                     </div>
 
                     <div class="field">
-                        <div class="label">Firstname</div>
+                        <div class="label">First Name</div>
                         <input type="text" name="firstname" id="firstname" />
                         <div class="invalid-feedback">
                             First name must start with a capital letter.
@@ -143,7 +143,7 @@ include('./admin/config/dbcon.php');
                     </div>
 
                     <div class="field">
-                        <div class="label">Middlename <span style="font-weight:200;color:gray;font-size:13px;">(optional)</span></div>
+                        <div class="label">Middle Name <span style="font-weight:200;color:gray;font-size:13px;">(optional)</span></div>
                         <input type="text" name="middlename" id="middlename" />
                         <div class="invalid-feedback">
                             Middle name must start with a capital letter.
