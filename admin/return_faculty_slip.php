@@ -59,9 +59,9 @@ $faculty_row = $faculty_result->fetch_assoc();
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-                        <div class="text-start mt-3">
-                            <a href="circulation_faculty_return.php" id="back" style="margin-left:20px;" class="btn btn-primary">Back</a>
-                        </div>
+                <div class="text-start mt-3">
+                    <a href="circulation_faculty_returning.php?firstname=<?php echo $firstname; ?>" id="back" style="margin-left:20px;" class="btn btn-primary">Back</a>
+                </div>
                         <div class="text-end mt-5">
                             <h5>Date: <?php echo date('F d, Y'); ?></h5>
                         </div>

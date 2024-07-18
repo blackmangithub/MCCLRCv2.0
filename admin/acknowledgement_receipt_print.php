@@ -84,7 +84,7 @@ $user_row = $user_result->fetch_assoc();
             <div class="col-lg-12">
                     <div class="card-body">
                     <div class="text-start mt-3">
-                    <a href="circulation_return.php" id="back" style="margin-left:20px;" class="btn btn-primary">Back</a>
+                    <a href="circulation_returning.php?student_id=<?php echo $student_id; ?>" id="back" style="margin-left:20px;" class="btn btn-primary">Back</a>
                     </div>
                         <div class="text-end mt-5">
                             <h5>Date: <?php echo date('F d, Y'); ?></h5>
