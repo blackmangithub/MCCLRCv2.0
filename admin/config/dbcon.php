@@ -1,5 +1,10 @@
 <?php 
 
+//  $host = "localhost";
+//  $username = "root";
+//  $password = "";
+//  $database = "mcclrc";
+
  $host = "localhost";
  $username = "u510162695_mcclrc";
  $password = "1Mcclrc_pass";
