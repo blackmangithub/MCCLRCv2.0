@@ -363,7 +363,7 @@ INSERT INTO `web_opac` (`web_opac_id`, `opac_image`, `ebook`, `title`, `author`,
 (21, '1670761278.png', '1670761278.pdf', 'Java for Absolute Beginners Learn to Program the Fundamentals the Java 9+ Way', 'Iuliana Cosmina', ' 2018', 'Iuliana Cosmina', '2022-12-01 15:10:08'),
 (22, '1670761205.png', '1670761205.pdf', 'Black Hat Go Go Programming for Hackers and Pentesters', 'Dan Kottmann', '2020', 'William Pollock', '2022-12-01 15:24:21'),
 (43, '1671145749.png', '1671145749.pdf', 'Laptop Repair Guide', 'GARRY ROMANEO', '2011', ' Garry Romaneo,', '2022-12-16 07:09:09'),
-(44, '1671145981.png', '1671145981.pdf', 'Web Designer\'s guide to wordpress', 'Jesse Friedman', '2013', ' Jesse Friedman', '2022-12-16 07:13:01'),
+(44, '1671145981.png', '1671145981.pdf', 'Web Designers guide to wordpress', 'Jesse Friedman', '2013', ' Jesse Friedman', '2022-12-16 07:13:01'),
 (45, '1671146158.png', '1671146158.pdf', 'English Grammar Reference Book', 'Jacqueline Melvin', '2014', 'Jacqueline Melvin', '2022-12-16 07:15:58');
 
 --
