@@ -61,29 +61,29 @@ include('authentication.php');
                 </div>
 
                 <div class="text-end mt-5">
-                    <h5>Date: <?php echo date('F d, Y'); ?></h5>
+                    <h5 style="margin-right: 30px;">Date: <?php echo date('F d, Y'); ?></h5>
                 </div>
                 <div class="text-center mt-5">
-                    <h4 style="font-weight:bold;">PENALTY REPORT</h4>
+                    <h4 style="font-weight:bold;">FACULTY REPORT</h4>
                 </div>
                 <div id="content" class="table-responsive mt-5" style="margin-left: 20px;margin-right: 20px;">
                     <table border="2" cellpadding="2" class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="font-size:15px;">Penalty Amount</th>
-                                <th style="font-size:15px;">Received From</th>
+                                <th style="font-size:15px;">Name</th>
+                                <th style="font-size:15px;">Book Title</th>
+                                <th style="font-size:15px;">Task</th>
                                 <th style="font-size:15px;">Person In Charge</th>
-                                <th style="font-size:15px;">Due Date</th>
-                                <th style="font-size:15px;">Date Returned</th>
+                                <th style="font-size:15px;">Date Transaction</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
                                 $return_query = "
-                                    SELECT report.date_transaction, report.detail_action, report.admin_name, book.title, user.firstname, user.lastname
+                                    SELECT report.date_transaction, report.detail_action, report.admin_name, book.title, faculty.firstname, faculty.lastname
                                     FROM report
                                     LEFT JOIN book ON report.book_id = book.book_id
-                                    LEFT JOIN user ON report.user_id = user.user_id
+                                    LEFT JOIN faculty ON report.faculty_id = faculty.faculty_id
                                     ORDER BY report.report_id DESC
                                 ";
                                 $return_result = mysqli_query($con, $return_query);

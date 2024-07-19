@@ -1,5 +1,5 @@
 <?php 
-include('authentication.php');
+require_once('authentication.php');
 include('includes/header.php'); 
 include('./includes/sidebar.php'); 
 
@@ -77,7 +77,9 @@ include('./includes/sidebar.php');
                                              <table id="myDataTable" cellpadding="0" cellspacing="0" border="0"
                                                   class="table table-striped table-bordered">
                                                   <div class="text-end mt-2">
-                                                       <button onclick="window.print()" class="btn btn-primary print-button">Print</button>
+                                                       <form method="POST" action="report_student_pdf.php">
+                                                       <button type="submit" name="pdf_creater" value="PDF" class="btn btn-primary print-button">Print</button>
+                                                       </form>
                                                   </div>
                                                   <br>
                                                   <thead>
@@ -126,7 +128,9 @@ include('./includes/sidebar.php');
                                              <table id="myDataTable2" cellpadding="0" cellspacing="0" border="0"
                                                   class="table table-striped table-bordered">
                                                   <div class="text-end mt-2">
-                                                       <button onclick="window.print()" class="btn btn-primary print-button">Print</button>
+                                                  <form method="POST" action="report_faculty_pdf.php">
+                                                       <button type="submit" name="pdf_creater" value="PDF" class="btn btn-primary print-button">Print</button>
+                                                       </form>
                                                   </div>
                                                   <br>
                                                   <thead>
