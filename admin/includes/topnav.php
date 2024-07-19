@@ -21,7 +21,9 @@
                 <a class="nav-link nav-icon fs-4" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
                     <?php
-                    $query = "SELECT COUNT(*) AS total_borrowers FROM holds WHERE hold_status = 'Hold'";
+                    $query = "SELECT COUNT(DISTINCT CONCAT(h.user_id, '-', h.faculty_id)) AS total_borrowers
+                    FROM holds h
+                    WHERE h.hold_status = 'Hold'";
                     $query_run = mysqli_query($con, $query);
                     $total_borrowers = $query_run ? mysqli_fetch_assoc($query_run)['total_borrowers'] : 0;
                     echo '<span class="badge bg-primary badge-number">'.$total_borrowers.'</span>';
@@ -42,7 +44,7 @@
                                     LEFT JOIN faculty f ON f.faculty_id = h.faculty_id
                                     WHERE h.hold_status = 'Hold'
                                     GROUP BY u.user_id, f.faculty_id
-                                    ORDER BY h.hold_id DESC";
+                                    ORDER BY h.hold_id DESC LIMIT 3";
                     $query_run = mysqli_query($con, $query_notif);
 
                     if (mysqli_num_rows($query_run) > 0) {
@@ -57,7 +59,6 @@
                         <div>
                             <h4><?=$name;?></h4>
                             <p>hold <span><?=$holdlist['num_hold_books'];?></span> book(s).</p>
-                            <br>
                             <form action="" method="POST">
                                 <button type="submit" value="<?=$holdlist['num_hold_books'];?>" class="btn btn-primary btn-sm" name="done">Accept</button>
                                 <button type="submit" value="<?=$holdlist['num_hold_books'];?>" class="btn btn-danger btn-sm" name="cancel">Deny</button>

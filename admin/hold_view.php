@@ -38,13 +38,15 @@ include('./includes/sidebar.php');
                                     <?php
                                     $borrow_query = mysqli_query($con, "
                                         SELECT holds.hold_id, holds.hold_date, 
-                                               book.title, book.book_image,
+                                               book.*,
                                                user.user_id, faculty.faculty_id
                                         FROM holds
-                                        LEFT JOIN book ON holds.accession_number = book.accession_number 
-                                        LEFT JOIN user ON holds.user_id = user.user_id 
-                                        LEFT JOIN faculty ON holds.faculty_id = faculty.faculty_id
-                                        WHERE user.user_id OR faculty.faculty_id
+                                        LEFT JOIN book ON holds.book_title = book.title 
+                                        LEFT JOIN user ON holds.user_id = user.user_id AND holds.hold_status = 'Hold'
+                                        LEFT JOIN faculty ON holds.faculty_id = faculty.faculty_id AND holds.hold_status = 'Hold'
+                                        WHERE holds.hold_status = 'Hold'
+                                        GROUP BY user.user_id, faculty.faculty_id
+                                        ORDER BY holds.hold_id DESC
                                     ");
                                     $borrow_count = mysqli_num_rows($borrow_query);
                                     while($borrow_row = mysqli_fetch_array($borrow_query)){

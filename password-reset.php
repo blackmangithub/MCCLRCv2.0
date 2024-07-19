@@ -40,6 +40,18 @@ session_start();
                color: gray;
           }
      </style>
+
+<script>
+        window.onload = function() {
+            // Check if session status is set
+            <?php if(isset($_SESSION['status'])): ?>
+                // Show the alert
+                alert("<?php echo $_SESSION['status']; ?>");
+                // Clear the session variable after showing the alert
+                <?php unset($_SESSION['status']); ?>
+            <?php endif; ?>
+        }
+    </script>
 </head>
 
 <body>
@@ -56,7 +68,7 @@ session_start();
                                         class="img-fluid d-none d-md-block  p-5" />
                               </div>
                          </div>
-                         <div class="col-sm-12 col-md-6 px-5 " style="margin-top: 100px;">
+                         <div class="col-sm-12 col-md-6 px-5 " style="margin-top: 60px;">
                               <div class="mt-3 mb-4">
                                    <center>
                                         <h4 class="m-0">
@@ -82,15 +94,6 @@ session_start();
                                              class="btn btn-primary text-light font-weight-bolder btn-lg">Send Password Reset Link</button>
                                    </div>
                               </form>
-                              <?php
-                              if(isset($_SESSION['status']))
-                              {
-                                   ?>
-                                        <h5 class="text-success mt-2" style="font-weight:700;font-family:calibri;"><?= $_SESSION['status']; ?></h5>
-                                   <?php
-                                   unset($_SESSION['status']);
-                              }
-                              ?>
                          </div>
                     </div>
                </div>
