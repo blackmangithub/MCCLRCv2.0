@@ -16,17 +16,43 @@ include('includes/sidebar.php');
     margin: 10px 3px 10px 0;
 }
 
+.sname, .dated{
+    display: none;
+}
+
 @media print {
     body * {
         visibility: hidden;
     }
-    .table, #head, .table *{
+
+    .alert {
+        border: none;
+        margin-bottom: -50px;
+        font-weight: bold;
+    }
+    .table, #head, .pull-left,
+    .alert, .sname,
+    .dated, .table *{
         visibility: visible;
+    }
+    .sname{
+        display: block;
+        position: absolute;
+        top: 80px;
+        left: -20px;
+        font-weight: bold;
+    }
+    .dated {
+        display: block;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        font-size: 15px;
     }
     .data_table{
         position: absolute;
         left: 0px;
-        top: -300px;
+        top: -200px;
         right: 0px;
     }
 }
@@ -125,7 +151,11 @@ include('includes/sidebar.php');
                                             </button>
                                         </div>
                                         <table id="myDataTable" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered">
-                                            <div class="pull-left">
+                                        <div class="pull-left">
+                                        <h5 class="dated">Date: <?php echo date('F d, Y'); ?></h5>
+                                                <h1 class="sname">MCC Learning Resources Center</h1>
+                                                <br>
+                                                <br>
                                                 <div class="span">
                                                     <div class="alert alert-info mt-2 p-1">
                                                         <i class="icon-credit-card icon-large"></i>&nbsp;Total Amount of Penalty: Php <?= number_format($count_penalty_row['total_penalty'], 2) ?>
