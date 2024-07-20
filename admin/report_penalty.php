@@ -16,7 +16,7 @@ include('includes/sidebar.php');
     margin: 10px 3px 10px 0;
 }
 
-.sname, .dated{
+.sname, .dated, .tname{
     display: none;
 }
 .span {
@@ -31,34 +31,44 @@ include('includes/sidebar.php');
 
     .alert {
         border: none;
-        margin-bottom: -50px;
+        margin-bottom: -70px;
         font-weight: bold;
     }
     .table, #head, .pull-left,
     .alert, .sname,
-    .dated, .table *{
+    .dated, .tname, .table *{
         visibility: visible;
     }
     .sname{
         display: block;
-        position: absolute;
+        position: fixed;
         top: 80px;
-        left: -20px;
+        left: 20px;
         font-weight: bold;
     }
     .dated {
         display: block;
-        position: absolute;
+        position: fixed;
         top: 50px;
         right: 0;
         font-size: 15px;
     }
     .data_table{
-        position: absolute;
+        position: fixed;
         left: 0px;
-        top: -200px;
+        top: 170px;
         right: 0px;
     }
+    .tname {
+            display: block;
+            position: fixed;
+            left: 0;
+            top: 170px;
+            right: 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 20px;
+        }
 }
 </style>
 
@@ -154,10 +164,11 @@ include('includes/sidebar.php');
                                         }
                                         ?>
                                         
-                                        <table id="myDataTable" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered">
+                                        <table id="myDataTable2" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered">
                                         <div class="pull-left">
                                         <h5 class="dated">Date: <?php echo date('F d, Y'); ?></h5>
                                                 <h1 class="sname">MCC Learning Resource Center</h1>
+                                                <h2 class="tname">Report Penalty</h2>
                                                 <br>
                                                 <br>
                                                 <div class="span">
@@ -167,9 +178,6 @@ include('includes/sidebar.php');
                                                 </div>
                                             </div>
                                             <thead>
-                                            <tr>
-                                                <th colspan="5" id="head" style="font-size:15px; font-weight:bold;text-align:center;">REPORT PENALTY</th>
-                                            </tr>
                                                 <tr>
                                                     <th>Penalty Amount</th>
                                                     <th>Received from</th>

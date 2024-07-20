@@ -48,4 +48,10 @@
         table.buttons().container()
             .appendTo('#example_wrapper .col-md-6:eq(0)');
     });
+
+    $(document).ready(function(){
+            $('.toggle-sidebar-btn').click(function(){
+                $('body').toggleClass('toggle-sidebar');
+            });
+        });
 </script>
