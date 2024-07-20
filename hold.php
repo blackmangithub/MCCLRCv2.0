@@ -35,7 +35,7 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                                 $user_id = $_SESSION['auth_stud']['stud_id'];
                                 $role = $_SESSION['auth_role'];
                                 $query = "SELECT * FROM holds 
-                                          LEFT JOIN book ON holds.accession_number = book.accession_number
+                                          LEFT JOIN book ON holds.book_id = book.book_id
                                           WHERE (user_id = '$user_id' OR faculty_id = '$user_id') AND hold_status = 'Hold' 
                                           ORDER BY hold_id DESC";
 
@@ -51,7 +51,7 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                                     foreach($query_run as $hold)
                                     {
                                         $hold_book = $hold['hold_id'];
-                                        $book_hold = $hold['accession_number'];
+                                        $book_hold = $hold['book_id'];
                                 ?>
 
                                 <div class="col-lg-3 col-md-3 label text-center mb-3">
@@ -102,16 +102,32 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
 if(isset($_POST['cancel_hold']))
 {
     $holdbook_id = mysqli_real_escape_string($con, $_POST['cancel_hold']);
-    $query = "DELETE FROM holds WHERE hold_id ='$holdbook_id'";
-    $query_run = mysqli_query($con, $query);
 
-    if($query_run)
-    {
-        echo "<script>alert('Book cancelled successfully'); window.location='hold.php'</script>";
-    }
-    else
-    {
-        $_SESSION['message_error'] = 'There was something wrong';
+    $query = "SELECT book_id FROM holds WHERE hold_id = '$holdbook_id'";
+    $result = mysqli_query($con, $query);
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        $book_id = $row['book_id'];
+
+        mysqli_begin_transaction($con);
+
+        $update_query = "UPDATE book SET status_hold = '' WHERE book_id = '$book_id'";
+        $delete_query = "DELETE FROM holds WHERE hold_id = '$holdbook_id'";
+
+        $update_result = mysqli_query($con, $update_query);
+        $delete_result = mysqli_query($con, $delete_query);
+
+        if ($update_result && $delete_result) {
+            mysqli_commit($con);
+            echo "<script>alert('Book hold cancelled successfully'); window.location='hold.php'</script>";
+        } else {
+            mysqli_rollback($con);
+            $_SESSION['message_error'] = 'There was something wrong';
+            header("Location: hold.php");
+            exit(0);
+        }
+    } else {
+        $_SESSION['message_error'] = 'Hold not found';
         header("Location: hold.php");
         exit(0);
     }

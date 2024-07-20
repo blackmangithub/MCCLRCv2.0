@@ -28,15 +28,16 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                          <section class="section profile">
                               <div class="row">
                                    <?php
-                                   if(isset($_GET['title']))
+                                   if(isset($_GET['id']) || isset($_GET['title']))
                                    {
+                                        $book_id = mysqli_real_escape_string($con, $_GET['id']);
                                         $book_title = mysqli_real_escape_string($con, $_GET['title']);
 
                                         // Fetch book details
                                         $query = "SELECT 
                                                        book.*, 
                                                        COUNT(book.accession_number) AS copy_count, 
-                                                       SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count 
+                                                       SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count
                                                   FROM book 
                                                   WHERE title = '$book_title' 
                                                   GROUP BY title 
@@ -106,7 +107,7 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                                                                  </div>
                                                                  <div class="col-lg-3 col-md-4 fw-semibold text-primary">
                                                                       <form action="" method="POST">
-                                                                           <input type="hidden" name="accession_number" value="<?=$book['accession_number']?>">
+                                                                           <input type="hidden" name="book_id" value="<?=$book['book_id']?>">
                                                                            <button type="submit" name="hold" class="btn btn-primary px-4" <?= $unavailable_count > 1 ? '' : 'disabled' ?>>Hold</button>
                                                                       </form>
                                                                  </div>
@@ -131,51 +132,55 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
      </div>
 </div>
 <?php 
-if(isset($_POST['hold'])) {
-     // Assuming $con is your mysqli connection object
-     $accession_number = mysqli_real_escape_string($con, $_POST['accession_number']);
+if (isset($_POST['hold'])) {
+     $book_id = mysqli_real_escape_string($con, $_POST['book_id']);
      $name_hold = $_SESSION['auth_stud']['stud_id'];
-     
-     // Check if the user already has a hold on the same book
-     $check_query = "SELECT * FROM holds WHERE accession_number = '$accession_number' AND user_id = '$name_hold' OR faculty_id = '$name_hold'";
+     $accession_number = mysqli_real_escape_string($con, $_POST['accession_number']); 
+ 
+     $title_query = "SELECT title FROM book WHERE book_id = '$book_id'";
+     $title_result = mysqli_query($con, $title_query);
+     $title_row = mysqli_fetch_assoc($title_result);
+     $book_title = mysqli_real_escape_string($con, $title_row['title']);
+ 
+     $check_query = "SELECT * FROM holds WHERE book_id = '$book_id'";
      $check_result = mysqli_query($con, $check_query);
-     
-     if(mysqli_num_rows($check_result) > 1) {
-         // User already has a hold on this book
-         echo "<script>alert('You already have a hold on this book!'); window.location='index.php'</script>";
+ 
+     if (mysqli_num_rows($check_result) > 0) {
+         echo "<script>alert('This specific copy of the book is already on hold!'); window.location='index.php'</script>";
      } else {
-         // Check how many books the user already has on hold
          $count_query = "SELECT COUNT(*) AS count_books FROM holds WHERE user_id = '$name_hold' OR faculty_id = '$name_hold'";
          $count_result = mysqli_query($con, $count_query);
          $count_row = mysqli_fetch_assoc($count_result);
          $current_hold_count = $count_row['count_books'];
-         
-         // Limit the user to 3 books on hold
+ 
          if ($current_hold_count >= 3) {
              echo "<script>alert('You cannot hold more than 3 books!'); window.location='index.php'</script>";
          } else {
-             // Insert new hold record
-             // Decide which query to use based on the user role
-               if ($_SESSION['auth_role'] == "student") {
-                    $query = "INSERT INTO holds (book_title, user_id, accession_number, hold_status, hold_date) VALUES ('$book_title','$name_hold', '$accession_number', 'Hold', NOW())";
-               } elseif ($_SESSION['auth_role'] == "faculty" || $_SESSION['auth_role'] == "staff") {
-                    $query = "INSERT INTO holds (book_title, faculty_id, accession_number, hold_status, hold_date) VALUES ('$book_title', '$name_hold', '$accession_number', 'Hold', NOW())";
-               }
-               
-               $query_run = mysqli_query($con, $query);
-               
-               if ($query_run) {
-                    // Successfully inserted hold record
-                    echo "<script>alert('Hold book Successfully'); window.location = 'index.php'</script>";
-               } else {
-                    // Insertion failed
-                    $_SESSION['message_error'] = 'Book not Hold';
-                    header("Location: index.php?search='$filtervalues'");
-                    exit(0);
-               } 
+             $update_query = "UPDATE book SET status_hold = 'Hold' WHERE book_id = '$book_id'";
+             mysqli_query($con, $update_query);
+ 
+             if ($_SESSION['auth_role'] == "student") {
+                 $insert_query = "INSERT INTO holds (book_id, user_id, accession_number, hold_status, hold_date) 
+                                  VALUES ('$book_id', '$name_hold', '$accession_number', 'Hold', NOW())";
+             } elseif ($_SESSION['auth_role'] == "faculty" || $_SESSION['auth_role'] == "staff") {
+                 $insert_query = "INSERT INTO holds (book_id, faculty_id, accession_number, hold_status, hold_date) 
+                                  VALUES ('$book_id', '$name_hold', '$accession_number', 'Hold', NOW())";
+             }
+ 
+             $query_run = mysqli_query($con, $insert_query);
+ 
+             if ($query_run) {
+                 echo "<script>alert('Hold book Successfully'); window.location = 'index.php'</script>";
+             } else {
+                 $_SESSION['message_error'] = 'Book not Hold';
+                 header("Location: index.php?search='$filtervalues'");
+                 exit(0);
+             }
          }
      }
  }
+ 
+ 
 ?>
 
 <?php

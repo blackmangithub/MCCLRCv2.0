@@ -22,13 +22,7 @@
                </a>
           </li>
           <li class="nav-item">
-    <a class="nav-link collapsed<?=$page == 'users.php' || 
-        $page == 'user_student.php' || 
-        $page == 'user_student_add.php' || 
-        $page == 'user_student_view.php' || 
-        $page == 'user_student_edit.php' || 
-        $page == 'user_faculty.php' || 
-        $page == 'user_student_approval.php' ? ' active' : '' ?>"
+    <a class="nav-link collapsed<?=$page == 'users.php' || $page == 'user_student.php' || $page == 'user_student_add.php' || $page == 'user_student_view.php' || $page == 'user_student_edit.php' || $page == 'user_faculty.php' || $page == 'user_student_approval.php'  ? 'active': '' ?>"
         href="users.php">
         <i class="bi bi-people"></i><span>Users</span>
         <?php
