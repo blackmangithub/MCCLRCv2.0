@@ -6,14 +6,13 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-// Load Composer's autoloader
-require 'vendor/autoload.php';
-
-$mail = new PHPMailer(true);
+    require 'phpmailer/vendor/phpmailer/phpmailer/src/Exception.php';
+    require 'phpmailer/vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require 'phpmailer/vendor/phpmailer/phpmailer/src/SMTP.php';
 
 function send_password_reset($get_name, $get_email, $token)
 {
-    global $mail;
+    $mail = new PHPMailer(true);
 
     try {
         // SMTP server configuration
@@ -22,28 +21,80 @@ function send_password_reset($get_name, $get_email, $token)
         $mail->SMTPAuth = true;
         $mail->Username = 'richmann276@gmail.com';
         $mail->Password = 'higw jept zipw zrwn'; // Use an app-specific password
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
 
         // Sender and recipient settings
-        $mail->setFrom('richmann276@gmail.com', 'Rich Mann');
+        $mail->setFrom('richmann276@gmail.com', 'MCC-LRC ADMIN');
         $mail->addAddress($get_email, $get_name);
-        $mail->addReplyTo('richmann276@gmail.com', 'Rich Mann');
+        $mail->addReplyTo('richmann276@gmail.com', 'MCC-LRC ADMIN');
 
         // Email content settings
         $mail->isHTML(true);
-        $mail->Subject = 'Reset Password Notification';
+        $mail->Subject = 'Here is your link to Reset the password of your MCC-LRC Account';
         $mail->Body = "
-            <img src='http://localhost/MCCLRCv2.0/assets/img/mcc-logo.png' alt='MCC Logo'>
-            <h2>Hello</h2>
-            <h3>You are receiving this email because we received a password reset request for your account.</h3>
-            <br/><br/>
-            <button style='background-color: dodgerblue;border:none;border-radius:5px;padding:7px;'><a style='text-decoration:none;color:white;font-weight:800;' href='http://localhost/MCCLRCV2.0/password-change.php?token=$token&email=$get_email'>Click Me</a></button>
-        ";
+        <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            width: 80%;
+                            margin: 20px auto;
+                            padding: 20px;
+                            background-color: #fff;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                        }
+                        .header {
+                            text-align: center;
+                            padding-bottom: 20px;
+                            border-bottom: 1px solid #ddd;
+                        }
+                        .logo {
+                            max-width: 150px;
+                            height: auto;
+                        }
+                        .content {
+                            padding: 20px 0;
+                        }
+                        .button {
+                            display: inline-block;
+                            padding: 10px 20px;
+                            background-color: #007bff;
+                            color: #fff;
+                            text-decoration: none;
+                            border-radius: 4px;
+                        }
+                    </style>
+            </head>
+            <body>
+                <h1>Reset Password</h1>
+                    
+            <div class='container'>
+            <div class='header'>
+            <img src='./assets/img/mcc-logo.png' alt='Logo'>
+            </div>
+            </div>
+            <div class='content'>
+            <p>Hello,</p>
+            <p>We received a request to reset your password. Click the button below to reset it:</p>
+            <p><a href='http://localhost/MCCLRCV2.0/password-change.php?token=$token&email=$get_email' class='button'>Reset Password</a>
+            <p>If you did not request a password reset, please ignore this email.</p>
+            
+            </div>
+            </body>
+        </html>
+     ";
 
         $mail->send();
+        return true;
     } catch (Exception $e) {
-        error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        return false;
     }
 }
 
