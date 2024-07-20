@@ -19,6 +19,10 @@ include('includes/sidebar.php');
 .sname, .dated{
     display: none;
 }
+.span {
+    margin-top: -40px;
+    margin-bottom: 20px;
+}
 
 @media print {
     body * {
@@ -86,15 +90,25 @@ include('includes/sidebar.php');
                         </ul>
                     </div>
                     <div class="card-body">
-                        <div class="row d-flex justify-content-between align-items-center mt-2">
-                            <h5 class="card-title col-12 col-md-3 px-3 text-center">Penalty Report</h5>
-                            <form action="" method="POST" class="col-12 col-md-6 d-flex">
+                        <div class="row d-flex justify-content-end align-items-center mt-2">
+                            <div class="text-start">
+                                            <button onclick="exportToPDF()" class="btn btn-danger pdf-button">
+                                                <i class="bi bi-file-earmark-pdf-fill"></i> <b>Export to PDF</b>
+                                            </button>
+                                            <button onclick="exportToExcel()" class="btn btn-success excel-button">
+                                                <i class="bi bi-file-earmark-excel-fill"></i> <b>Export to Excel</b>
+                                            </button>
+                                            <button onclick="window.print()" class="btn btn-primary print-button">
+                                                <i class="bi bi-printer-fill"></i> <b>Print</b>
+                                            </button>
+                                        </div>
+                            <form action="" method="POST" class="col-12 col-md-5 d-flex">
                                 <?php date_default_timezone_set('Asia/Manila'); ?>
                                 <div class="form-group form-group-sm">
                                     <label for="from_date"> <small>From Date</small></label>
                                     <input type="date" name="from_date" id="from_date" class="form-control form-control-sm" required>
                                 </div>
-                                <div class="form-group form-group-sm mx-2">
+                                <div class="form-group form-group-sm mx-1">
                                     <label for="to_date"> <small>To Date</small></label>
                                     <input type="date" name="to_date" id="to_date" class="form-control form-control-sm" required>
                                 </div>
@@ -139,21 +153,11 @@ include('includes/sidebar.php');
                                             $count_penalty_row = mysqli_fetch_array($count_penalty_query);
                                         }
                                         ?>
-                                        <div class="text-start mt-5">
-                                            <button onclick="exportToPDF()" class="btn btn-danger pdf-button">
-                                                <i class="bi bi-file-earmark-pdf-fill"></i> <b>Export to PDF</b>
-                                            </button>
-                                            <button onclick="exportToExcel()" class="btn btn-success excel-button">
-                                                <i class="bi bi-file-earmark-excel-fill"></i> <b>Export to Excel</b>
-                                            </button>
-                                            <button onclick="window.print()" class="btn btn-primary print-button">
-                                                <i class="bi bi-printer-fill"></i> <b>Print</b>
-                                            </button>
-                                        </div>
+                                        
                                         <table id="myDataTable" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered">
                                         <div class="pull-left">
                                         <h5 class="dated">Date: <?php echo date('F d, Y'); ?></h5>
-                                                <h1 class="sname">MCC Learning Resources Center</h1>
+                                                <h1 class="sname">MCC Learning Resource Center</h1>
                                                 <br>
                                                 <br>
                                                 <div class="span">
