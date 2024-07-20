@@ -16,6 +16,7 @@ include('./includes/sidebar.php');
           <h1>Collection of Books</h1>
           <nav>
                <ol class="breadcrumb">
+               <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                     <li class="breadcrumb-item active">Book Collection</li>
                </ol>
           </nav>
