@@ -6,9 +6,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-    require 'phpmailer/vendor/phpmailer/phpmailer/src/Exception.php';
-    require 'phpmailer/vendor/phpmailer/phpmailer/src/PHPMailer.php';
-    require 'phpmailer/vendor/phpmailer/phpmailer/src/SMTP.php';
+    require 'vendor/phpmailer/phpmailer/src/Exception.php';
+    require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require 'vendor/phpmailer/phpmailer/src/SMTP.php';
 
 function send_password_reset($get_name, $get_email, $token)
 {
@@ -66,7 +66,6 @@ function send_password_reset($get_name, $get_email, $token)
                             display: inline-block;
                             padding: 10px 20px;
                             background-color: #007bff;
-                            color: #fff;
                             text-decoration: none;
                             border-radius: 4px;
                         }
@@ -77,13 +76,13 @@ function send_password_reset($get_name, $get_email, $token)
                     
             <div class='container'>
             <div class='header'>
-            <img src='./assets/img/mcc-logo.png' alt='Logo'>
+            <img src='images/mcc-logo.png' alt='Logo'>
             </div>
             </div>
             <div class='content'>
             <p>Hello,</p>
             <p>We received a request to reset your password. Click the button below to reset it:</p>
-            <p><a href='http://localhost/MCCLRCV2.0/password-change.php?token=$token&email=$get_email' class='button'>Reset Password</a>
+            <p><a style='color: white;' href='http://localhost/MCCLRCV2.0/password-change.php?token=$token&email=$get_email' class='button'>Reset Password</a></p>
             <p>If you did not request a password reset, please ignore this email.</p>
             
             </div>
