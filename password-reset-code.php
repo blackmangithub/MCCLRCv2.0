@@ -72,19 +72,16 @@ function send_password_reset($get_name, $get_email, $token)
                     </style>
             </head>
             <body>
-                <h1>Reset Password</h1>
-                    
             <div class='container'>
             <div class='header'>
             <img src='images/mcc-logo.png' alt='Logo'>
             </div>
-            </div>
             <div class='content'>
             <p>Hello,</p>
             <p>We received a request to reset your password. Click the button below to reset it:</p>
-            <p><a style='color: white;' href='https://mcc-lrc.com/password-change.php?token=$token&email=$get_email' class='button'>Reset Password</a></p>
+            <p><a style='color: white;' href='https://mcc-lrc.com/password-change.php?token=".urlencode($token)."&email=".urlencode($get_email)."' class='button'>Reset Password</a></p>
             <p>If you did not request a password reset, please ignore this email.</p>
-            
+            </div>
             </div>
             </body>
         </html>
