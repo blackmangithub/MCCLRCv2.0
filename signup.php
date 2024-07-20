@@ -280,7 +280,7 @@ include('./admin/config/dbcon.php');
 
                     <div class="field btns">
                         <button class="prev-4 prev">Previous</button>
-                        <button type="submit" class="submit" name="register_btn">Submit</button>
+                        <button type="submit" class="submit" name="register_btn">Signup</button>
                     </div>
                 </div>
                 <!-- Fifth Slide Page end-->
