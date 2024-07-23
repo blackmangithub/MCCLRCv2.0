@@ -68,9 +68,9 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
                 <div class="col-xl-2">
                   <a href="book_details.php?title=<?= urlencode($book['title']); ?>&id=<?= urlencode($book['book_id']); ?>" class="text-decoration-none">
                     <?php if ($book['book_image'] != ""): ?>
-                    <img src="../uploads/books_img/<?php echo htmlspecialchars($book['book_image']); ?>" width="100px" alt="">
+                    <img src="https://mcc-lrc.com/uploads/books_img/<?php echo htmlspecialchars($book['book_image']); ?>" width="100px" alt="">
                     <?php else: ?>
-                    <img src="../uploads/books_img/book_image.jpg" alt="">
+                    <img src="https://mcc-lrc.com/uploads/books_img/book_image.jpg" alt="">
                     <?php endif; ?>
                   </a>
                 </div>
