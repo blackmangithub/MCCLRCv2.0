@@ -66,7 +66,7 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
             <div class="card mt-1">
               <div class="card-body pt-3 d-md-flex d-sm-block">
                 <div class="col-xl-2">
-                  <a href="book_details.php?title=<?= urlencode($book['title']); ?>&id=<?= urlencode($book['book_id']); ?>" class="text-decoration-none">
+                  <a href="book_details.php?title=<?= $book['title']; ?>" class="text-decoration-none">
                     <?php if ($book['book_image'] != ""): ?>
                     <img src="uploads/books_img/<?php echo htmlspecialchars($book['book_image']); ?>" width="100px" alt="">
                     <?php else: ?>
