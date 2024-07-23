@@ -49,7 +49,6 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
             </a>
           </center>
           <hr class="mt-2 mb-2 text-black">
-          <?php endif; ?>
           <div id="new_books" class="row row-cols-1 row-cols-md-12 g-4">
             <?php 
             if (isset($_GET['search'])) { 
