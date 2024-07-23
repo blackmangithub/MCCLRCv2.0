@@ -42,7 +42,7 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
           </div>
         </div>
         <div class="card-body border border-0">
-          <?php if (!isset($_GET['search'])) : ?>
+          <?php if (!isset($_GET['search'])) :?>
           <center>
             <a href="#new_books" class="btn btn-primary mt-2" data-aos="zoom-in">
               New Acquisitions
