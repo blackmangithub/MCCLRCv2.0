@@ -108,7 +108,7 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
                 foreach ($query_run as $book) {
             ?>
             <div class="col-12 col-md-3" data-aos="zoom-in">
-              <a href="book_details.php?title=<?= urlencode($book['title']); ?>&id=<?= urlencode($book['book_id']); ?>">
+              <a href="book_details.php?title=<?=$book['title'] ?>&id=<?=$book['book_id'] ?>">
                 <div class="card h-100 shadow">
                   <?php if ($book['book_image'] != ""): ?>
                   <img src="uploads/books_img/<?php echo htmlspecialchars($book['book_image']); ?>" alt="">
