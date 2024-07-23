@@ -8,7 +8,8 @@ if (empty($_SESSION['auth'])) {
   exit(0);
 }
 
-if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" && $_SESSION['auth_role'] != "staff") {
+if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" && $_SESSION['auth_role'] != "staff") 
+{
   header("Location:index.php");
   exit(0);
 }
