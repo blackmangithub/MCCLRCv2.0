@@ -80,9 +80,9 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
                   <div class="row mt-3">
                     <div class="col-lg-12 col-md-12 fs-6">
                       <a href="book_details.php?title=<?= urlencode($book['title']); ?>&id=<?= urlencode($book['book_id']); ?>" style="text-decoration: none" class="fw-bold">
-                        <?= htmlspecialchars($book['title']) ?>
+                        <?= htmlspecialchars($book['title']); ?>
                       </a>
-                      (<?= htmlspecialchars($book['copyright_date']) ?>)
+                      (<?= htmlspecialchars($book['copyright_date']); ?>)
                     </div>
                   </div>
                   <div class="row mt-2">
