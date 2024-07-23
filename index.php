@@ -33,7 +33,7 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
               <form method="GET">
                 <div class="d-flex">
                   <div class="input-group mb-3 me-6">
-                    <input type="text" name="search" value="<?php if(isset($_GET['search'])){ echo htmlspecialchars($_GET['search']); } ?>" class="form-control" placeholder="Type here to search" required>
+                    <input type="text" name="search" value="<?php if(isset($_GET['search'])){ echo ($_GET['search']); } ?>" class="form-control" placeholder="Type here to search" required>
                     <button class="btn btn-primary px-md-5 px-sm-1">Search</button>
                   </div>
                 </div>
@@ -70,7 +70,7 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                 <div class="col-xl-2">
                   <a href="book_details.php?title=<?= urlencode($book['title']); ?>&id=<?= urlencode($book['book_id']); ?>" class="text-decoration-none">
                     <?php if($book['book_image'] != ""):?>
-                    <img src="uploads/books_img/<?php echo htmlspecialchars($book['book_image']); ?>" width="100px" alt="">
+                    <img src="uploads/books_img/<?php echo $book['book_image']; ?>" width="100px" alt="">
                     <?php else:?>
                     <img src="uploads/books_img/book_image.jpg" alt="">
                     <?php endif;?>
@@ -80,14 +80,14 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                   <div class="row mt-3">
                     <div class="col-lg-12 col-md-12 fs-6">
                       <a href="book_details.php?title=<?= urlencode($book['title']); ?>&id=<?= urlencode($book['book_id']); ?>" style="text-decoration: none" class="fw-bold">
-                        <?= htmlspecialchars($book['title']); ?>
+                        <?= $book['title']; ?>
                       </a>
-                      (<?= htmlspecialchars($book['copyright_date']); ?>)
+                      (<?= $book['copyright_date']; ?>)
                     </div>
                   </div>
                   <div class="row mt-2">
                     <div class="col-lg-9 col-md-8">
-                      by&nbsp;<?= htmlspecialchars($book['author']); ?>
+                      by&nbsp;<?= $book['author']; ?>
                     </div>
                   </div>
                 </div>
@@ -113,7 +113,7 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
               <a href="book_details.php?title=<?= urlencode($book['title']); ?>&id=<?= urlencode($book['book_id']); ?>">
                 <div class="card h-100 shadow">
                   <?php if($book['book_image'] != ""): ?>
-                  <img src="uploads/books_img/<?php echo htmlspecialchars($book['book_image']); ?>" alt="">
+                  <img src="uploads/books_img/<?php echo $book['book_image']; ?>" alt="">
                   <?php else:?>
                   <img src="uploads/books_img/book_image.jpg" alt="">
                   <?php endif;?>
