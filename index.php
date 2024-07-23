@@ -1,6 +1,5 @@
 <?php 
 ini_set('display_error', '1');
-
 include('includes/header.php');
 include('includes/navbar.php');
 include('admin/config/dbcon.php');
