@@ -66,7 +66,7 @@ include('./admin/config/dbcon.php');
 <body>
      <section class="d-flex mt-1 flex-column justify-content-center align-items-center">
           <a href="home.php" class="back">
-               <i class="bi-arrow-left-circle-fill"></i>
+               <p>Back</p>
           </a>
           <div class="container-xl">
                <div class="col mx-auto rounded shadow bg-white">
