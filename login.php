@@ -9,7 +9,7 @@ session_start();
 //}
 
 include('./admin/config/dbcon.php');
-include('./includes/header.php')
+include('./includes/header.php');
 ?>
 
      <style>
