@@ -11,6 +11,7 @@
      <link rel="stylesheet" href="assets/css/bootstrap5.min.css" />
 
      <!-- Bootstrap Icon -->
+     <link rel="stylesheet" href="assets/font/bootstrap-icons.css">
      <link rel="stylesheet" href="assets/font/bootstrap-icons.min.css">
 
      <!-- Iconscout cdn link -->
