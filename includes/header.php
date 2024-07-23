@@ -12,10 +12,10 @@
 
      <!-- Bootstrap Icon -->
      <link rel="stylesheet" href="assets/font/bootstrap-icons.css">
+     <link rel="stylesheet" href="assets/font/bootstrap-icons.min.css">
 
      <!-- Iconscout cdn link -->
      <link rel="stylesheet" href="assets/css/line.css">
-     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
      <!-- Custom CSS Styling -->
      <link rel="stylesheet" href="assets/css/style.css">
@@ -26,6 +26,7 @@
 
      <!-- Animation -->
      <link rel="stylesheet" href="assets/css/aos.css" />
+
 </head>
 
 <body>
