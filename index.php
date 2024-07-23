@@ -146,7 +146,7 @@ $(document).ready(function() {
         }
       });
     } else {
-      $("#searchresult").css("display", "block");
+      $("#searchresult").css("display", "none");
     }
   });
 });
