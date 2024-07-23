@@ -16,8 +16,8 @@ include('admin/config/dbcon.php');
                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 nav nav-pills nav-justified">
                     <?php if(isset($_SESSION['auth_stud'])) :?>
                     <li class="nav-item">
-                         <a class="nav-link text-white <?=$page == 'home.php' || $page == 'book_details.php' ? 'active': '' ?> fw-semibold"
-                              href="home.php">Home</a>
+                         <a class="nav-link text-white <?=$page == 'index.php' || $page == 'book_details.php' ? 'active': '' ?> fw-semibold"
+                              href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
                          <a class="nav-link text-white <?=$page == 'ebook.php' ? 'active': '' ?> fw-semibold"
