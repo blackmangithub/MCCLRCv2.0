@@ -9,10 +9,11 @@
 
      <!-- Bootstrap CSS -->
      <link rel="stylesheet" href="assets/css/bootstrap5.min.css" />
+     <link rel="stylesheet" href="assets/css/bootstrap-icons.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
 
      <!-- Bootstrap Icon -->
      <link rel="stylesheet" href="assets/font/bootstrap-icons.css">
-     <link rel="stylesheet" href="assets/font/bootstrap-icons.min.css">
 
      <!-- Iconscout cdn link -->
      <link rel="stylesheet" href="assets/css/line.css">

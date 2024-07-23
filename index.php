@@ -1,6 +1,6 @@
 <?php 
-include('includes/header.php');
-include('includes/navbar.php');
+include('./includes/header.php');
+include('./includes/navbar.php');
 include('admin/config/dbcon.php');
 
 if (empty($_SESSION['auth'])) {
