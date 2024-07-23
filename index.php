@@ -9,7 +9,7 @@ if(empty($_SESSION['auth'])){
   header('Location: home.php');
   exit(0);
 }
-if($_SESSION['auth_role'] != "0")
+if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" && $_SESSION['auth_role'] != "staff") 
 {
   header("Location:index.php");
   exit(0);
