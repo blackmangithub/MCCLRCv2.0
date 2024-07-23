@@ -15,9 +15,6 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
   exit(0);
 }
 ?>
-
-
-
 <div class="container">
      <div class="row">
           <div class="col-12">
@@ -30,7 +27,10 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
                               </div>
 
                               <div class="col-8  mt-2  ">
-                                   <h3 class="fw-semibold">Madridejos Community College Learning Resource Center</h3>
+                              <center>
+                                <h3 class="fw-semibold">Madridejos Community College</h3>
+                                <h4 class="fw-semibold">Learning Resource Center</h4>
+                              </center>
                                    <form class=" " method="GET">
                                         <div class="d-flex">
                                              <div class="input-group mb-3 me-5">
