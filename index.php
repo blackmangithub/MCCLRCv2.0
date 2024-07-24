@@ -1,5 +1,5 @@
 <?php 
-ini_set('display_error', '1');
+ini_set('display_errors', '1');
 include('includes/header.php');
 include('includes/navbar.php');
 include('admin/config/dbcon.php');
@@ -9,8 +9,7 @@ if (empty($_SESSION['auth'])) {
   exit(0);
 }
 
-if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" && $_SESSION['auth_role'] != "staff") 
-{
+if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" && $_SESSION['auth_role'] != "staff") {
   header("Location:index.php");
   exit(0);
 }
@@ -53,17 +52,11 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
           <div id="new_books" class="row row-cols-1 row-cols-md-12 g-4">
             <?php 
             if (isset($_GET['search'])) { 
-              $filtervalues = mysqli_real_escape_string($con, $_GET['search']);
-              $query = "SELECT book.*, COUNT(book.accession_number) AS copy_count,
-                        SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count
-                        FROM book 
-                        WHERE title LIKE '%$filtervalues%' AND status_hold = ''
-                        GROUP BY title
-                        ORDER BY title DESC";
+              $search = mysqli_real_escape_string($con, $_GET['search']);
+              $query = "SELECT * FROM book WHERE title LIKE '%$search%' OR author LIKE '%$search%'";
               $query_run = mysqli_query($con, $query);
               if (mysqli_num_rows($query_run) > 0) {
-                foreach ($query_run as $book) {
-                  $unavailable_count = $book['copy_count'] - $book['available_count'];
+                while ($book = mysqli_fetch_assoc($query_run)) {
             ?>
             <div class="card mt-1">
               <div class="card-body pt-3 d-md-flex d-sm-block">
@@ -94,9 +87,9 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
               </div>
             </div>
             <?php
-                } 
+                }
               } else {
-                echo '<div class="col-md-12 alert alert-info h5 text-center">No Book Found</div>';
+                echo "<p>No records found.</p>";
               }
             } else {
               $query = "SELECT book.*, COUNT(book.accession_number) AS copy_count, 
@@ -106,8 +99,8 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
                         GROUP BY title 
                         ORDER BY title DESC";
               $query_run = mysqli_query($con, $query);
-              if (mysqli_num_rows($query_run)) {
-                foreach ($query_run as $book) {
+              if (mysqli_num_rows($query_run) > 0) {
+                while ($book = mysqli_fetch_assoc($query_run)) {
             ?>
             <div class="col-12 col-md-3" data-aos="zoom-in">
               <a href="book_details.php?title=<?= urlencode($book['title']); ?>&id=<?= urlencode($book['book_id']); ?>">
@@ -122,6 +115,8 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
             </div>
             <?php
                 }
+              } else {
+                echo "<p>No new acquisitions found.</p>";
               }
             }
             ?>
