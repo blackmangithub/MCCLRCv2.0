@@ -55,8 +55,7 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
             if (isset($_GET['search'])) { 
               $filtervalues = mysqli_real_escape_string($con, $_GET['search']);
               $query = "SELECT book.*, COUNT(book.accession_number) AS copy_count,
-                        SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count,
-                        book.status_hold = ''
+                        SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count
                         FROM book 
                         WHERE title LIKE '%$filtervalues%'
                         GROUP BY title
@@ -101,8 +100,7 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
               }
             } else {
               $query = "SELECT book.*, COUNT(book.accession_number) AS copy_count, 
-                        SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count,
-                        book.status_hold = ''
+                        SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count 
                         FROM book 
                         GROUP BY title 
                         ORDER BY title DESC";
