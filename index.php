@@ -131,28 +131,6 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
   </div>
 </div>
 
-<script>
-$(document).ready(function() {
-  $("#live_search").keyup(function() {
-    var input = $(this).val();
-    if (input != "") {
-      $.ajax({
-        url: "home_code.php",
-        method: "POST",
-        data: {
-          input: input
-        },
-        success: function(data) {
-          $("#searchresult").html(data);
-        }
-      });
-    } else {
-      $("#searchresult").css("display", "none");
-    }
-  });
-});
-</script>
-
 <?php
 include('includes/footer.php');
 include('includes/script.php');
