@@ -103,7 +103,6 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
                         SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count,
                         book.status_hold = ' '
                         FROM book 
-                        WHERE book.status_hold = ' '
                         GROUP BY title 
                         ORDER BY title DESC";
               $query_run = mysqli_query($con, $query);
