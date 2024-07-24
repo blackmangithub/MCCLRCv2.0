@@ -15,3 +15,19 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
   exit(0);
 }
 ?>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mt-4" data-aos="fade-up">
+        <div class="card-header">
+          <div class="d-flex align-items-center justify-content-center mt-2">
+            <div class="mx-2">
+            <img src="assets/img/mcc-logo.png" class="d-sm-none d-md-block me-4" style="height: 100px; width: 100px;" alt="MCC Logo">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
