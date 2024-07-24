@@ -58,155 +58,19 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
                          <?php endif;?>
                          <div id="new_books" class="row row-cols-1 row-cols-md-12 g-4">
                               <?php if(isset($_GET['search']))
-                         { ?>
-                              <div class="card mt-4  border-0">
-
-
-                                   <div class="card-body">
-                                        <section class="section profile">
-                                             <div class="row">
-
-                                                  <div class="col-xl-3">
-                                                       <div class="card">
-
-                                                            <div
-                                                                 class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between">
-                                                                 <div class="col-xl-9 fw-semibold text-primary">
-                                                                      Library Catalog
-                                                                 </div>
-                                                                 <?php
-                                                                 $query = "SELECT * FROM book";
-                                                                 $query_run = mysqli_query($con, $query); 
-                                                                 
-                                                                 if($total_books = mysqli_num_rows($query_run))
-                                                                 {
-                                                                      
-                                                                      echo '<div class="col mx-2 bg-info rounded text-center p-1 fw-semibold text-white">'.$total_books.'</div>';
-                                                                 }
-                                                                 else
-                                                                 {
-                                                                      echo '<div class="col mx-2">0</div>';
-                                                                 }
-                                                            ?>
-
-                                                            </div>
-
-
-                                                       </div>
-                                                       <div class="card mt-2">
-                                                            <div class="accordion accordion-flush"
-                                                                 id="accordionFlushExample">
-                                                                 <div class="accordion-item">
-                                                                      <h2 class="accordion-header"
-                                                                           id="flush-headingOne">
-                                                                           <button class="accordion-button collapsed"
-                                                                                type="button" data-bs-toggle="collapse"
-                                                                                data-bs-target="#flush-collapseOne"
-                                                                                aria-expanded="false"
-                                                                                aria-controls="flush-collapseOne">
-                                                                                Authors
-                                                                           </button>
-                                                                      </h2>
-                                                                      <div id="flush-collapseOne"
-                                                                           class="accordion-collapse collapse"
-                                                                           aria-labelledby="flush-headingOne"
-                                                                           data-bs-parent="#accordionFlushExample">
-
-                                                                           <ul class="list-group text-center">
-                                                                                <li class="list-group-item">Pomperada,
-                                                                                     Jake</li>
-                                                                                <li class="list-group-item">Lavina,
-                                                                                     Charlemagne</li>
-                                                                                <li class="list-group-item">Abante,
-                                                                                     Marmelo</li>
-                                                                                <li class="list-group-item">Juanez,
-                                                                                     jennifer</li>
-                                                                                <li class="list-group-item">Besuena,
-                                                                                     Jerelyn</li>
-                                                                           </ul>
-
-                                                                      </div>
-                                                                 </div>
-                                                                 <div class="accordion-item">
-                                                                      <h2 class="accordion-header"
-                                                                           id="flush-headingTwo">
-                                                                           <button class="accordion-button collapsed"
-                                                                                type="button" data-bs-toggle="collapse"
-                                                                                data-bs-target="#flush-collapseTwo"
-                                                                                aria-expanded="false"
-                                                                                aria-controls="flush-collapseTwo">
-                                                                                Copyright Date
-                                                                           </button>
-                                                                      </h2>
-                                                                      <div id="flush-collapseTwo"
-                                                                           class="accordion-collapse collapse"
-                                                                           aria-labelledby="flush-headingTwo"
-                                                                           data-bs-parent="#accordionFlushExample">
-                                                                           <ul class="list-group text-center">
-                                                                                <li class="list-group-item">2022</li>
-                                                                                <li class="list-group-item">2021</li>
-                                                                                <li class="list-group-item">2020</li>
-                                                                                <li class="list-group-item">2019</li>
-                                                                                <li class="list-group-item">2018</li>
-                                                                           </ul>
-                                                                      </div>
-                                                                 </div>
-                                                                 <div class="accordion-item">
-                                                                      <h2 class="accordion-header"
-                                                                           id="flush-headingThree">
-                                                                           <button class="accordion-button collapsed"
-                                                                                type="button" data-bs-toggle="collapse"
-                                                                                data-bs-target="#flush-collapseThree"
-                                                                                aria-expanded="false"
-                                                                                aria-controls="flush-collapseThree">
-                                                                                LRC Location
-                                                                           </button>
-                                                                      </h2>
-                                                                      <div id="flush-collapseThree"
-                                                                           class="accordion-collapse collapse"
-                                                                           aria-labelledby="flush-headingThree"
-                                                                           data-bs-parent="#accordionFlushExample">
-                                                                           <ul class="list-group">
-                                                                                <li class="list-group-item">Foreign
-                                                                                     Section</li>
-                                                                                <li class="list-group-item">Reserved
-                                                                                     Section</li>
-                                                                                <li class="list-group-item">Fiction
-                                                                                     Section</li>
-                                                                                <li class="list-group-item">Filipiniana
-                                                                                     Section</li>
-                                                                                <li class="list-group-item">And a fifth
-                                                                                     one</li>
-                                                                           </ul>
-                                                                      </div>
-                                                                 </div>
-                                                            </div>
-
-
-
-                                                       </div>
-
-
-                                                  </div>
-                                                  <div class=" col-xl-9">
-
-                                                       <?php
-                         
-                              $filtervalues = $_GET['search'];
-
-                              $query = "SELECT * FROM book LEFT JOIN category on book.category_id = category.category_id WHERE CONCAT(title,author,publisher,accession_number) LIKE '%$filtervalues%'";
-                                   //                     $query = "(SELECT book_id, book_image, title, author, copyright_date, copy, 'book' as type FROM book WHERE title LIKE '%" . 
-                                   //  $filtervalues . "%' OR author LIKE '%" . $filtervalues ."%') 
-                                   //  UNION
-                                   //  (SELECT web_opac_id, opac_image, title, copyright_date, author, copy, 'web_opac' as type FROM web_opac WHERE title LIKE '%" . 
-                                   //  $filtervalues."%' OR author LIKE '%" . $filtervalues ."%')";
-                              $query_run = mysqli_query($con, $query);
-                              
-                              if(mysqli_num_rows($query_run) > 0)
-                              {
-                                   foreach($query_run as $book)
-                                   {
-                                        ?>
+                         { 
+                          $filtervalues = mysqli_real_escape_string($con, $_GET['search']);
+              $query = "SELECT book.*, COUNT(book.accession_number) AS copy_count,
+                        SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count
+                        FROM book 
+                        WHERE title LIKE '%$filtervalues%' AND status_hold = ''
+                        GROUP BY title
+                        ORDER BY title DESC";
+              $query_run = mysqli_query($con, $query);
+              if (mysqli_num_rows($query_run) > 0) {
+                foreach ($query_run as $book) {
+                  $unavailable_count = $book['copy_count'] - $book['available_count'];
+                          ?>
                                                        <div class="card mt-1">
                                                             <div class="card-body pt-3 d-md-flex d-sm-block">
                                                                  <div class="col-xl-2">
