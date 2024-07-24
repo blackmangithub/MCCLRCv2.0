@@ -93,7 +93,8 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
               }
             } else {
               $query = "SELECT book.*, COUNT(book.accession_number) AS copy_count, 
-                        SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count 
+                        SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count,
+                        book.status_hold
                         FROM book 
                         WHERE status_hold = ''
                         GROUP BY title 
