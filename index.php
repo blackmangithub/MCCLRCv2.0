@@ -18,7 +18,7 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <div class="card mt-4" data-aos="fade-up">
+      <div class="card  mt-4 " data-aos="fade-up">
         <div class="card-header">
           <div class="d-flex align-items-center justify-content-center mt-2">
             <div class="mx-2">
