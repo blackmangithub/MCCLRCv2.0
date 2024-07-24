@@ -343,7 +343,12 @@ if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &
                          {
                               ?>
                          <?php
-                              $query = "SELECT * FROM book ORDER BY book_id DESC LIMIT 8";
+                              $query = "SELECT book.*, COUNT(book.accession_number) AS copy_count, 
+                        SUM(CASE WHEN book.status = 'available' THEN 1 ELSE 0 END) AS available_count 
+                        FROM book 
+                        WHERE status_hold = ''
+                        GROUP BY title 
+                        ORDER BY title DESC LIMIT 8";
                               $query_run = mysqli_query($con, $query);
                               
                               if(mysqli_num_rows($query_run) > 0)
