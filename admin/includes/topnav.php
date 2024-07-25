@@ -59,10 +59,6 @@
                         <div>
                             <h4><?=$name;?></h4>
                             <p>hold <span><?=$holdlist['num_hold_books'];?></span> book(s).</p>
-                            <form action="" method="POST">
-                                <button type="submit" value="<?=$holdlist['num_hold_books'];?>" class="btn btn-primary btn-sm" name="done">Accept</button>
-                                <button type="submit" value="<?=$holdlist['num_hold_books'];?>" class="btn btn-danger btn-sm" name="cancel">Deny</button>
-                            </form>
                         </div>
                     </li>
                     <li>
@@ -131,30 +127,3 @@
     </nav>
 </header>
 
-<?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['cancel'])) {
-        $holdbook_id = mysqli_real_escape_string($con, $_POST['cancel']);
-        $query = "UPDATE holds SET hold_status = 'Deny' WHERE hold_id = '$holdbook_id'";
-        if (mysqli_query($con, $query)) {
-            echo "<script>alert('Denied book successfully'); window.location='index.php'</script>";
-        } else {
-            $_SESSION['message_error'] = 'There is something wrong';
-            header("Location: hold.php");
-            exit(0);
-        }
-    }
-
-    if (isset($_POST['done'])) {
-        $holdbook_id = mysqli_real_escape_string($con, $_POST['done']);
-        $query = "UPDATE holds SET hold_status='Accept' WHERE hold_id = '$holdbook_id'";
-        if (mysqli_query($con, $query)) {
-            echo "<script>alert('Book accepted successfully'); window.location='index.php'</script>";
-        } else {
-            $_SESSION['message_error'] = 'Hold book not approved';
-            header("Location: index.php");
-            exit(0);
-        }
-    }
-}
-?>

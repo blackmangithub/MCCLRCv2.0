@@ -64,6 +64,8 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                                 <div class="col-lg-6 col-md-6 label">
                                     <div>
                                         <?=$hold['title'].' '.$hold['copyright_date'].' by '.$hold['author'];?>
+                                        <br>
+                                        Accession No. <b><?=$hold['accession_number'];?></b>
                                     </div>
                                     <div class="text-muted">
                                         <?=date("M d, Y", strtotime($hold['hold_date']));?>

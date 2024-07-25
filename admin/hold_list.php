@@ -28,7 +28,7 @@ include('./includes/sidebar.php');
                                     <div class="input-group mb-3 input-group-sm">
                                         <input type="text" name="id_no"
                                                value="<?php echo isset($_GET['id_no']) ? $_GET['id_no'] : ''; ?>"
-                                               class="form-control" placeholder="Enter Student/Faculty ID or Name"
+                                               class="form-control" placeholder="Enter Student ID or Faculty Name"
                                                aria-label="ID" aria-describedby="basic-addon1" autofocus required>
                                         <button class="input-group-text bg-primary text-white"
                                                 id="basic-addon1">Search</button>

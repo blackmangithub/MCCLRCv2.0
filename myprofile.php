@@ -168,20 +168,20 @@ $table = $_SESSION['auth_role'] == "student" ? "user" : "faculty";
                                                                  <div class="col-md-8 col-lg-9 position-relative">
                                                                       <input name="newpassword" type="password" class="form-control" id="newPassword">
                                                                       <i class="bi bi-eye-fill position-absolute password-toggle" id="toggleNewPassword" style="right: 23px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
-                                                                      <div class="invalid-feedback" id="newPasswordWarning">
+                                                                 </div>
+                                                                 <div class="invalid-feedback" id="newPasswordWarning" style="position: relative; left:180px;">
                                                                            Password must be at least 8 characters long.
                                                                       </div>
-                                                                 </div>
                                                             </div>
                                                             <div class="row mb-3">
                                                                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                                                                  <div class="col-md-8 col-lg-9 position-relative">
                                                                       <input name="renewpassword" type="password" class="form-control" id="renewPassword">
                                                                       <i class="bi bi-eye-fill position-absolute password-toggle" id="toggleRenewPassword" style="right: 23px; top: 30%; transform: translateY(-50%); cursor: pointer;"></i>
-                                                                      <div class="invalid-feedback" id="renewPasswordWarning">
+                                                                 </div>
+                                                                 <div class="invalid-feedback" id="renewPasswordWarning" style="position: relative; left:180px;top:-20px;">
                                                                            Password must be at least 8 characters long.
                                                                       </div>
-                                                                 </div>
                                                             </div>
                                                             <div class="text-center">
                                                                  <button type="submit" name="password_update" class="btn btn-primary">Change Password</button>
