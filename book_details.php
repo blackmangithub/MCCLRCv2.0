@@ -155,10 +155,7 @@ if (isset($_POST['hold'])) {
  
          if ($current_hold_count >= 3) {
              echo "<script>alert('You cannot hold more than 3 books!'); window.location='index.php'</script>";
-         } else {
-             $update_query = "UPDATE book SET status_hold = 'Hold' WHERE book_id = '$book_id'";
-             mysqli_query($con, $update_query);
- 
+         } else { 
              if ($_SESSION['auth_role'] == "student") {
                  $insert_query = "INSERT INTO holds (book_id, user_id, accession_number, hold_status, hold_date) 
                                   VALUES ('$book_id', '$name_hold', '$accession_number', 'Hold', NOW())";
