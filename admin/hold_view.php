@@ -2,6 +2,22 @@
 include('authentication.php');
 include('includes/header.php'); 
 include('./includes/sidebar.php'); 
+
+$id = $_GET['id'];
+$type = $_GET['type'];
+
+$query = "";
+if($type == "user") {
+    $query = "SELECT * FROM user WHERE user_id = ?";
+} else if($type == "faculty") {
+    $query = "SELECT * FROM faculty WHERE faculty_id = ?";
+}
+
+$user_stmt = $con->prepare($query);
+$user_stmt->bind_param("s", $id);
+$user_stmt->execute();
+$user_result = $user_stmt->get_result();
+$user_row = $user_result->fetch_assoc();
 ?>
 
 <main id="main" class="main">
@@ -15,7 +31,7 @@ include('./includes/sidebar.php');
             </ol>
         </nav>
     </div>
-    <section class="section ">
+    <section class="section">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -44,13 +60,11 @@ include('./includes/sidebar.php');
                                         LEFT JOIN book ON holds.book_title = book.title 
                                         LEFT JOIN user ON holds.user_id = user.user_id AND holds.hold_status = 'Hold'
                                         LEFT JOIN faculty ON holds.faculty_id = faculty.faculty_id AND holds.hold_status = 'Hold'
-                                        WHERE holds.hold_status = 'Hold'
-                                        GROUP BY user.user_id, faculty.faculty_id
+                                        WHERE holds.hold_status = 'Hold' AND (user.user_id = '$id' OR faculty.faculty_id = '$id')
                                         ORDER BY holds.hold_id DESC
                                     ");
                                     $borrow_count = mysqli_num_rows($borrow_query);
                                     while($borrow_row = mysqli_fetch_array($borrow_query)){
-                                        $id = $borrow_row['hold_id'];
                                         $book_title = $borrow_row['title'];
                                         $user_id = $borrow_row['user_id'];
                                         $faculty_id = $borrow_row['faculty_id'];

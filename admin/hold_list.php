@@ -51,13 +51,13 @@ include('./includes/sidebar.php');
                                 {
                                     $row = mysqli_fetch_assoc($query_run_user);
                                     $user_id = $row['user_id'];
-                                    echo ('<script> location.href="circulation_borrowing.php?user_id='.$user_id.'";</script>');
+                                    echo ('<script> location.href="hold_view.php?id='.$user_id.'&type=user";</script>');
                                 }
                                 elseif(mysqli_num_rows($query_run_faculty) > 0)
                                 {
                                     $row = mysqli_fetch_assoc($query_run_faculty);
-                                    $user_id = $row['faculty_id'];
-                                    echo ('<script> location.href="circulation_borrowing.php?faculty_id='.$user_id.'";</script>');
+                                    $faculty_id = $row['faculty_id'];
+                                    echo ('<script> location.href="hold_view.php?id='.$faculty_id.'&type=faculty";</script>');
                                 }
                                 else
                                 {
@@ -95,14 +95,13 @@ include('./includes/sidebar.php');
                                     LEFT JOIN user u ON u.user_id = h.user_id AND h.hold_status = 'Hold'
                                     LEFT JOIN faculty f ON f.faculty_id = h.faculty_id AND h.hold_status = 'Hold'
                                     WHERE h.hold_status = 'Hold'
-                                    GROUP BY u.user_id, f.faculty_id, h.hold_id
+                                    GROUP BY u.user_id, f.faculty_id
                                     ORDER BY h.hold_id DESC");
 
                                     $borrow_count = mysqli_num_rows($borrow_query);
                                     while($holdlist = mysqli_fetch_array($borrow_query)) {
                                         $name = $holdlist['user_id'] ? $holdlist['user_firstname'].' '.$holdlist['user_lastname'] : $holdlist['faculty_firstname'].' '.$holdlist['faculty_lastname'];
                                         $id = $holdlist['user_id'] ? $holdlist['user_id'] : $holdlist['faculty_id'];
-                                        $hold_id = $holdlist['hold_id'];
                                     ?>
                                     <tr>
                                         <td style="text-transform: capitalize">
@@ -112,7 +111,7 @@ include('./includes/sidebar.php');
                                         <td class="justify-content-center">
                                             <div class="btn-group" style="background: #DFF6FF;">
                                                 <!-- View Hold Books Action -->
-                                                <a href="hold_view.php?id=<?=$id; ?>"
+                                                <a href="hold_view.php?id=<?=$id;?>&type=<?=$holdlist['user_id'] ? 'user' : 'faculty';?>"
                                                    class="viewBookBtn btn btn-sm border text-primary"
                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                    title="View Hold Books">
@@ -120,7 +119,7 @@ include('./includes/sidebar.php');
                                                 </a>
                                                 <!-- Delete Hold Action -->
                                                 <form action="" method="POST">
-                                                    <input type="hidden" name="hold_id" value="<?=$hold_id;?>">
+                                                    <input type="hidden" name="hold_id" value="<?=$holdlist['hold_id'];?>">
                                                     <button type="submit" name="delete"
                                                             class="btn btn-sm border text-danger"
                                                             data-bs-toggle="tooltip"
