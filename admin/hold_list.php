@@ -118,7 +118,7 @@ include('./includes/sidebar.php');
                                                 </a>
                                                 <!-- Delete Hold Action -->
                                                 <form action="" method="POST">
-                                                    <button type="submit" name="cancel"
+                                                    <button type="submit" name="delete"
                                                             value="<?=$holdlist['num_hold_books'];?>"
                                                             class="btn btn-sm border text-danger"
                                                             data-bs-toggle="tooltip"
@@ -127,9 +127,9 @@ include('./includes/sidebar.php');
                                                     </button>
                                                 </form>
                                                 <?php
-                                                if(isset($_POST['cancel']))
+                                                if(isset($_POST['delete']))
                                                 {
-                                                    $holdbook_id = mysqli_real_escape_string($con, $_POST['cancel']);
+                                                    $holdbook_id = mysqli_real_escape_string($con, $_POST['delete']);
                                                     $book_query = "SELECT * FROM holds WHERE hold_id = $holdbook_id";
                                                     $book_result = mysqli_query($con, $book_query);
                                                     while($book_row = mysqli_fetch_assoc($book_result)) {
