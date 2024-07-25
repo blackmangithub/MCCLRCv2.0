@@ -23,6 +23,7 @@ include('./admin/config/dbcon.php');
      <!-- Alertify JS link -->
      <link rel="stylesheet" href="assets/css/alertify.min.css" />
      <link rel="stylesheet" href="assets/css/alertify.bootstraptheme.min.css" />
+     <link rel="stylesheet" href="assets/css/bootstrap-icons.min.css">
 
      <!-- Iconscout cdn link -->
      <link rel="stylesheet" href="assets/css/line.css">
