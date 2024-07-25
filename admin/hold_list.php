@@ -134,7 +134,7 @@ include('./includes/sidebar.php');
                                                     $book_result = mysqli_query($con, $book_query);
                                                     while($book_row = mysqli_fetch_assoc($book_result)) {
                                                         $hold_id = $book_row['hold_id'];
-                                                        $query = "DELETE FROM holds WHERE hold_id = '$hold_id'";
+                                                        $query = "DELETE FROM holds WHERE hold_id = $hold_id";
                                                         $query_run = mysqli_query($con, $query);
                                                         if($query_run)
                                                         {
