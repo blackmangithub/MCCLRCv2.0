@@ -130,7 +130,7 @@ include('./includes/sidebar.php');
                                                 if(isset($_POST['cancel']))
                                                 {
                                                     $holdbook_id = mysqli_real_escape_string($con, $_POST['cancel']);
-                                                    $book_query = "SELECT hold_id FROM holds WHERE user_id = '$holdbook_id' OR faculty_id = '$holdbook_id'";
+                                                    $book_query = "SELECT * FROM holds WHERE hold_id = $holdbook_id";
                                                     $book_result = mysqli_query($con, $book_query);
                                                     while($book_row = mysqli_fetch_assoc($book_result)) {
                                                         $hold_id = $book_row['hold_id'];
