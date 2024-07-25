@@ -54,7 +54,7 @@ $user_row = $user_result->fetch_assoc();
                                     <?php
                                     $borrow_query = mysqli_query($con, "
                                         SELECT holds.hold_id, holds.hold_date, 
-                                               book.*,
+                                               book.*, book.book_image,
                                                user.user_id, faculty.faculty_id
                                         FROM holds
                                         LEFT JOIN book ON holds.book_title = book.title 
