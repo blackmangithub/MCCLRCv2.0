@@ -89,18 +89,20 @@ include('./includes/sidebar.php');
                                     $borrow_query = mysqli_query($con, "SELECT 
                                     u.user_id, u.firstname AS user_firstname, u.lastname AS user_lastname, 
                                     f.faculty_id, f.firstname AS faculty_firstname, f.lastname AS faculty_lastname,
+                                    h.hold_id,
                                     COUNT(h.hold_id) AS num_hold_books
                                     FROM holds h
                                     LEFT JOIN user u ON u.user_id = h.user_id AND h.hold_status = 'Hold'
                                     LEFT JOIN faculty f ON f.faculty_id = h.faculty_id AND h.hold_status = 'Hold'
                                     WHERE h.hold_status = 'Hold'
-                                    GROUP BY u.user_id, f.faculty_id
+                                    GROUP BY u.user_id, f.faculty_id, h.hold_id
                                     ORDER BY h.hold_id DESC");
 
                                     $borrow_count = mysqli_num_rows($borrow_query);
                                     while($holdlist = mysqli_fetch_array($borrow_query)) {
                                         $name = $holdlist['user_id'] ? $holdlist['user_firstname'].' '.$holdlist['user_lastname'] : $holdlist['faculty_firstname'].' '.$holdlist['faculty_lastname'];
                                         $id = $holdlist['user_id'] ? $holdlist['user_id'] : $holdlist['faculty_id'];
+                                        $hold_id = $holdlist['hold_id'];
                                     ?>
                                     <tr>
                                         <td style="text-transform: capitalize">
@@ -118,8 +120,8 @@ include('./includes/sidebar.php');
                                                 </a>
                                                 <!-- Delete Hold Action -->
                                                 <form action="" method="POST">
+                                                    <input type="hidden" name="hold_id" value="<?=$hold_id;?>">
                                                     <button type="submit" name="delete"
-                                                            value="<?=$holdlist['num_hold_books'];?>"
                                                             class="btn btn-sm border text-danger"
                                                             data-bs-toggle="tooltip"
                                                             data-bs-placement="bottom" title="Delete Holder">
@@ -129,19 +131,13 @@ include('./includes/sidebar.php');
                                                 <?php
                                                 if(isset($_POST['delete']))
                                                 {
-                                                    $holdbook_id = mysqli_real_escape_string($con, $_POST['delete']);
-                                                    $book_query = "SELECT * FROM holds WHERE hold_id = $holdbook_id";
-                                                    $book_result = mysqli_query($con, $book_query);
-                                                    while($book_row = mysqli_fetch_assoc($book_result)) {
-                                                        $hold_id = $book_row['hold_id'];
-                                                        $query = "DELETE FROM holds WHERE hold_id = $hold_id";
-                                                        $query_run = mysqli_query($con, $query);
-                                                        if($query_run)
-                                                        {
-                                                            echo "<script>alert('Deleted successfully'); window.location='hold_list.php'</script>";
-                                                        }
+                                                    $hold_id = mysqli_real_escape_string($con, $_POST['hold_id']);
+                                                    $query = "DELETE FROM holds WHERE hold_id = $hold_id";
+                                                    $query_run = mysqli_query($con, $query);
+                                                    if($query_run)
+                                                    {
+                                                        echo "<script>alert('Deleted successfully'); window.location='hold_list.php'</script>";
                                                     }
-                                                    
                                                 }
                                                 ?>
                                             </div>
