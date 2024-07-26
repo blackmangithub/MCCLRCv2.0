@@ -147,7 +147,7 @@ include('includes/sidebar.php');
                                             $return_query = mysqli_query($con, "SELECT * FROM return_book 
                                                 LEFT JOIN book ON return_book.book_id = book.book_id 
                                                 LEFT JOIN user ON return_book.user_id = user.user_id
-                                                WHERE book_penalty > 1 AND date_returned BETWEEN '$from_date' AND '$to_date' 
+                                                WHERE book_penalty > -1 AND date_returned BETWEEN '$from_date' AND '$to_date' 
                                                 ORDER BY return_book.return_book_id DESC") or die(mysqli_connect_error());
                                             
                                             $count_penalty_query = mysqli_query($con, "SELECT SUM(book_penalty) as total_penalty FROM return_book WHERE book_penalty > 0 AND date_returned BETWEEN '$from_date' AND '$to_date'") or die(mysqli_connect_error());
