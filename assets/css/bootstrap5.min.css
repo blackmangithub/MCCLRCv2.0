@@ -4565,7 +4565,9 @@ fieldset:disabled .btn {
     }
 
     .navbar-expand-lg .navbar-nav .dropdown-menu {
-        position: flex
+        position: flex;
+        left: 0;
+        top:0;
     }
 
     .navbar-expand-lg .navbar-nav .nav-link {
