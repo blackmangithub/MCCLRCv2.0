@@ -32,7 +32,7 @@
      <style>
           .navbar-collapse {
                position: fixed;
-               top: 0;
+               top: 50px;
                left: -100%;
                width: 250px;
                height: 100vh;
