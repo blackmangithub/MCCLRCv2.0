@@ -147,7 +147,6 @@ include('includes/sidebar.php');
                                             $return_query = mysqli_query($con, "SELECT * FROM return_book 
                                                 LEFT JOIN book ON return_book.book_id = book.book_id 
                                                 LEFT JOIN user ON return_book.user_id = user.user_id
-                                                LEFT JOIN faculty ON return_book.faculty_id = faculty.faculty_id
                                                 WHERE book_penalty > -1 AND date_returned BETWEEN '$from_date' AND '$to_date' 
                                                 ORDER BY return_book.return_book_id DESC") or die(mysqli_connect_error());
                                             
@@ -157,7 +156,6 @@ include('includes/sidebar.php');
                                             $return_query = mysqli_query($con, "SELECT * FROM return_book 
                                                 LEFT JOIN book ON return_book.book_id = book.book_id 
                                                 LEFT JOIN user ON return_book.user_id = user.user_id
-                                                LEFT JOIN faculty ON return_book.faculty_id = faculty.faculty_id
                                                 WHERE book_penalty > 0 
                                                 ORDER BY return_book.return_book_id DESC") or die(mysqli_connect_error());
 
