@@ -28,27 +28,6 @@
 
      <!-- Animation -->
      <link rel="stylesheet" href="assets/css/aos.css" />
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
-     <style>
-          .navbar-collapse {
-               position: fixed;
-               top: 50px;
-               left: -100%;
-               width: 250px;
-               height: 100vh;
-               background: #0096FF;
-               transition: left 0.3s;
-          }
-
-          .navbar-collapse.show {
-               left: 0;
-          }
-
-          .navbar-toggler {
-               position: fixed;
-               left: 10px;
-          }
-     </style>
 </head>
 
 <body>
