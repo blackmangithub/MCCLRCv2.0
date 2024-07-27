@@ -45,7 +45,7 @@
           }
 
           .navbar-toggler {
-               position: absolute;
+               position: relative;
                left: 10px;
           }
      </style>
