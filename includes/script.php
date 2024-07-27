@@ -39,7 +39,11 @@ AOS.init();
      <script>
           $(document).ready(function () {
                $('.navbar-toggler').click(function () {
-                    $('#navbarSupportedContent').toggleClass('show');
+                    if ($('#navbarSupportedContent').hasClass('show')) {
+                         $('#navbarSupportedContent').removeClass('show');
+                    } else {
+                         $('#navbarSupportedContent').addClass('show');
+                    }
                });
           });
      </script>
