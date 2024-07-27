@@ -31,7 +31,7 @@
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
      <style>
           .navbar-collapse {
-               position: absolute;
+               position: relative;
                top: 0;
                left: -100%;
                width: 250px;
