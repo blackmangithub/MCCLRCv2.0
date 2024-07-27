@@ -102,16 +102,16 @@ include('includes/sidebar.php');
                     <div class="card-body">
                         <div class="row d-flex justify-content-end align-items-center mt-2">
                             <div class="text-start">
-                                            <button onclick="exportToPDF()" class="btn btn-danger pdf-button">
-                                                <i class="bi bi-file-earmark-pdf-fill"></i> <b>Export to PDF</b>
-                                            </button>
-                                            <button onclick="exportToExcel()" class="btn btn-success excel-button">
-                                                <i class="bi bi-file-earmark-excel-fill"></i> <b>Export to Excel</b>
-                                            </button>
-                                            <button onclick="window.print()" class="btn btn-primary print-button">
-                                                <i class="bi bi-printer-fill"></i> <b>Print</b>
-                                            </button>
-                                        </div>
+                                <button onclick="exportToPDF()" class="btn btn-danger pdf-button">
+                                    <i class="bi bi-file-earmark-pdf-fill"></i> <b>Export to PDF</b>
+                                </button>
+                                <button onclick="exportToExcel()" class="btn btn-success excel-button">
+                                    <i class="bi bi-file-earmark-excel-fill"></i> <b>Export to Excel</b>
+                                </button>
+                                <button onclick="window.print()" class="btn btn-primary print-button">
+                                    <i class="bi bi-printer-fill"></i> <b>Print</b>
+                                </button>
+                            </div>
                             <form action="" method="POST" class="col-12 col-md-5 d-flex">
                                 <?php date_default_timezone_set('Asia/Manila'); ?>
                                 <div class="form-group form-group-sm">
@@ -213,44 +213,48 @@ include('includes/sidebar.php');
     </section>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.16/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
 <script>
-        async function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+    async function exportToPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
 
-            doc.autoTable({
-                html: '#myDataTable',
-                styles: { fontSize: 8 },
-                headStyles: { fillColor: [0, 0, 0] },
-                startY: 20
+        doc.autoTable({
+            html: '#myDataTable2',
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [0, 0, 0] },
+            startY: 20
+        });
+
+        doc.save('penalty_report.pdf');
+    }
+
+    function exportToExcel() {
+        var wb = XLSX.utils.book_new();
+        var ws_data = [
+            ['Penalty Amount', 'Received From', 'Person In Charge', 'Due Date', 'Date Returned']
+        ];
+
+        var table = document.querySelector('#myDataTable2 tbody');
+        var rows = table.querySelectorAll('tr');
+
+        rows.forEach(function(row) {
+            var cells = row.querySelectorAll('td');
+            var row_data = [];
+            cells.forEach(function(cell) {
+                row_data.push(cell.innerText);
             });
+            ws_data.push(row_data);
+        });
 
-            doc.save('student_report.pdf');
-        }
-
-        function exportToExcel() {
-            var wb = XLSX.utils.book_new();
-            var ws_data = [
-                ['Penalty Amount', 'Received From', 'Person In Charge', 'Due Date', 'Date Returned']
-            ];
-
-            var table = document.querySelector('#myDataTable tbody');
-            var rows = table.querySelectorAll('tr');
-
-            rows.forEach(function(row) {
-                var cells = row.querySelectorAll('td');
-                var row_data = [];
-                cells.forEach(function(cell) {
-                    row_data.push(cell.innerText);
-                });
-                ws_data.push(row_data);
-            });
-
-            var ws = XLSX.utils.aoa_to_sheet(ws_data);
-            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-            XLSX.writeFile(wb, "student_report.xlsx");
-        }
-    </script>
+        var ws = XLSX.utils.aoa_to_sheet(ws_data);
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+        XLSX.writeFile(wb, "penalty_report.xlsx");
+    }
+</script>
 
 <?php 
 include('includes/footer.php');
