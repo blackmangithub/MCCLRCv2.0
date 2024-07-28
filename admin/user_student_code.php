@@ -51,6 +51,7 @@ if(isset($_POST['deny'])) {
         // Send email notification
         $subject = "Account Denied Notification";
         $message = "<html><body>";
+        $message = "<img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>";
         $message .= "<h1>Your Account has been Denied</h1>";
         $message .= "<p>Dear Student,</p>";
         $message .= "<p>Your MCC-LRC account registration has been denied. Please contact the library for more details.</p>";
@@ -87,6 +88,7 @@ if(isset($_POST['approved'])) {
         // Send email notification
         $subject = "Account Approved Notification";
         $message = "<html><body>";
+        $message = "<img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>";
         $message .= "<h1>Your Account has been Approved</h1>";
         $message .= "<p>Dear Student,</p>";
         $message .= "<p>Your MCC-LRC account registration has been approved. You can now log in to your account.</p>";
@@ -121,6 +123,7 @@ if(isset($_POST['block_student'])) {
         // Send email notification
         $subject = "Account Blocked Notification";
         $message = "<html><body>";
+        $message = "<img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>";
         $message .= "<h1>Your Account has been Blocked</h1>";
         $message .= "<p>Dear Student,</p>";
         $message .= "<p>Your MCC-LRC account has been blocked for a while. Please contact the library for more details.</p>";
@@ -156,6 +159,7 @@ if(isset($_POST['unblock_student'])) {
         // Send email notification
         $subject = "Account Unblocked Notification";
         $message = "<html><body>";
+        $message = "<img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>";
         $message .= "<h1>Your Account has been Unblocked</h1>";
         $message .= "<p>Dear Student,</p>";
         $message .= "<p>Your MCC-LRC account has been unblocked. You can now log in to your account.</p>";
