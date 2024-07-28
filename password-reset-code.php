@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
 
-function send_password_reset($get_name, $get_email, $token) {
+function send_password_reset($get_email, $token) {
     $mail = new PHPMailer(true);
 
     try {
@@ -22,7 +22,7 @@ function send_password_reset($get_name, $get_email, $token) {
 
         // Sender and recipient settings
         $mail->setFrom('richmann276@gmail.com', 'MCC-LRC ADMIN');
-        $mail->addAddress($get_email, $get_name);
+        $mail->addAddress($get_email);
 
         // Email content settings
         $mail->isHTML(true);
@@ -96,19 +96,18 @@ if (isset($_POST['password_reset_link'])) {
     $token = md5(rand());
 
     // User table check
-    $check_email_user = "SELECT firstname, email FROM user WHERE email='$email' LIMIT 1";
+    $check_email_user = "SELECT email FROM user WHERE email='$email' LIMIT 1";
     $check_email_run_user = mysqli_query($con, $check_email_user);
 
     if (mysqli_num_rows($check_email_run_user) > 0) {
         $row = mysqli_fetch_array($check_email_run_user);
-        $get_name = $row['firstname'];
         $get_email = $row['email'];
 
         $update_token_user = "UPDATE user SET verify_token='$token', token_used=0 WHERE email='$get_email' LIMIT 1";
         $update_token_run_user = mysqli_query($con, $update_token_user);
 
         if ($update_token_run_user) {
-            if (send_password_reset($get_name, $get_email, $token)) {
+            if (send_password_reset($get_email, $token)) {
                 $_SESSION['status'] = 'We e-mailed you a password reset link';
                 $_SESSION['alert_type'] = 'success';
                 header('Location: password-reset.php');
@@ -123,19 +122,18 @@ if (isset($_POST['password_reset_link'])) {
     }
 
     // Faculty table check
-    $check_email_faculty = "SELECT firstname, email FROM faculty WHERE email='$email' LIMIT 1";
+    $check_email_faculty = "SELECT email FROM faculty WHERE email='$email' LIMIT 1";
     $check_email_run_faculty = mysqli_query($con, $check_email_faculty);
 
     if (mysqli_num_rows($check_email_run_faculty) > 0) {
         $row = mysqli_fetch_array($check_email_run_faculty);
-        $get_name = $row['firstname'];
         $get_email = $row['email'];
 
         $update_token_faculty = "UPDATE faculty SET verify_token='$token', token_used=0 WHERE email='$get_email' LIMIT 1";
         $update_token_run_faculty = mysqli_query($con, $update_token_faculty);
 
         if ($update_token_run_faculty) {
-            if (send_password_reset($get_name, $get_email, $token)) {
+            if (send_password_reset($get_email, $token)) {
                 $_SESSION['status'] = 'We e-mailed you a password reset link';
                 $_SESSION['alert_type'] = 'success';
                 header('Location: password-reset.php');

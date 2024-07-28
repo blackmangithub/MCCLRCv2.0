@@ -98,56 +98,59 @@ if(isset($_POST['edit_admin']))
 // Add Admin
 if(isset($_POST['add_admin']))
 {
-     $firstname = mysqli_real_escape_string($con, $_POST['firstname']);
-     $middlename = mysqli_real_escape_string($con, $_POST['middlename']);
-     $lastname = mysqli_real_escape_string($con, $_POST['lastname']);
-     $email = mysqli_real_escape_string($con, $_POST['email']);
-     $address = mysqli_real_escape_string($con, $_POST['address']);
-     $phone_number = mysqli_real_escape_string($con, $_POST['phone_number']);
-     $admin_image = $_FILES['admin_image']['name'];
+    $firstname = mysqli_real_escape_string($con, $_POST['firstname']);
+    $middlename = mysqli_real_escape_string($con, $_POST['middlename']);
+    $lastname = mysqli_real_escape_string($con, $_POST['lastname']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $address = mysqli_real_escape_string($con, $_POST['address']);
+    $phone_number = mysqli_real_escape_string($con, $_POST['phone_number']);
+    $password = mysqli_real_escape_string($con, $_POST['password']);
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $admin_type = mysqli_real_escape_string($con, $_POST['admin_type']);
+    $admin_image = $_FILES['admin_image']['name'];
 
-     if($admin_image != "")
-     {
-                    //  Rename the Image
-               $admin_extension = pathinfo($admin_image, PATHINFO_EXTENSION);
-               $admin_filename = time().'.'.$admin_extension;
-               
+    if($admin_image != "")
+    {
+        // Rename the Image
+        $admin_extension = pathinfo($admin_image, PATHINFO_EXTENSION);
+        $admin_filename = time().'.'.$admin_extension;
 
-               $query = "INSERT INTO admin (firstname, middlename, lastname, email, address, phone_number, password, confirm_password, admin_image, admin_added) VALUES ('$firstname', '$middlename', '$lastname', '$email', '$address', '$phone_number', md5('$lastname'), md5('$lastname'), '$admin_filename', NOW()  )";
-               $query_run = mysqli_query($con, $query);
+        $query = "INSERT INTO admin (firstname, middlename, lastname, email, address, phone_number, password, admin_type, admin_image, admin_added) 
+                  VALUES ('$firstname', '$middlename', '$lastname', '$email', '$address', '$phone_number', '$hashed_password', '$admin_type', '$admin_filename', NOW())";
+        $query_run = mysqli_query($con, $query);
 
-               if($query_run)
-               {
-                    move_uploaded_file($_FILES['admin_image']['tmp_name'], '../uploads/admin_profile/'.$admin_filename);
-                    $_SESSION['message_success'] = 'Admin Added successfully';
-                    header("Location: admin.php");
-                    exit(0);
-               }
-               else
-               {
-                    $_SESSION['message_error'] = 'Admin not Added';
-                    header("Location: admin.php");
-                    exit(0);
-               }
-     }
-     else
-     {
-               $query = "INSERT INTO admin (firstname, middlename, lastname, email, address, phone_number, password, confirm_password, admin_image, admin_added) VALUES ('$firstname', '$middlename', '$lastname', '$email', '$address', '$phone_number', md5('$lastname'), md5('$lastname'), '$admin_image', NOW()  )";
-               $query_run = mysqli_query($con, $query);
+        if($query_run)
+        {
+            move_uploaded_file($_FILES['admin_image']['tmp_name'], '../uploads/admin_profile/'.$admin_filename);
+            $_SESSION['message_success'] = 'Admin Added successfully';
+            header("Location: admin.php");
+            exit(0);
+        }
+        else
+        {
+            $_SESSION['message_error'] = 'Admin not Added';
+            header("Location: admin.php");
+            exit(0);
+        }
+    }
+    else
+    {
+        $query = "INSERT INTO admin (firstname, middlename, lastname, email, address, phone_number, password, admin_type, admin_image, admin_added) 
+                  VALUES ('$firstname', '$middlename', '$lastname', '$email', '$address', '$phone_number', '$hashed_password', '$admin_type', NULL, NOW())";
+        $query_run = mysqli_query($con, $query);
 
-               if($query_run)
-               {
-                    move_uploaded_file($_FILES['admin_image']['tmp_name'], '../uploads/admin_profile/'.$_FILES['admin_image']['name']);
-                    $_SESSION['message_success'] = 'Admin Added successfully';
-                    header("Location: admin.php");
-                    exit(0);
-               }
-               else
-               {
-                    $_SESSION['message_error'] = 'Admin not Added';
-                    header("Location: admin.php");
-                    exit(0);
-               }
-     }
+        if($query_run)
+        {
+            $_SESSION['message_success'] = 'Admin Added successfully';
+            header("Location: admin.php");
+            exit(0);
+        }
+        else
+        {
+            $_SESSION['message_error'] = 'Admin not Added';
+            header("Location: admin.php");
+            exit(0);
+        }
+    }
 }
 ?>

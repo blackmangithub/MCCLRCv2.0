@@ -6,40 +6,57 @@ if(isset($_POST['change_password']))
      $current_password = mysqli_real_escape_string($con, $_POST['current_password']);
      $newpassword = mysqli_real_escape_string($con, $_POST['newpassword']);
      $renewpassword = mysqli_real_escape_string($con, $_POST['renewpassword']);
-
-     $validate_query = "SELECT * FROM admin WHERE password = md5('$current_password')";
+     
+     // Fetch the current hashed password from the database
+     $validate_query = "SELECT password FROM admin WHERE admin_id = '".$_SESSION['auth_admin']['admin_id']."'";
      $validate_query_run = mysqli_query($con, $validate_query);
 
      if(mysqli_num_rows($validate_query_run) > 0)
      {
-          if($newpassword == $renewpassword)
+          $row = mysqli_fetch_assoc($validate_query_run);
+          $current_hashed_password = $row['password'];
+          
+          // Verify the current password
+          if(password_verify($current_password, $current_hashed_password))
           {
-               $change_pass = "UPDATE `admin` SET password= md5('$newpassword'),  confirm_password=md5('$renewpassword')";
-               $change_pass_run = mysqli_query($con, $change_pass);
-
-               if($change_pass_run)
+               if($newpassword == $renewpassword)
                {
-                    $_SESSION['message_success'] = '<small>Password updated successfully</small>';
-                    header("Location: account_settings.php");
-                    exit(0);
+                    // Hash the new password
+                    $new_hashed_password = password_hash($newpassword, PASSWORD_DEFAULT);
+                    
+                    $change_pass = "UPDATE `admin` SET password= '$new_hashed_password' WHERE admin_id = '".$_SESSION['auth_admin']['admin_id']."'";
+                    $change_pass_run = mysqli_query($con, $change_pass);
+
+                    if($change_pass_run)
+                    {
+                         $_SESSION['message_success'] = '<small>Password updated successfully</small>';
+                         header("Location: account_settings.php");
+                         exit(0);
+                    }
+                    else
+                    {
+                         $_SESSION['message_error'] = 'Password not updated';
+                         header("Location: account_settings.php");
+                         exit(0);
+                    }
                }
                else
                {
-                    $_SESSION['message_error'] = 'Password not updated';
+                    $_SESSION['message_error'] = '<small>New password and confirm password do not match</small>';
                     header("Location: account_settings.php");
                     exit(0);
                }
           }
           else
           {
-               $_SESSION['message_error'] = '<small>Password and confirm password not match</small>';
+               $_SESSION['message_error'] = 'Current password is incorrect';
                header("Location: account_settings.php");
                exit(0);
           }
      }
      else
      {
-          $_SESSION['message_error'] = 'Current password not match';
+          $_SESSION['message_error'] = 'Failed to fetch current password';
           header("Location: account_settings.php");
           exit(0);
      }

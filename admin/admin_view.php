@@ -50,7 +50,9 @@ include('./includes/sidebar.php');
                                              </div>
                                              <img src="../uploads/admin_profile/<?=$admin['admin_image'];?>" alt=""
                                                   width="100px" height="100px" class="border border-info">
-                                             <p class="mt-3"><?=$admin['admin_image'];?></p>
+                                                  <br>
+                                                  <br>
+                                             <b class="mt-3"><?=$admin['admin_type'];?></b>
                                         </div>
                                         <div>
                                              <div class="mb-3 mt-2">

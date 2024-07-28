@@ -49,14 +49,61 @@ if(isset($_POST['deny'])) {
     if($query_run) {
         // Send email notification
         $subject = "Account Denied Notification";
-        $message = "<html><body>";
-        $message = "<img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>";
-        $message .= "<h1>Your Account has been Denied</h1>";
-        $message .= "<p>Dear Faculty/Staff,</p>";
-        $message .= "<p>Your MCC-LRC account registration has been denied. Please contact the library for more details.</p>";
-        $message .= "<p>You can also contact us on our <a href='https://www.facebook.com/MCCLRC' target='_blank'>Facebook page</a>.</p>";
-        $message .= "<p>Thank you.</p>";
-        $message .= "</body></html>";
+        $message = " <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        width: 80%;
+                        margin: 20px auto;
+                        padding: 20px;
+                        background-color: #fff;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    }
+                    .header {
+                        text-align: center;
+                        padding-bottom: 20px;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    .logo {
+                        max-width: 150px;
+                        height: auto;
+                    }
+                    .content {
+                        padding: 20px 0;
+                    }
+                    .button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #007bff;
+                        text-decoration: none;
+                        color: white;
+                        border-radius: 4px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <div class='header'>
+                        <img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>
+                    </div>
+                    <div class='content'>
+                        <h1 style='color:#dc3545;text-align:center;'>Your Account has been Denied!!!</h1>
+                        <p>Dear Faculty/Staff,</p>
+                        <p>Your MCC-LRC account registration has been denied. Please contact the library for more details.</p>
+                        <p>You can also contact us on our facebook page <a href='https://www.facebook.com/MCCLRC' target='_blank'>Madridejos Community College - Learning Resource Center</a>.</p>
+                        <p>Thank you.</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        ";
 
         sendEmail($faculty_email, $subject, $message);
 
@@ -86,14 +133,60 @@ if(isset($_POST['approved'])) {
     if($query_run) {
         // Send email notification
         $subject = "Account Approved Notification";
-        $message = "<html><body>";
-        $message = "<img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>";
-        $message .= "<h1>Your Account has been Approved</h1>";
-        $message .= "<p>Dear Faculty/Staff,</p>";
-        $message .= "<p>Your MCC-LRC account registration has been approved. You can now log in to your account.</p>";
-        $message .= "<p>Thank you.</p>";
-        $message .= "</body></html>";
-
+        $message = " <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        width: 80%;
+                        margin: 20px auto;
+                        padding: 20px;
+                        background-color: #fff;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    }
+                    .header {
+                        text-align: center;
+                        padding-bottom: 20px;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    .logo {
+                        max-width: 150px;
+                        height: auto;
+                    }
+                    .content {
+                        padding: 20px 0;
+                    }
+                    .button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #007bff;
+                        text-decoration: none;
+                        color: white;
+                        border-radius: 4px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <div class='header'>
+                        <img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>
+                    </div>
+                    <div class='content'>
+                        <h1 style='color:#198754;text-align:center;'>Your Account has been Approved.</h1>
+                        <p>Dear Faculty/Staff,</p>
+                        <p>Your MCC-LRC account registration has been approved. You can now log in to your account.</p>
+                        <p>Thank you.</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        ";
         sendEmail($faculty_email, $subject, $message);
 
         $_SESSION['message_success'] = 'Faculty approved successfully';
@@ -121,14 +214,61 @@ if(isset($_POST['block_faculty'])) {
 
         // Send email notification
         $subject = "Account Blocked Notification";
-        $message = "<html><body>";
-        $message = "<img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>";
-        $message .= "<h1>Your Account has been Blocked</h1>";
-        $message .= "<p>Dear Faculty/Staff,</p>";
-        $message .= "<p>Your MCC-LRC account has been blocked for a while. Please contact the library for more details.</p>";
-        $message .= "<p>You can also contact us on our <a href='https://www.facebook.com/MCCLRC' target='_blank'>Facebook page</a>.</p>";
-        $message .= "<p>Thank you.</p>";
-        $message .= "</body></html>";
+        $message = " <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        width: 80%;
+                        margin: 20px auto;
+                        padding: 20px;
+                        background-color: #fff;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    }
+                    .header {
+                        text-align: center;
+                        padding-bottom: 20px;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    .logo {
+                        max-width: 150px;
+                        height: auto;
+                    }
+                    .content {
+                        padding: 20px 0;
+                    }
+                    .button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #007bff;
+                        text-decoration: none;
+                        color: white;
+                        border-radius: 4px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <div class='header'>
+                        <img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>
+                    </div>
+                    <div class='content'>
+                        <h1 style='color:#dc3545;text-align:center;'>Your Account has been Blocked!!!</h1>
+                        <p>Dear Faculty/Staff,</p>
+                        <p>Your MCC-LRC account has been blocked for a while. Please contact the library for more details.</p>
+                        <p>You can also contact us on our facebook page <a href='https://www.facebook.com/MCCLRC' target='_blank'>Madridejos Community College - Learning Resource Center</a>.</p>
+                        <p>Thank you.</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        ";
 
         sendEmail($faculty_email, $subject, $message);
 
@@ -157,13 +297,60 @@ if(isset($_POST['unblock_faculty'])) {
 
         // Send email notification
         $subject = "Account Unblocked Notification";
-        $message = "<html><body>";
-        $message = "<img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>";
-        $message .= "<h1>Your Account has been Unblocked</h1>";
-        $message .= "<p>Dear Faculty/Staff,</p>";
-        $message .= "<p>Your MCC-LRC account has been unblocked. You can now log in to your account.</p>";
-        $message .= "<p>Thank you.</p>";
-        $message .= "</body></html>";
+        $message = " <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        width: 80%;
+                        margin: 20px auto;
+                        padding: 20px;
+                        background-color: #fff;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    }
+                    .header {
+                        text-align: center;
+                        padding-bottom: 20px;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    .logo {
+                        max-width: 150px;
+                        height: auto;
+                    }
+                    .content {
+                        padding: 20px 0;
+                    }
+                    .button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #007bff;
+                        text-decoration: none;
+                        color: white;
+                        border-radius: 4px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <div class='header'>
+                        <img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>
+                    </div>
+                    <div class='content'>
+                        <h1 style='color:#198754;text-align:center;'>Your Account has been Unblocked.</h1>
+                        <p>Dear Faculty/Staff,</p>
+                        <p>Your MCC-LRC account has been unblocked. You can now log in to your account.</p>
+                        <p>Thank you.</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        ";
 
         sendEmail($faculty_email, $subject, $message);
 
