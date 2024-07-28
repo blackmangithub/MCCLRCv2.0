@@ -34,16 +34,25 @@ if(isset($_POST['register_btn'])) {
         exit(0);
     }
 
-    // Check if student ID or username already exists
+    // Check if student ID, username, or email already exists
     $check_query = "";
+    $email_check_query = "SELECT email FROM user WHERE email = '$email' UNION SELECT email FROM faculty WHERE email = '$email'";
+
     if ($role_as == 'student') {
         $check_query = "SELECT student_id_no FROM user WHERE student_id_no = '$student_id_no'";
     } elseif ($role_as == 'faculty' || $role_as == 'staff') {
         $check_query = "SELECT username FROM faculty WHERE username = '$student_id_no'"; // Assuming username is used for faculty
     }
+
     $check_query_run = mysqli_query($con, $check_query);
+    $email_check_query_run = mysqli_query($con, $email_check_query);
+
     if(mysqli_num_rows($check_query_run) > 0) {
         $_SESSION['message_error'] = ($role_as == 'student') ? "Student ID No. already exists" : "Username already exists";
+        header("Location: signup.php");
+        exit(0);
+    } elseif (mysqli_num_rows($email_check_query_run) > 0) {
+        $_SESSION['message_error'] = "Email already exists";
         header("Location: signup.php");
         exit(0);
     }

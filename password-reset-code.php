@@ -6,12 +6,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-    require 'vendor/phpmailer/phpmailer/src/Exception.php';
+require 'vendor/phpmailer/phpmailer/src/Exception.php';
     require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
     require 'vendor/phpmailer/phpmailer/src/SMTP.php';
 
-function send_password_reset($get_name, $get_email, $token)
-{
+function send_password_reset($get_name, $get_email, $token) {
     $mail = new PHPMailer(true);
 
     try {
@@ -34,62 +33,64 @@ function send_password_reset($get_name, $get_email, $token)
         $mail->Subject = 'Here is your link to Reset the password of your MCC-LRC Account';
         $mail->Body = "
         <html>
-                <head>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            background-color: #f4f4f4;
-                            margin: 0;
-                            padding: 0;
-                        }
-                        .container {
-                            width: 80%;
-                            margin: 20px auto;
-                            padding: 20px;
-                            background-color: #fff;
-                            border-radius: 8px;
-                            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                        }
-                        .header {
-                            text-align: center;
-                            padding-bottom: 20px;
-                            border-bottom: 1px solid #ddd;
-                        }
-                        .logo {
-                            max-width: 150px;
-                            height: auto;
-                        }
-                        .content {
-                            padding: 20px 0;
-                        }
-                        .button {
-                            display: inline-block;
-                            padding: 10px 20px;
-                            background-color: #007bff;
-                            text-decoration: none;
-                            border-radius: 4px;
-                        }
-                    </style>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        width: 80%;
+                        margin: 20px auto;
+                        padding: 20px;
+                        background-color: #fff;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    }
+                    .header {
+                        text-align: center;
+                        padding-bottom: 20px;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    .logo {
+                        max-width: 150px;
+                        height: auto;
+                    }
+                    .content {
+                        padding: 20px 0;
+                    }
+                    .button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #007bff;
+                        text-decoration: none;
+                        color: white;
+                        border-radius: 4px;
+                    }
+                </style>
             </head>
             <body>
-            <div class='container'>
-            <div class='header'>
-            <img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>
-            </div>
-            <div class='content'>
-            <p>Hello,</p>
-            <p>We received a request to reset your password. Click the button below to reset it:</p>
-            <p><a style='color: white;' href='https://localhost/password-change.php?token=".urlencode($token)."&email=".urlencode($get_email)."' class='button'>Reset Password</a></p>
-            <p>If you did not request a password reset, please ignore this email.</p>
-            </div>
-            </div>
+                <div class='container'>
+                    <div class='header'>
+                        <img src='https://mcc-lrc.com/images/mcc-logo.png' alt='Logo'>
+                    </div>
+                    <div class='content'>
+                        <p>Hello,</p>
+                        <p>We received a request to reset your password. Click the button below to reset it:</p>
+                        <p><a style='color: white;' href='https://mcc-lrc.com/password-change.php?token=" . urlencode($token) . "&email=" . urlencode($get_email) . "' class='button'>Reset Password</a></p>
+                        <p>If you did not request a password reset, please ignore this email.</p>
+                    </div>
+                </div>
             </body>
         </html>
-     ";
+        ";
 
         $mail->send();
         return true;
     } catch (Exception $e) {
+        error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         return false;
     }
 }
@@ -111,11 +112,17 @@ if (isset($_POST['password_reset_link'])) {
         $update_token_run_user = mysqli_query($con, $update_token_user);
 
         if ($update_token_run_user) {
-            send_password_reset($get_name, $get_email, $token);
-            $_SESSION['status'] = 'We e-mailed you a password reset link';
-                $_SESSION['alert_type'] = 'success'; // Optional: Set the alert type if needed
+            if (send_password_reset($get_name, $get_email, $token)) {
+                $_SESSION['status'] = 'We e-mailed you a password reset link';
+                $_SESSION['alert_type'] = 'success';
                 header('Location: password-reset.php');
                 exit(0);
+            } else {
+                $_SESSION['status'] = 'Email sending failed. Please try again.';
+                $_SESSION['alert_type'] = 'danger';
+                header('Location: password-reset.php');
+                exit(0);
+            }
         }
     }
 
@@ -132,11 +139,17 @@ if (isset($_POST['password_reset_link'])) {
         $update_token_run_faculty = mysqli_query($con, $update_token_faculty);
 
         if ($update_token_run_faculty) {
-            send_password_reset($get_name, $get_email, $token);
-            $_SESSION['status'] = 'We e-mailed you a password reset link';
-            $_SESSION['alert_type'] = 'success';
-            header('Location: password-reset.php');
-            exit(0);
+            if (send_password_reset($get_name, $get_email, $token)) {
+                $_SESSION['status'] = 'We e-mailed you a password reset link';
+                $_SESSION['alert_type'] = 'success';
+                header('Location: password-reset.php');
+                exit(0);
+            } else {
+                $_SESSION['status'] = 'Email sending failed. Please try again.';
+                $_SESSION['alert_type'] = 'danger';
+                header('Location: password-reset.php');
+                exit(0);
+            }
         }
     } else {
         $_SESSION['status'] = 'No email found';
@@ -150,7 +163,6 @@ if (isset($_POST['password-change'])) {
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $new_password = mysqli_real_escape_string($con, $_POST['new_password']);
     $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-    $current_time = date("Y-m-d H:i:s");
 
     // User table check
     $check_email_user = "SELECT email, token_used FROM user WHERE email='$email' LIMIT 1";
@@ -168,8 +180,13 @@ if (isset($_POST['password-change'])) {
 
             if ($update_password_run_user) {
                 $_SESSION['status'] = 'Password successfully changed.';
-                $_SESSION['alert_type'] = 'success'; // Optional: Set the alert type if needed
+                $_SESSION['alert_type'] = 'success';
                 header('Location: login.php');
+                exit(0);
+            } else {
+                $_SESSION['status'] = 'Failed to update the password. Please try again.';
+                $_SESSION['alert_type'] = 'danger';
+                header('Location: password-change.php');
                 exit(0);
             }
         } else {
@@ -196,17 +213,24 @@ if (isset($_POST['password-change'])) {
 
             if ($update_password_run_faculty) {
                 $_SESSION['status'] = 'Password successfully changed.';
-                $_SESSION['alert_type'] = 'success'; // Optional: Set the alert type if needed
+                $_SESSION['alert_type'] = 'success';
                 header('Location: login.php');
+                exit(0);
+            } else {
+                $_SESSION['status'] = 'Failed to update the password. Please try again.';
+                $_SESSION['alert_type'] = 'danger';
+                header('Location: password-change.php');
                 exit(0);
             }
         } else {
             $_SESSION['status'] = 'Link already been used. Please request a new password reset link.';
+            $_SESSION['alert_type'] = 'danger';
             header('Location: password-reset.php');
             exit(0);
         }
     } else {
         $_SESSION['status'] = 'Something went wrong.';
+        $_SESSION['alert_type'] = 'danger';
         header('Location: password-change.php');
         exit(0);
     }
