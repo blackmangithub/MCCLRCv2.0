@@ -154,7 +154,7 @@ include('./admin/config/dbcon.php');
 
           // Event listener for role select change
           roleSelect.addEventListener('change', function() {
-               if (roleSelect.value === 'faculty') {
+               if (roleSelect.value === 'faculty' || roleSelected.value === 'staff') {
                     studentIdLabel.textContent = 'Username';
                     studentIdInput.placeholder = 'Enter your username';
                     studentIdInput.removeAttribute('maxlength'); // Remove maxlength for free typing
@@ -168,7 +168,7 @@ include('./admin/config/dbcon.php');
           });
 
           // Initial setup based on default role selection
-          if (roleSelect.value === 'faculty') {
+          if (roleSelect.value === 'faculty' || roleSelected.value === 'staff') {
                studentIdInput.removeAttribute('maxlength');
                studentIdInput.removeEventListener('input', formatStudentID);
           } else {
