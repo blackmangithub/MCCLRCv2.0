@@ -358,9 +358,9 @@ include('./admin/config/dbcon.php');
                 yearLevelField.style.display = 'block';
                 stud_idLabel.textContent = 'Student ID No.';
                 studentIDInput.value = ''; // Clear the input value
-            } else if (selectedRole === 'faculty') {
+            } else if (selectedRole === 'faculty' || selectedRole === 'staff') {
                 yearLevelField.style.display = 'none';
-                stud_idLabel.textContent = 'Faculty Username';
+                stud_idLabel.textContent = 'Faculty/Staff Username';
                 studentIDInput.value = ''; // Clear the input value
             }
         });
