@@ -100,14 +100,12 @@ if (isset($_POST['password_reset_link'])) {
     $check_email_run_user = mysqli_query($con, $check_email_user);
 
     if (mysqli_num_rows($check_email_run_user) > 0) {
-        $row = mysqli_fetch_array($check_email_run_user);
-        $get_email = $row['email'];
 
-        $update_token_user = "UPDATE user SET verify_token='$token', token_used=0 WHERE email='$get_email' LIMIT 1";
+        $update_token_user = "UPDATE user SET verify_token='$token', token_used=0 WHERE email='$email' LIMIT 1";
         $update_token_run_user = mysqli_query($con, $update_token_user);
 
         if ($update_token_run_user) {
-            if (send_password_reset($get_email, $token)) {
+            if (send_password_reset($email, $token)) {
                 $_SESSION['status'] = 'We e-mailed you a password reset link';
                 $_SESSION['alert_type'] = 'success';
                 header('Location: password-reset.php');
@@ -126,14 +124,12 @@ if (isset($_POST['password_reset_link'])) {
     $check_email_run_faculty = mysqli_query($con, $check_email_faculty);
 
     if (mysqli_num_rows($check_email_run_faculty) > 0) {
-        $row = mysqli_fetch_array($check_email_run_faculty);
-        $get_email = $row['email'];
 
-        $update_token_faculty = "UPDATE faculty SET verify_token='$token', token_used=0 WHERE email='$get_email' LIMIT 1";
+        $update_token_faculty = "UPDATE faculty SET verify_token='$token', token_used=0 WHERE email='$email' LIMIT 1";
         $update_token_run_faculty = mysqli_query($con, $update_token_faculty);
 
         if ($update_token_run_faculty) {
-            if (send_password_reset($get_email, $token)) {
+            if (send_password_reset($email, $token)) {
                 $_SESSION['status'] = 'We e-mailed you a password reset link';
                 $_SESSION['alert_type'] = 'success';
                 header('Location: password-reset.php');
