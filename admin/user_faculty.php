@@ -59,7 +59,7 @@ include('./includes/sidebar.php');
                                         </thead>
                                         <tbody>
                                              <?php
-                                             $query = "SELECT * FROM faculty WHERE status IN ('approved', 'blocked') AND (role_as = 'faculty' OR role_as = 'staff') ORDER BY status ASC";
+                                             $query = "SELECT * FROM faculty WHERE status IN ('approved' AND 'blocked') AND (role_as = 'faculty' OR role_as = 'staff') ORDER BY faculty_id ASC";
                                              $query_run = mysqli_query($con, $query);
 
                                              if(mysqli_num_rows($query_run)) {
