@@ -360,7 +360,7 @@ include('./admin/config/dbcon.php');
                 studentIDInput.value = ''; // Clear the input value
             } else if (selectedRole === 'faculty' || selectedRole === 'staff') {
                 yearLevelField.style.display = 'none';
-                stud_idLabel.textContent = 'Faculty/Staff Username';
+                stud_idLabel.textContent = 'Username';
                 studentIDInput.value = ''; // Clear the input value
             }
         });
