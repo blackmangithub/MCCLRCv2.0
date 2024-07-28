@@ -56,7 +56,10 @@ if(isset($_POST['login_btn'])) {
                     exit(0);
                 } elseif ($status == 'pending') {
                     $_SESSION['message_error'] = "Your account is still pending for approval! Please wait..";
-                } else {
+                } elseif ($status == 'blocked') {
+                    $_SESSION['message_error'] = "Your account has been blocked!";
+                }
+                else {
                     $_SESSION['message_error'] = "Your account is inactive or disabled";
                 }
             } else {

@@ -48,6 +48,40 @@ if(isset($_POST['approved']))
      }
 }
 
+// Block faculty
+if(isset($_POST['block_faculty'])) {
+     $faculty_id = $_POST['block_faculty'];
+     $query = "UPDATE faculty SET status='blocked' WHERE faculty_id='$faculty_id'";
+     $query_run = mysqli_query($con, $query);
+
+     if($query_run) {
+          $_SESSION['message'] = "Faculty staff has been blocked successfully.";
+          header("Location: user_faculty.php");
+          exit(0);
+     } else {
+          $_SESSION['message'] = "Something went wrong.";
+          header("Location: user_faculty.php");
+          exit(0);
+     }
+}
+
+// Unblock faculty
+if(isset($_POST['unblock_faculty'])) {
+     $faculty_id = $_POST['unblock_faculty'];
+     $query = "UPDATE faculty SET status='approved' WHERE faculty_id='$faculty_id'";
+     $query_run = mysqli_query($con, $query);
+
+     if($query_run) {
+          $_SESSION['message'] = "Faculty staff has been unblocked successfully.";
+          header("Location: user_faculty.php");
+          exit(0);
+     } else {
+          $_SESSION['message'] = "Something went wrong.";
+          header("Location: user_faculty.php");
+          exit(0);
+     }
+}
+
 // Delete Action
 if(isset($_POST['delete_faculty']))
 {
