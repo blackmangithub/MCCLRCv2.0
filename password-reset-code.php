@@ -18,8 +18,8 @@ function send_password_reset($get_name, $get_email, $token) {
         $mail->SMTPAuth = true;
         $mail->Username = 'richmann276@gmail.com';
         $mail->Password = 'higw jept zipw zrwn'; // Use an app-specific password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = 465;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
 
         // Sender and recipient settings
         $mail->setFrom('richmann276@gmail.com', 'MCC-LRC ADMIN');
