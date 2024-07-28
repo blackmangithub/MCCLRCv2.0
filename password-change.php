@@ -60,22 +60,6 @@ $faculty_row = $faculty_result->fetch_assoc();
         .back:hover {
             color: gray;
         }
-        /* Custom styles for toggle password icon */
-        .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #777; /* Adjust color as needed */
-        }
-        .toggle-password-icon {
-            font-size: 16px; /* Adjust icon size */
-        }
-        /* Adjust icon color when hovered */
-        .toggle-password:hover .toggle-password-icon {
-            color: #333;
-        }
     </style>
 </head>
 
@@ -104,9 +88,6 @@ $faculty_row = $faculty_result->fetch_assoc();
                                 <div class="form-floating mb-3">
                                     <input type="password" id="passwordInput" class="form-control" name="new_password" placeholder="New Password" required>
                                     <label for="password">New Password</label>
-                                    <span class="toggle-password" onclick="togglePasswordVisibility('passwordInput', 'passwordToggleIcon')">
-                                        <i class="bi bi-eye toggle-password-icon" id="passwordToggleIcon"></i>
-                                    </span>
                                     <div id="passwordLengthFeedback" class="invalid-feedback">
                                         Password must be at least 8 characters long.
                                     </div>
@@ -114,12 +95,13 @@ $faculty_row = $faculty_result->fetch_assoc();
                                 <div class="form-floating mb-3">
                                     <input type="password" id="confirmPasswordInput" class="form-control" name="cpassword" placeholder="Confirm New Password" required>
                                     <label for="cpassword">Confirm Password</label>
-                                    <span class="toggle-password" onclick="togglePasswordVisibility('confirmPasswordInput', 'confirmPasswordToggleIcon')">
-                                        <i class="bi bi-eye toggle-password-icon" id="confirmPasswordToggleIcon"></i>
-                                    </span>
                                     <div id="passwordMatchFeedback" class="invalid-feedback">
                                         Passwords do not match.
                                     </div>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="showPasswordCheckbox" onclick="togglePasswordVisibility()">
+                                    <label class="form-check-label" for="showPasswordCheckbox">Show Password</label>
                                 </div>
                             </div>
                             <div class="d-grid gap-2 md-3">
@@ -154,17 +136,17 @@ $faculty_row = $faculty_result->fetch_assoc();
             return isValid;
         }
 
-        function togglePasswordVisibility(inputId, iconId) {
-            const passwordInput = document.getElementById(inputId);
-            const passwordIcon = document.getElementById(iconId);
-            if (passwordInput.type === 'password') {
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+            const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
+
+            if (showPasswordCheckbox.checked) {
                 passwordInput.type = 'text';
-                passwordIcon.classList.remove('bi-eye');
-                passwordIcon.classList.add('bi-eye-slash');
+                confirmPasswordInput.type = 'text';
             } else {
                 passwordInput.type = 'password';
-                passwordIcon.classList.remove('bi-eye-slash');
-                passwordIcon.classList.add('bi-eye');
+                confirmPasswordInput.type = 'password';
             }
         }
     </script>
