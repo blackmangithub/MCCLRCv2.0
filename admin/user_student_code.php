@@ -53,7 +53,7 @@ if(isset($_POST['deny'])) {
         $message = "<html><body>";
         $message .= "<h1>Your Account has been Denied</h1>";
         $message .= "<p>Dear Student,</p>";
-        $message .= "<p>Your account registration has been denied. Please contact the library for more details.</p>";
+        $message .= "<p>Your MCC-LRC account registration has been denied. Please contact the library for more details.</p>";
         $message .= "<p>You can also contact us on our <a href='https://www.facebook.com/MCCLRC' target='_blank'>Facebook page</a>.</p>";
         $message .= "<p>Thank you.</p>";
         $message .= "</body></html>";
@@ -89,7 +89,7 @@ if(isset($_POST['approved'])) {
         $message = "<html><body>";
         $message .= "<h1>Your Account has been Approved</h1>";
         $message .= "<p>Dear Student,</p>";
-        $message .= "<p>Your account registration has been approved. You can now log in to your account.</p>";
+        $message .= "<p>Your MCC-LRC account registration has been approved. You can now log in to your account.</p>";
         $message .= "<p>Thank you.</p>";
         $message .= "</body></html>";
 
@@ -123,7 +123,7 @@ if(isset($_POST['block_student'])) {
         $message = "<html><body>";
         $message .= "<h1>Your Account has been Blocked</h1>";
         $message .= "<p>Dear Student,</p>";
-        $message .= "<p>Your account has been blocked for a while. Please contact the library for more details.</p>";
+        $message .= "<p>Your MCC-LRC account has been blocked for a while. Please contact the library for more details.</p>";
         $message .= "<p>You can also contact us on our <a href='https://www.facebook.com/MCCLRC' target='_blank'>Facebook page</a>.</p>";
         $message .= "<p>Thank you.</p>";
         $message .= "</body></html>";
@@ -158,7 +158,7 @@ if(isset($_POST['unblock_student'])) {
         $message = "<html><body>";
         $message .= "<h1>Your Account has been Unblocked</h1>";
         $message .= "<p>Dear Student,</p>";
-        $message .= "<p>Your account has been unblocked. You can now log in to your account.</p>";
+        $message .= "<p>Your MCC-LRC account has been unblocked. You can now log in to your account.</p>";
         $message .= "<p>Thank you.</p>";
         $message .= "</body></html>";
 
