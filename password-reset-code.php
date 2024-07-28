@@ -1,7 +1,6 @@
 <?php
 session_start();
 include('./admin/config/dbcon.php');
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -24,7 +23,6 @@ function send_password_reset($get_name, $get_email, $token) {
         // Sender and recipient settings
         $mail->setFrom('richmann276@gmail.com', 'MCC-LRC ADMIN');
         $mail->addAddress($get_email, $get_name);
-        $mail->addReplyTo('richmann276@gmail.com', 'MCC-LRC ADMIN');
 
         // Email content settings
         $mail->isHTML(true);
