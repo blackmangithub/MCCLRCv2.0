@@ -29,13 +29,13 @@ if(isset($_POST['admin_login_btn']))
         'admin_type'=>$admin_type,
       ];
       
-      if($_SESSION['auth_role'] == 'Admin')  // Admin
+      if($_SESSION['auth_role'] == 'admin')  // Admin
       {
         $_SESSION['message_success'] = "<small>Welcome to Dashboard Admin!</small>";
         header("Location:index.php");
         exit(0);
       }
-      elseif($_SESSION['auth_role'] == 'Staff')  // Staff
+      elseif($_SESSION['auth_role'] == 'staff')  // Staff
       {
         $_SESSION['message_success'] = "<small>Welcome to Dashboard Staff!</small>";
         header("Location:index.php");
