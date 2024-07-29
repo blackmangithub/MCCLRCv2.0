@@ -115,8 +115,8 @@ if(isset($_POST['add_admin']))
         $admin_extension = pathinfo($admin_image, PATHINFO_EXTENSION);
         $admin_filename = time().'.'.$admin_extension;
 
-        $query = "INSERT INTO admin (firstname, middlename, lastname, email, address, phone_number, password, admin_type, admin_image, admin_added) 
-                  VALUES ('$firstname', '$middlename', '$lastname', '$email', '$address', '$phone_number', '$hashed_password', '$admin_type', '$admin_filename', NOW())";
+        $query = "INSERT INTO admin (firstname, middlename, lastname, email, address, phone_number, password, admin_image, admin_type, admin_added) 
+                  VALUES ('$firstname', '$middlename', '$lastname', '$email', '$address', '$phone_number', '$hashed_password', '$admin_filename', '$admin_type', NOW())";
         $query_run = mysqli_query($con, $query);
 
         if($query_run)
@@ -135,8 +135,8 @@ if(isset($_POST['add_admin']))
     }
     else
     {
-        $query = "INSERT INTO admin (firstname, middlename, lastname, email, address, phone_number, password, admin_type, admin_image, admin_added) 
-                  VALUES ('$firstname', '$middlename', '$lastname', '$email', '$address', '$phone_number', '$hashed_password', '$admin_type', NULL, NOW())";
+        $query = "INSERT INTO admin (firstname, middlename, lastname, email, address, phone_number, password, admin_image, admin_type, admin_added) 
+                  VALUES ('$firstname', '$middlename', '$lastname', '$email', '$address', '$phone_number', '$hashed_password', NULL, '$admin_type', NOW())";
         $query_run = mysqli_query($con, $query);
 
         if($query_run)
