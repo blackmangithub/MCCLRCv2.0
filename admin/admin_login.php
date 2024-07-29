@@ -1,7 +1,6 @@
 <?php
 session_start();
 include('config/dbcon.php');
-include('authentication.php');
 
 if(isset($_POST['admin_login_btn']))
 {
@@ -30,13 +29,13 @@ if(isset($_POST['admin_login_btn']))
         'admin_type'=>$admin_type,
       ];
       
-      if($_SESSION['auth_role'] == 'admin')  // Admin
+      if($_SESSION['auth_role'] == 'Admin')  // Admin
       {
         $_SESSION['message_success'] = "<small>Welcome to Dashboard Admin!</small>";
         header("Location:index.php");
         exit(0);
       }
-      elseif($_SESSION['auth_role'] == 'staff')  // Staff
+      elseif($_SESSION['auth_role'] == 'Staff')  // Staff
       {
         $_SESSION['message_success'] = "<small>Welcome to Dashboard Staff!</small>";
         header("Location:index.php");
