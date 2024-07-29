@@ -98,7 +98,7 @@ if (isset($_POST['password_reset_link'])) {
     $token = md5(rand());
 
     // User table check
-    $check_email_user = "SELECT firstname, email FROM user WHERE email='$email' LIMIT 1";
+    $check_email_user = "SELECT firstname, email FROM user WHERE email='$email'";
     $check_email_run_user = mysqli_query($con, $check_email_user);
 
     if (mysqli_num_rows($check_email_run_user) > 0) {
@@ -106,7 +106,7 @@ if (isset($_POST['password_reset_link'])) {
         $get_name = $row['firstname'];
         $get_email = $row['email'];
 
-        $update_token_user = "UPDATE user SET verify_token='$token', token_used=0 WHERE email='$get_email' LIMIT 1";
+        $update_token_user = "UPDATE user SET verify_token='$token', token_used=0 WHERE email='$get_email'";
         $update_token_run_user = mysqli_query($con, $update_token_user);
 
         if ($update_token_run_user) {
@@ -125,7 +125,7 @@ if (isset($_POST['password_reset_link'])) {
     }
 
     // Faculty table check
-    $check_email_faculty = "SELECT firstname, email FROM faculty WHERE email='$email' LIMIT 1";
+    $check_email_faculty = "SELECT firstname, email FROM faculty WHERE email='$email'";
     $check_email_run_faculty = mysqli_query($con, $check_email_faculty);
 
     if (mysqli_num_rows($check_email_run_faculty) > 0) {
@@ -133,7 +133,7 @@ if (isset($_POST['password_reset_link'])) {
         $get_name = $row['firstname'];
         $get_email = $row['email'];
 
-        $update_token_faculty = "UPDATE faculty SET verify_token='$token', token_used=0 WHERE email='$get_email' LIMIT 1";
+        $update_token_faculty = "UPDATE faculty SET verify_token='$token', token_used=0 WHERE email='$get_email'";
         $update_token_run_faculty = mysqli_query($con, $update_token_faculty);
 
         if ($update_token_run_faculty) {
@@ -163,7 +163,7 @@ if (isset($_POST['password-change'])) {
     $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
     // User table check
-    $check_email_user = "SELECT email, token_used FROM user WHERE email='$email' LIMIT 1";
+    $check_email_user = "SELECT email, token_used FROM user WHERE email='$email'";
     $check_email_run_user = mysqli_query($con, $check_email_user);
 
     if (mysqli_num_rows($check_email_run_user) > 0) {
@@ -173,7 +173,7 @@ if (isset($_POST['password-change'])) {
 
         // Check if token is used
         if ($token_used == 0) {
-            $update_password_user = "UPDATE user SET password='$hashed_password', token_used=1 WHERE email='$get_email' LIMIT 1";
+            $update_password_user = "UPDATE user SET password='$hashed_password', token_used=1 WHERE email='$get_email'";
             $update_password_run_user = mysqli_query($con, $update_password_user);
 
             if ($update_password_run_user) {
@@ -196,7 +196,7 @@ if (isset($_POST['password-change'])) {
     }
 
     // Faculty table check
-    $check_email_faculty = "SELECT email, token_used FROM faculty WHERE email='$email' LIMIT 1";
+    $check_email_faculty = "SELECT email, token_used FROM faculty WHERE email='$email'";
     $check_email_run_faculty = mysqli_query($con, $check_email_faculty);
 
     if (mysqli_num_rows($check_email_run_faculty) > 0) {
@@ -206,7 +206,7 @@ if (isset($_POST['password-change'])) {
 
         // Check if token is used
         if ($token_used == 0) {
-            $update_password_faculty = "UPDATE faculty SET password='$hashed_password', token_used=1 WHERE email='$get_email' LIMIT 1";
+            $update_password_faculty = "UPDATE faculty SET password='$hashed_password', token_used=1 WHERE email='$get_email'";
             $update_password_run_faculty = mysqli_query($con, $update_password_faculty);
 
             if ($update_password_run_faculty) {
