@@ -1,6 +1,6 @@
 <?php 
 
-$host = "127.0.0.1:3306";
+$host = "localhost";
 $username = "u510162695_mcclrc";
 $password = "1Mcclrc_pass";
 $database = "u510162695_mcclrc";
