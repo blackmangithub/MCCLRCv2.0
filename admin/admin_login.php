@@ -6,9 +6,9 @@ if(isset($_POST['admin_login_btn']))
 {
   $email = mysqli_real_escape_string($con, $_POST['email']);
   $password = mysqli_real_escape_string($con, $_POST['password']);
-  $admin_type = mysqli_real_escape_string($con, $_POST['admin_type']);
+  $admin_types = mysqli_real_escape_string($con, $_POST['admin_type']);
 
-  $admin_login_query = "SELECT * FROM admin WHERE email='$email'";
+  $admin_login_query = "SELECT * FROM admin WHERE email='$email' AND admin_type='$admin_types'";
   $admin_login_query_run = mysqli_query($con, $admin_login_query);
 
   if(mysqli_num_rows($admin_login_query_run) > 0)
