@@ -103,7 +103,7 @@ if(isset($_POST['admin_login_btn']))
                                    <div class="col-md-12">
                                    <div class="form-floating mb-3">
                                              <select class="form-select" id="admin_type" name="admin_type" required>
-                                                  <option value="" selected disabled>Select Admin Type</option>
+                                                  <option value="" selected disabled>Select Type</option>
                                                   <option value="Admin">Admin</option>
                                                   <option value="Staff">Staff</option>
                                              </select>
