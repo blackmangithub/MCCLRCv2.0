@@ -99,7 +99,7 @@ if(isset($_POST['admin_login_btn']))
                                    </center>
                               </div>
 
-                              <form action="admin_login.php" method="POST" class="needs-validation" novalidate>
+                              <form action="" method="POST" class="needs-validation" novalidate>
                                    <div class="col-md-12">
                                    <div class="form-floating mb-3">
                                              <select class="form-select" id="admin_type" name="admin_type" required>
