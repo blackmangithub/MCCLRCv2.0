@@ -2,6 +2,10 @@
 session_start();
 include('config/dbcon.php');
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if(isset($_POST['admin_login_btn']))
 {
   $email = mysqli_real_escape_string($con, $_POST['email']);
@@ -103,7 +107,7 @@ if(isset($_POST['admin_login_btn']))
                                    <div class="col-md-12">
                                    <div class="form-floating mb-3">
                                              <select class="form-select" id="admin_type" name="admin_type" required>
-                                                  <option value="" selected disabled>Select Admin Type</option>
+                                                  <option value="" selected disabled>Select Type</option>
                                                   <option value="Admin">Admin</option>
                                                   <option value="Staff">Staff</option>
                                              </select>
