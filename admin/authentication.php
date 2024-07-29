@@ -10,7 +10,7 @@ if(!isset($_SESSION['auth']))
 }
 else
 {
-  if($_SESSION['auth_admin']['admin_type'] != "Admin" && $_SESSION['auth_admin']['admin_type'] != "Staff")
+  if($_SESSION['auth_admin']['auth_role'] != "Admin" && $_SESSION['auth_admin']['auth_role'] != "Staff")
   {
     $_SESSION['message_error'] = "<small>You are not authorized to access this page</small>";
     header("Location:admin_login.php");
