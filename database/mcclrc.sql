@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2024 at 04:45 AM
+-- Generation Time: Jul 29, 2024 at 12:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,6 @@ CREATE TABLE `admin` (
   `confirm_password` varchar(100) NOT NULL,
   `admin_image` varchar(100) NOT NULL,
   `admin_type` varchar(100) NOT NULL,
-  `role_as` tinyint(4) NOT NULL DEFAULT 1,
   `admin_added` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
@@ -47,9 +46,9 @@ CREATE TABLE `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`admin_id`, `firstname`, `middlename`, `lastname`, `email`, `address`, `phone_number`, `password`, `confirm_password`, `admin_image`, `admin_type`, `role_as`, `admin_added`) VALUES
-(13, 'Relina', '', 'Jabal-balili', 'admin@gmail.com', 'address', '09123456789', '21232f297a57a5a743894a0e4a801fc3', '21232f297a57a5a743894a0e4a801fc3', '1670055503.png', '', 1, '2022-11-30 01:17:21'),
-(39, 'Diovin', 'Pasicaran', 'Calatero', 'richmann276@gmail.com', 'Patao, Bantayan, Cebu', '(+63) 9858-024-662', '215f6edb64ede0706dc31fc0ab9afe7b', '215f6edb64ede0706dc31fc0ab9afe7b', '1721472794.png', '', 1, '2024-07-20 18:53:14');
+INSERT INTO `admin` (`admin_id`, `firstname`, `middlename`, `lastname`, `email`, `address`, `phone_number`, `password`, `confirm_password`, `admin_image`, `admin_type`, `admin_added`) VALUES
+(42, 'Diovin', 'Pasicaran', 'Calatero', 'diovincalatero150@gmail.com', 'Patao, Bantayan, Cebu', '09858024662', '$2y$10$DqhTbOtMAdSgVbEnBnq57.FFlvNuw3Y4XvYEiGJJKcmjhuRB1Y5Lu', '', '1722155329.webp', 'Staff', '2024-07-28 16:28:49'),
+(43, 'Relina', '', 'Jabal-Balili', 'admin@gmail.com', 'secret', '09123456789', '$2y$10$MpZjrHt4vuw52aURtC1PuOCoubx9d5JzwqUsapgAIqoMoO6IucbiK', '', '1722156775.webp', 'Admin', '2024-07-28 16:52:55');
 
 -- --------------------------------------------------------
 
@@ -88,19 +87,6 @@ CREATE TABLE `allowed_days` (
 INSERT INTO `allowed_days` (`allowed_days_id`, `no_of_days`) VALUES
 (1, 3),
 (2, 150);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `barcode`
---
-
-CREATE TABLE `barcode` (
-  `barcode_id` int(11) NOT NULL,
-  `pre_barcode` varchar(100) NOT NULL,
-  `mid_barcode` int(100) NOT NULL,
-  `suf_barcode` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -155,16 +141,6 @@ CREATE TABLE `borrow_book` (
   `accession_number` varchar(255) NOT NULL,
   `notification_status` varchar(10) DEFAULT 'Unread'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `borrow_book`
---
-
-INSERT INTO `borrow_book` (`borrow_book_id`, `user_id`, `faculty_id`, `book_id`, `date_borrowed`, `due_date`, `date_returned`, `borrowed_status`, `book_penalty`, `accession_number`, `notification_status`) VALUES
-(710, 84, 0, 93, '2024-07-20 00:00:00', '2024-07-23 00:00:00', '2024-07-20 00:00:00', 'returned', '0', '', 'Unread'),
-(711, 0, 12, 94, '2024-07-20 00:00:00', '2024-07-23 00:00:00', '2024-07-20 00:00:00', 'returned', '0', '', 'Unread'),
-(712, 84, 0, 93, '2024-07-25 00:00:00', '2024-07-28 00:00:00', '0000-00-00 00:00:00', 'borrowed', '', '', 'Read'),
-(713, 0, 12, 94, '2024-07-25 00:00:00', '2024-07-28 00:00:00', '0000-00-00 00:00:00', 'borrowed', '', '', 'Read');
 
 -- --------------------------------------------------------
 
@@ -221,8 +197,7 @@ CREATE TABLE `faculty` (
 --
 
 INSERT INTO `faculty` (`faculty_id`, `lastname`, `firstname`, `middlename`, `gender`, `course`, `address`, `cell_no`, `birthdate`, `email`, `username`, `password`, `cpassword`, `role_as`, `status`, `faculty_added`, `qr_code`, `verify_token`, `token_used`) VALUES
-(12, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'bman23382@gmail.com', 'diovin', '$2y$10$P0Vma8o3xlHDPX50z1GGpOOzhmLXS9A13tcBsvuhuiSIbrnUlu.b.', '', 'faculty', 'approved', '2024-07-05 07:05:22', 'diovin.png', '6242392cd30ed179fe13d7fa4f48306e', 0),
-(16, 'Black', 'Mann', '', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-12-03', 'diovincalatero150@gmail.com', 'blackmann', '$2y$10$DrhIer5JAjRH3gAuBAzJ6ejsvZZ/PMdaf/D0jL/a04uUdtrJNxFjO', '', 'staff', 'pending', '2024-07-28 10:26:42', 'blackmann.png', '', 0);
+(16, 'Black', 'Mann', '', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-12-03', 'diovincalatero150@gmail.com', 'blackmann', '$2y$10$DrhIer5JAjRH3gAuBAzJ6ejsvZZ/PMdaf/D0jL/a04uUdtrJNxFjO', '', 'staff', 'approved', '2024-07-28 10:26:42', 'blackmann.png', '', 0);
 
 -- --------------------------------------------------------
 
@@ -276,18 +251,6 @@ CREATE TABLE `report` (
   `date_transaction` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data for table `report`
---
-
-INSERT INTO `report` (`report_id`, `book_id`, `user_id`, `faculty_id`, `admin_name`, `detail_action`, `date_transaction`) VALUES
-(1527, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-20 16:23:32'),
-(1528, 94, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-20 16:23:57'),
-(1529, 93, 84, 0, 'Relina  Jabal-balili', 'Returned Book', '2024-07-20 18:49:34'),
-(1530, 94, 0, 12, 'Relina  Jabal-balili', 'Returned Book', '2024-07-20 18:49:52'),
-(1531, 93, 84, 0, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-25 09:11:39'),
-(1532, 94, 0, 12, 'Relina  Jabal-balili', 'Borrowed Book', '2024-07-25 09:11:51');
-
 -- --------------------------------------------------------
 
 --
@@ -304,14 +267,6 @@ CREATE TABLE `return_book` (
   `date_returned` datetime NOT NULL,
   `book_penalty` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `return_book`
---
-
-INSERT INTO `return_book` (`return_book_id`, `user_id`, `faculty_id`, `book_id`, `date_borrowed`, `due_date`, `date_returned`, `book_penalty`) VALUES
-(735, 84, 0, 93, '2024-07-20 00:00:00', '2024-07-23 00:00:00', '2024-07-20 00:00:00', '0'),
-(736, 0, 12, 94, '2024-07-20 00:00:00', '2024-07-23 00:00:00', '2024-07-20 00:00:00', '0');
 
 -- --------------------------------------------------------
 
@@ -347,7 +302,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `lastname`, `firstname`, `middlename`, `gender`, `course`, `address`, `cell_no`, `birthdate`, `email`, `year_level`, `student_id_no`, `password`, `cpassword`, `role_as`, `status`, `user_added`, `qr_code`, `verify_token`, `token_used`) VALUES
-(84, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'bman23382@gmail.com', '4th year', '2021-1055', '$2y$10$frgxFJiWLEjHNpKXmR86AejUIG/Q6oIYTFt8HFfMUhRhkU3KMbbgO', '', 'student', 'approved', '2024-07-01 20:04:19', '2021-1055.png', '7f2f86ab13ad37081ee7a003ed767776', 0);
+(84, 'Calatero', 'Diovin', 'Pasicaran', 'Male', 'BSIT', 'Patao, Bantayan, Cebu', '09858024662', '2002-03-14', 'bman23382@gmail.com', '4th year', '2021-1055', '$2y$10$frgxFJiWLEjHNpKXmR86AejUIG/Q6oIYTFt8HFfMUhRhkU3KMbbgO', '', 'student', 'approved', '2024-07-01 20:04:19', '2021-1055.png', '53bd9966145af9c18ec597434e607e29', 0);
 
 -- --------------------------------------------------------
 
@@ -419,12 +374,6 @@ ALTER TABLE `allowed_book`
 --
 ALTER TABLE `allowed_days`
   ADD PRIMARY KEY (`allowed_days_id`);
-
---
--- Indexes for table `barcode`
---
-ALTER TABLE `barcode`
-  ADD PRIMARY KEY (`barcode_id`);
 
 --
 -- Indexes for table `book`
@@ -508,7 +457,7 @@ ALTER TABLE `web_opac`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `allowed_book`
@@ -521,12 +470,6 @@ ALTER TABLE `allowed_book`
 --
 ALTER TABLE `allowed_days`
   MODIFY `allowed_days_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `barcode`
---
-ALTER TABLE `barcode`
-  MODIFY `barcode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `book`
@@ -580,7 +523,7 @@ ALTER TABLE `return_book`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `user_log`
