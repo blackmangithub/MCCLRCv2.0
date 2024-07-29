@@ -26,7 +26,6 @@ if(isset($_POST['admin_login_btn']))
         'admin_id'=>$admin_id,
         'admin_name'=>$admin_name,
         'email'=>$admin_email,
-        'admin_type'=>$admin_type,
       ];
       
       if($admin_type == 'Admin')  // Admin
