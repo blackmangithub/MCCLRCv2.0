@@ -21,6 +21,8 @@
 
      <!-- Custom CSS Styling -->
      <link rel="stylesheet" href="assets/css/style.css">
+     <link rel="stylesheet" href="assets/css/jquery-ui.css">
+     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
      <!-- Alertify JS cdn link -->
      <link rel="stylesheet" href="assets/css/alertify.min.css" />

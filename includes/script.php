@@ -18,7 +18,10 @@
 
 <script src="assets/js/login.js"></script>
 
-<script src="assets/js/jquery-3.6.1.min.js"></script>
+<script src="assets/js/jquery-3.6.0.min.js"></script>
+<script src="assets/js/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 <!-- Alertify JS CDN Link -->
 <script src="assets/js/alertify.min.js"></script>
