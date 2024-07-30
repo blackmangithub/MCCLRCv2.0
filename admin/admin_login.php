@@ -89,10 +89,9 @@ else
                     <div class="col-sm-12 col-md-6 px-5">
                         <div class="mt-4 mb-4">
                             <center>
-                                <h4 class="m-0">Welcome to</h4>
                                 <h1 class="m-0"><strong>MCC</strong></h1>
                                 <p class="fs-4 fw-semibold text-info">Learning Resource Center</p>
-                                <p class="m-0">Admin Login</p>
+                                <p class="m-0 fw-semibold">Admin Login</p>
                             </center>
                         </div>
 
@@ -128,8 +127,14 @@ else
                                 </div>
                             </div>
                             <div class="d-grid gap-2 md-3 mb-3">
-                                <button type="submit" name="admin_login_btn" class="btn btn-info text-light font-weight-bolder btn-lg">Login</button>
+                                <button type="submit" name="admin_login_btn" class="btn btn-primary text-light font-weight-bolder btn-lg">Login</button>
                             </div>
+                            <div class="text-end mb-3">
+                                             <p>
+                                                  <a href="../login.php" class="text-primary text-decoration-none fw-semibold">User Login</a>
+                                             </p>
+                                             
+                                        </div>
                         </form>
                     </div>
                 </div>

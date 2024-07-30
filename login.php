@@ -70,12 +70,9 @@ include('./admin/config/dbcon.php');
                          <div class="col-sm-12 col-md-6 px-5 ">
                               <div class="mt-3 mb-4">
                                    <center>
-                                        <h4 class="m-0">
-                                             Welcome to
-                                        </h4>
                                         <h1 class="m-0"><strong>MCC</strong></h1>
                                         <p class="fs-4 fw-semibold text-info">Learning Resource Center</p>
-                                        <p class="m-0">Login Form</p>
+                                        <p class="m-0 fw-semibold">Login Form</p>
                                    </center>
                               </div>
                               <form action="logincode.php" method="POST" class="needs-validation" novalidate>
@@ -114,10 +111,16 @@ include('./admin/config/dbcon.php');
                                         <div class="text-center mb-3">
                                              <p>
                                                   Don't have an account?
-                                                  <a href="./signup.php" class="text-primary">Signup</a>
+                                                  <a href="./signup.php" class="text-primary text-decoration-none fw-semibold">Signup</a>
+                                             </p>
+                                             
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                        <p>
+                                                  <a href="password-reset.php" class="text-primary text-decoration-none fw-semibold">Forgot Password?</a>
                                              </p>
                                              <p>
-                                                  <a href="password-reset.php" class="text-primary">Forgot Password?</a>
+                                                  <a href="admin/admin_login.php" class="text-primary text-decoration-none fw-semibold">Admin Login</a>
                                              </p>
                                         </div>
                                    </div>
