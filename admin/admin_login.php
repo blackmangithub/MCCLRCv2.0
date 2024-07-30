@@ -2,72 +2,55 @@
 session_start();
 include('config/dbcon.php');
 
-if (isset($_POST['admin_login_btn'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $admin_types = $_POST['admin_type'];
+if(isset($_POST['admin_login_btn']))
+{
+  $email = mysqli_real_escape_string($con, $_POST['email']);
+  $password = mysqli_real_escape_string($con, $_POST['password']);
+  $admin_types = mysqli_real_escape_string($con, $_POST['admin_type']);
 
-    if ($admin_types == 'Admin' || $admin_types == 'Staff') {
-        $admin_login_query = "SELECT * FROM admin WHERE email=? LIMIT 1";
-    } else {
-        $_SESSION['message_error'] = "Invalid role specified";
-        header("Location: admin_login.php");
+  $admin_login_query = "SELECT * FROM admin WHERE email='$email' AND admin_type='$admin_types'";
+  $admin_login_query_run = mysqli_query($con, $admin_login_query);
+
+  if(mysqli_num_rows($admin_login_query_run) > 0)
+  {
+    $data = mysqli_fetch_array($admin_login_query_run);
+    if(password_verify($password, $data['password'])) {
+      $admin_id = $data['admin_id'];  
+      $admin_name = $data['firstname'].' '.$data['lastname'];  
+      $admin_email = $data['email'];
+      $admin_type = $data['admin_type'];
+
+      $_SESSION['auth'] = true;
+      $_SESSION['auth_role'] = "$admin_type"; 
+      $_SESSION['auth_admin'] = [
+        'admin_id'=>$admin_id,
+        'admin_name'=>$admin_name,
+        'email'=>$admin_email,
+      ];
+
+      if($admin_type == 'Admin')  // Admin
+      {
+        $_SESSION['message_success'] = "<small>Welcome to Dashboard Admin!</small>";
+        header("Location:index.php");
         exit(0);
+      }
+      elseif($admin_type == 'Staff')  // Staff
+      {
+        $_SESSION['message_success'] = "<small>Welcome to Dashboard Staff!</small>";
+        header("Location:index.php");
     }
-
-    $stmt = mysqli_stmt_init($con);
-    if (mysqli_stmt_prepare($stmt, $admin_login_query)) {
-        mysqli_stmt_bind_param($stmt, "s", $email);
-        mysqli_stmt_execute($stmt);
-        $login_query_run = mysqli_stmt_get_result($stmt);
-
-        if (mysqli_num_rows($login_query_run) == 1) {
-            $data = mysqli_fetch_assoc($login_query_run);
-            $hashed_password = $data['password'];
-
-            if (password_verify($password, $hashed_password)) {
-                $admin_id = $data['admin_id'];
-                $admin_name = $data['firstname'] . ' ' . $data['lastname'];
-                $admin_email = $data['email'];
-                $admin_type = $data['admin_type'];
-
-                if ($admin_type == 'Admin' || $admin_type == 'Staff') {
-                    $_SESSION['auth'] = true;
-                    $_SESSION['auth_role'] = $admin_type;
-                    $_SESSION['auth_admin'] = [
-                        'admin_id' => $admin_id,
-                        'admin_name' => $admin_name,
-                        'email' => $admin_email,
-                    ];
-
-                    if ($admin_type == 'Admin') {
-                        $_SESSION['message_success'] = "<small>Welcome to Dashboard Admin!</small>";
-                    } elseif ($admin_type == 'Staff') {
-                        $_SESSION['message_success'] = "<small>Welcome to Dashboard Staff!</small>";
-                    }
-
-                    header("Location:index.php");
-                    exit(0);
-                } else {
-                    $_SESSION['message_error'] = "Invalid role specified";
-                    header("Location: admin_login.php");
-                    exit(0);
-                }
-            } else {
-                $_SESSION['message_error'] = "Invalid email, password, or admin type";
-                header("Location: admin_login.php");
-                exit(0);
-            }
-        } else {
-            $_SESSION['message_error'] = "Invalid email, password, or admin type";
-            header("Location: admin_login.php");
-            exit(0);
-        }
-    } else {
-        $_SESSION['message_error'] = "Database query error";
-        header("Location: admin_login.php");
-        exit(0);
-    }
+} else {
+    $_SESSION['message_error'] = "Invalid email, password, or admin type";
+    header("Location: admin_login.php");
+    exit(0);
+}
+}
+else
+{  
+  $_SESSION['message_error'] = "Invalid email, password, or admin type";
+  header("Location: admin_login.php");
+  exit(0);
+}
 }
 ?>
 <!DOCTYPE html>
