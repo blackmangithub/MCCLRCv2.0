@@ -121,15 +121,20 @@ if(isset($_POST['cancel_hold']))
 
         if ($update_result && $delete_result) {
             mysqli_commit($con);
-            echo "<script>alert('Book hold cancelled successfully'); window.location='hold.php'</script>";
+            $_SESSION['status'] = "Book hold cancelled successfully";
+            $_SESSION['status_code'] = "success";
+            header("Location: hold.php");
+            exit(0);
         } else {
             mysqli_rollback($con);
-            $_SESSION['message_error'] = 'There was something wrong';
+            $_SESSION['status'] = "There was something wrong";
+            $_SESSION['status_code'] = "warning";
             header("Location: hold.php");
             exit(0);
         }
     } else {
-        $_SESSION['message_error'] = 'Hold not found';
+        $_SESSION['status'] = "Hold not found";
+        $_SESSION['status_code'] = "error";
         header("Location: hold.php");
         exit(0);
     }

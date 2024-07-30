@@ -22,14 +22,16 @@ if(isset($_POST['register_btn'])) {
 
     // Validate mandatory fields
     if(empty($lastname) || empty($firstname) || empty($gender) || empty($birthdate) || empty($address) || empty($cell_no) || empty($email) || empty($student_id_no) || empty($password) || empty($cpassword) || empty($role_as)) {
-        $_SESSION['message_error'] = "Please fill up all fields";
+        $_SESSION['status'] = "Please fill up all fields";
+        $_SESSION['status_code'] = "warning";
         header("Location: signup.php");
         exit(0);
     }
 
     // Check if passwords match
     if($password !== $cpassword) {
-        $_SESSION['message_error'] = "Password and Confirm Password do not match";
+        $_SESSION['status'] = "Password and Confirm Password do not match";
+        $_SESSION['status_code'] = "warning";
         header("Location: signup.php");
         exit(0);
     }
@@ -48,11 +50,13 @@ if(isset($_POST['register_btn'])) {
     $email_check_query_run = mysqli_query($con, $email_check_query);
 
     if(mysqli_num_rows($check_query_run) > 0) {
-        $_SESSION['message_error'] = ($role_as == 'student') ? "Student ID No. already exists" : "Username already exists";
+        $_SESSION['status'] = ($role_as == 'student') ? "Student ID No. already exists" : "Username already exists";
+        $_SESSION['status_code'] = "warning";
         header("Location: signup.php");
         exit(0);
     } elseif (mysqli_num_rows($email_check_query_run) > 0) {
-        $_SESSION['message_error'] = "Email already exists";
+        $_SESSION['status'] = "Email already exists";
+        $_SESSION['status_code'] = "warning";
         header("Location: signup.php");
         exit(0);
     }
@@ -85,21 +89,25 @@ if(isset($_POST['register_btn'])) {
         }
 
         if(mysqli_query($con, $update_query)) {
-            $_SESSION['message_success'] = "Registered successfully, wait for approval.";
+            $_SESSION['status'] = "Registered successfully, wait for approval.";
+            $_SESSION['status_code'] = "success";
             header("Location: login.php");
             exit(0);
         } else {
-            $_SESSION['message_error'] = "Failed to update QR code path in database";
+            $_SESSION['status'] = "Failed to update QR code path in database";
+            $_SESSION['status_code'] = "error";
             header("Location: signup.php");
             exit(0);
         }
     } else {
-        $_SESSION['message_error'] = "Failed to register user";
+        $_SESSION['status'] = "Failed to register user";
+        $_SESSION['status_code'] = "error";
         header("Location: signup.php");
         exit(0);
     }
 } else {
-    $_SESSION['message'] = "Please input all the fields";
+    $_SESSION['status'] = "Please input all the fields";
+    $_SESSION['status_code'] = "warning";
     header("Location: signup.php");
     exit(0);
 }

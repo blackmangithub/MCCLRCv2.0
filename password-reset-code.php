@@ -112,12 +112,12 @@ if (isset($_POST['password_reset_link'])) {
         if ($update_token_run_user) {
             if (send_password_reset($get_name, $get_email, $token)) {
                 $_SESSION['status'] = 'We e-mailed you a password reset link';
-                $_SESSION['alert_type'] = 'success';
+                $_SESSION['status_code'] = 'success';
                 header('Location: password-reset.php');
                 exit(0);
             } else {
                 $_SESSION['status'] = 'Email sending failed. Please try again.';
-                $_SESSION['alert_type'] = 'danger';
+                $_SESSION['status_code'] = 'error';
                 header('Location: password-reset.php');
                 exit(0);
             }
@@ -138,20 +138,20 @@ if (isset($_POST['password_reset_link'])) {
 
         if ($update_token_run_faculty) {
             if (send_password_reset($get_name, $get_email, $token)) {
-                $_SESSION['status'] = 'We e-mailed you a password reset link';
-                $_SESSION['alert_type'] = 'success';
+                $_SESSION['status'] = "We e-mailed you a password reset link";
+                $_SESSION['status_code'] = "success";
                 header('Location: password-reset.php');
                 exit(0);
             } else {
-                $_SESSION['status'] = 'Email sending failed. Please try again.';
-                $_SESSION['alert_type'] = 'danger';
+                $_SESSION['status'] = "Email sending failed. Please try again.";
+                $_SESSION['status_code'] = "error";
                 header('Location: password-reset.php');
                 exit(0);
             }
         }
     } else {
-        $_SESSION['status'] = 'No email found';
-        $_SESSION['alert_type'] = 'danger';
+        $_SESSION['status'] = "No email found";
+        $_SESSION['status_code'] = "error";
         header('Location: password-reset.php');
         exit(0);
     }
@@ -178,18 +178,18 @@ if (isset($_POST['password-change'])) {
 
             if ($update_password_run_user) {
                 $_SESSION['status'] = 'Password successfully changed.';
-                $_SESSION['alert_type'] = 'success';
+                $_SESSION['status_code'] = 'success';
                 header('Location: login.php');
                 exit(0);
             } else {
                 $_SESSION['status'] = 'Failed to update the password. Please try again.';
-                $_SESSION['alert_type'] = 'danger';
+                $_SESSION['status_code'] = 'error';
                 header('Location: password-change.php');
                 exit(0);
             }
         } else {
             $_SESSION['status'] = 'Link already been used. Please request a new password reset link.';
-            $_SESSION['alert_type'] = 'danger';
+            $_SESSION['status_code'] = 'error';
             header('Location: password-reset.php');
             exit(0);
         }
@@ -211,24 +211,24 @@ if (isset($_POST['password-change'])) {
 
             if ($update_password_run_faculty) {
                 $_SESSION['status'] = 'Password successfully changed.';
-                $_SESSION['alert_type'] = 'success';
+                $_SESSION['status_code'] = 'success';
                 header('Location: login.php');
                 exit(0);
             } else {
                 $_SESSION['status'] = 'Failed to update the password. Please try again.';
-                $_SESSION['alert_type'] = 'danger';
+                $_SESSION['status_code'] = 'error';
                 header('Location: password-change.php');
                 exit(0);
             }
         } else {
             $_SESSION['status'] = 'Link already been used. Please request a new password reset link.';
-            $_SESSION['alert_type'] = 'danger';
+            $_SESSION['status_code'] = 'error';
             header('Location: password-reset.php');
             exit(0);
         }
     } else {
         $_SESSION['status'] = 'Something went wrong.';
-        $_SESSION['alert_type'] = 'danger';
+        $_SESSION['status_code'] = 'error';
         header('Location: password-change.php');
         exit(0);
     }

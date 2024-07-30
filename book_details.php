@@ -142,7 +142,10 @@ if (isset($_POST['hold'])) {
     $check_result = mysqli_query($con, $check_query);
 
     if (mysqli_num_rows($check_result) > 0) {
-        echo "<script>alert('You have already placed a hold on this book title!'); window.location='index.php'</script>";
+        $_SESSION['status'] = "You have already placed a hold on this book title!";
+        $_SESSION['status_code'] = "warning";
+        header("Location:index.php");
+        exit(0);
     } else {
         // Check the current hold count for the user/faculty
         $count_query = "SELECT COUNT(*) AS count_books FROM holds 
@@ -152,7 +155,10 @@ if (isset($_POST['hold'])) {
         $current_hold_count = $count_row['count_books'];
 
         if ($current_hold_count >= 3) {
-            echo "<script>alert('You cannot hold more than 3 books!'); window.location='index.php'</script>";
+            $_SESSION['status'] = "You cannot hold more than 3 books!";
+        $_SESSION['status_code'] = "warning";
+        header("Location:index.php");
+        exit(0);
         } else {
             $update_query = "UPDATE book SET status_hold = 'Hold' WHERE book_id = '$book_id'";
             mysqli_query($con, $update_query);
@@ -169,9 +175,13 @@ if (isset($_POST['hold'])) {
             $query_run = mysqli_query($con, $insert_query);
 
             if ($query_run) {
-                echo "<script>alert('Book held successfully'); window.location = 'index.php'</script>";
+                $_SESSION['status'] = "Book held successfully";
+                $_SESSION['status_code'] = "success";
+                header("Location:index.php");
+                exit(0);
             } else {
-                $_SESSION['message_error'] = 'Failed to hold the book';
+                $_SESSION['status'] = "Failed to hold the book";
+                $_SESSION['status_code'] = "error";
                 header("Location: index.php");
                 exit(0);
             }

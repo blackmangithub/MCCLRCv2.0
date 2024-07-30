@@ -34,21 +34,25 @@ if (isset($_POST['password_update'])) {
              $change_pass_run = mysqli_query($con, $change_pass_query);
  
              if (!$change_pass_run) {
-                 $_SESSION['message_error'] = 'Password not updated: ' . mysqli_error($con);
+                 $_SESSION['status'] = "Password not updated: " . mysqli_error($con);
+                 $_SESSION['status_code'] = "error";
                  header("Location: myprofile.php");
                  exit(0);
              }
  
-             $_SESSION['message_success'] = '<small>Password updated successfully</small>';
+             $_SESSION['status'] = "<small>Password updated successfully</small>";
+             $_SESSION['status_code'] = "success";
              header("Location: myprofile.php");
              exit(0);
          } else {
-             $_SESSION['message_error'] = '<small>Password and confirm password do not match</small>';
+             $_SESSION['status'] = '<small>Password and confirm password do not match</small>';
+             $_SESSION['status_code'] = "warning";
              header("Location: myprofile.php");
              exit(0);
          }
      } else {
-         $_SESSION['message_error'] = 'Current password does not match';
+         $_SESSION['status'] = 'Current password does not match';
+         $_SESSION['status_code'] = "warning";
          header("Location: myprofile.php");
          exit(0);
      }
@@ -80,11 +84,13 @@ if (isset($_POST['save_changes'])) {
     $query_run = mysqli_query($con, $query);
 
     if ($query_run) {
-        $_SESSION['message_success'] = 'Updated Successfully';
+        $_SESSION['status'] = "Updated Successfully";
+        $_SESSION['status_code'] = "success";
         header("Location: myprofile.php");
         exit(0);
     } else {
-        $_SESSION['message_error'] = 'Not Updated';
+        $_SESSION['status'] = "Not Updated";
+        $_SESSION['status_code'] = "error";
         header("Location: myprofile.php");
         exit(0);
     }

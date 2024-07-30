@@ -51,18 +51,6 @@ include('./admin/config/dbcon.php');
                color: gray;
           }
      </style>
-
-<script>
-        window.onload = function() {
-            // Check if session status is set
-            <?php if(isset($_SESSION['status'])): ?>
-                // Show the alert
-                alert("<?php echo $_SESSION['status']; ?>");
-                // Clear the session variable after showing the alert
-                <?php unset($_SESSION['status']); ?>
-            <?php endif; ?>
-        }
-    </script>
 </head>
 
 <body>

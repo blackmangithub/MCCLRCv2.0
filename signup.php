@@ -390,7 +390,10 @@ include('./admin/config/dbcon.php');
         }
     </script>
 
-    <?php include('message.php'); ?>
+    <?php
+    include('message.php'); 
+    include('includes/script.php');
+    ?>
 </body>
 
 </html>
