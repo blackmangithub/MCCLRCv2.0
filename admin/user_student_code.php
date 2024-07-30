@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
     require 'phpmailer/vendor/phpmailer/phpmailer/src/SMTP.php';
 
 // Function to send email notification
-function sendEmail($student_email, $subject, $message) {
+function sendEmail($email, $subject, $message) {
     $mail = new PHPMailer(true);
     try {
         //Server settings
