@@ -7,19 +7,37 @@ include('authentication.php');
 if (isset($_POST['delete_book'])) {
     $accession_number = mysqli_real_escape_string($con, $_POST['accession_number']);
 
-    $query = "DELETE FROM book WHERE accession_number = '$accession_number'";
-    $query_run = mysqli_query($con, $query);
+    // First, select the title from the book table based on the accession number
+    $select_query = "SELECT title FROM book WHERE accession_number = '$accession_number'";
+    $select_query_run = mysqli_query($con, $select_query);
 
-    if ($query_run) {
-        $_SESSION['message'] = "Book deleted successfully";
-        header("Location: book_views.php?title=" . urlencode($_POST['title']) . "&tab=copies");
-        exit(0);
+    if (mysqli_num_rows($select_query_run) > 0) {
+        $row = mysqli_fetch_assoc($select_query_run);
+        $title = $row['title'];
+
+        // Now delete the book
+        $delete_query = "DELETE FROM book WHERE accession_number = '$accession_number'";
+        $delete_query_run = mysqli_query($con, $delete_query);
+
+        if ($delete_query_run) {
+            $_SESSION['status'] = "Book accession number '$accession_number' deleted successfully";
+            $_SESSION['status_code'] = "success";
+            header("Location: book_views.php?title=" . urlencode($title) . "&tab=copies");
+            exit(0);
+        } else {
+            $_SESSION['status'] = "Failed to delete book accession number '$accession_number'";
+            $_SESSION['status_code'] = "error";
+            header("Location: book_views.php?title=" . urlencode($title) . "&tab=copies");
+            exit(0);
+        }
     } else {
-        $_SESSION['message'] = "Failed to delete book";
-        header("Location: book_views.php?title=" . urlencode($_POST['title']) . "&tab=copies");
+        $_SESSION['status'] = "No book found with accession number '$accession_number'";
+        $_SESSION['status_code'] = "warning";
+        header("Location: book_views.php?tab=copies");
         exit(0);
     }
 }
+
 
 // Update Book
 if (isset($_POST['update_book'])) {
@@ -68,11 +86,13 @@ if (isset($_POST['update_book'])) {
             move_uploaded_file($_FILES['book_image']['tmp_name'], '../uploads/books_img/' . $book_filename);
         }
 
-        $_SESSION['message_success'] = 'Book Updated successfully';
+        $_SESSION['status'] = 'Book Updated successfully';
+        $_SESSION['status_code'] = "success";
         header("Location: books.php");
         exit(0);
     } else {
-        $_SESSION['message_error'] = 'Book not Updated';
+        $_SESSION['status'] = 'Book not Updated';
+        $_SESSION['status_code'] = "error";
         header("Location: books.php");
         exit(0);
     }
@@ -87,7 +107,8 @@ if (isset($_POST['update_accession_number'])) {
     $check_query_run = mysqli_query($con, $check_query);
 
     if (mysqli_num_rows($check_query_run) > 0) {
-        $_SESSION['message'] = "The new Accession Number already exists. Please choose a different one.";
+        $_SESSION['status'] = "The new Accession Number already exists. Please choose a different one.";
+        $_SESSION['status_code'] = "warning";
         header("Location: book_views.php?title=" . urlencode($_POST['title']) . "&tab=copies");
         exit(0);
     } else {
@@ -95,11 +116,13 @@ if (isset($_POST['update_accession_number'])) {
         $query_run = mysqli_query($con, $query);
 
         if ($query_run) {
-            $_SESSION['message'] = "Accession Number updated successfully";
+            $_SESSION['status'] = "Accession Number updated successfully";
+            $_SESSION['status_code'] = "success";
             header("Location: book_views.php?title=" . urlencode($_POST['title']) . "&tab=copies");
             exit(0);
         } else {
-            $_SESSION['message'] = "Failed to update Accession Number";
+            $_SESSION['status'] = "Failed to update Accession Number";
+            $_SESSION['status_code'] = "error";
             header("Location: book_views.php?title=" . urlencode($_POST['title']) . "&tab=copies");
             exit(0);
         }
@@ -155,16 +178,23 @@ if (isset($_POST['add_book'])) {
                     move_uploaded_file($image_tmp_name, $image_upload_path);
                     $book_image = $new_image_name;
                 } else {
-                    echo "Your file is too large.";
-                    exit();
+                    $_SESSION['status'] = "Your file is too large.";
+                    $_SESSION['status_code'] = "warning";
+                    header("Location:book_add.php");
+                    exit(0);
                 }
             } else {
-                echo "There was an error uploading your file.";
-                exit();
+                $_SESSION['status'] = "There was an error uploading your file.";
+                $_SESSION['status_code'] = "error";
+                header("Location:book_add.php");
+                exit(0);
             }
         } else {
             echo "You cannot upload files of this type.";
-            exit();
+            $_SESSION['status'] = "You cannot upload files of this type.";
+            $_SESSION['status_code'] = "warning";
+            header("Location:book_add.php");
+            exit(0);
         }
     } else {
         // Use existing image if no new image is uploaded
@@ -191,11 +221,15 @@ if (isset($_POST['add_book'])) {
 
         mysqli_stmt_close($stmt);
 
-        echo "Book(s) added successfully.";
+        $_SESSION['status'] = "Book(s) added successfully.";
+        $_SESSION['status_code'] = "success";
         header("Location: books.php");
-        exit();
+        exit(0);
     } else {
-        echo "Error preparing the statement: " . mysqli_error($con);
+        $_SESSION['status'] = "Error preparing the statement: " . mysqli_error($con);
+        $_SESSION['status_code'] = "error";
+        header("Location: book_add.php");
+        exit(0);
     }
 }
 
