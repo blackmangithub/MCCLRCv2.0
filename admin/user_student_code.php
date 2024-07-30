@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
     require 'phpmailer/vendor/phpmailer/phpmailer/src/SMTP.php';
 
 // Function to send email notification
-function sendEmail($email, $subject, $message) {
+function sendEmail($student_email, $subject, $message) {
     $mail = new PHPMailer(true);
     try {
         //Server settings
@@ -273,11 +273,13 @@ if(isset($_POST['block_student'])) {
         ";
         sendEmail($student_email, $subject, $message);
 
-        $_SESSION['message'] = "Student has been blocked successfully.";
+        $_SESSION['status'] = "Student has been blocked successfully.";
+        $_SESSION['status_code'] = "success";
         header("Location: user_student.php");
         exit(0);
     } else {
-        $_SESSION['message'] = "Something went wrong.";
+        $_SESSION['status'] = "Something went wrong.";
+        $_SESSION['status_code'] = "error";
         header("Location: user_student.php");
         exit(0);
     }
@@ -355,11 +357,13 @@ if(isset($_POST['unblock_student'])) {
 
         sendEmail($student_email, $subject, $message);
 
-        $_SESSION['message'] = "Student has been unblocked successfully.";
+        $_SESSION['status'] = "Student has been unblocked successfully.";
+        $_SESSION['status_code'] = "success";
         header("Location: user_student.php");
         exit(0);
     } else {
-        $_SESSION['message'] = "Something went wrong.";
+        $_SESSION['status'] = "Something went wrong.";
+        $_SESSION['status_code'] = "error";
         header("Location: user_student.php");
         exit(0);
     }
@@ -372,11 +376,13 @@ if(isset($_POST['delete_student'])) {
     $query_run = mysqli_query($con, $query);
 
     if($query_run) {
-        $_SESSION['message_success'] = 'Student deleted successfully';
+        $_SESSION['status'] = 'Student deleted successfully';
+        $_SESSION['status_code'] = "success";
         header("Location: user_student.php");
         exit(0);
     } else {
-        $_SESSION['message_error'] = 'Student not deleted';
+        $_SESSION['status'] = 'Student not deleted';
+        $_SESSION['status_code'] = "error";
         header("Location: user_student.php");
         exit(0);
     }
