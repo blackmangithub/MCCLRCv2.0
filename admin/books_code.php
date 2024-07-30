@@ -122,53 +122,81 @@ if (isset($_POST['accession_number_check'])) {
 
 
 // Add Book
-if(isset($_POST['add_book'])) {
-     $title = mysqli_real_escape_string($con, $_POST['title']);
-     $author = mysqli_real_escape_string($con, $_POST['author']);
-     $copyright_date = mysqli_real_escape_string($con, $_POST['copyright_date']);
-     $publisher = mysqli_real_escape_string($con, $_POST['publisher']);
-     $isbn = mysqli_real_escape_string($con, $_POST['isbn']);
-     $place_publication = mysqli_real_escape_string($con, $_POST['place_publication']);
-     $call_number = mysqli_real_escape_string($con, $_POST['call_number']);
-     $category = mysqli_real_escape_string($con, $_POST['lrc_location']);
-     $book_image = $_FILES['book_image']['name'];
- 
-     if($book_image != "") {
-         $book_extension = pathinfo($book_image, PATHINFO_EXTENSION);
-         $book_filename = time().'.'. $book_extension;
- 
-         $pre = "MCC"; // Prefix for the barcode
-         $suf = "LRC"; // Suffix for the barcode
- 
-         // Insert book for each accession number
-         for ($i = 1; $i <= $copy; $i++) {
-             $accession_number = mysqli_real_escape_string($con, $_POST['accession_number_' . $i]);
-             
-             // Generate barcode based on accession number
-             $gen = $pre . '-' . $suf . $accession_number;
- 
-             $query = "INSERT INTO book (title, author, copyright_date, publisher, isbn, place_publication, call_number, accession_number, category_id, barcode, book_image, date_added, status) VALUES ('$title', '$author', '$copyright_date', '$publisher', '$isbn', '$place_publication', '$call_number', '$accession_number', '$category', '$gen', '$book_filename', NOW(), 'Available')";
-             $query_run = mysqli_query($con, $query);
-         }
- 
-         if($query_run) {             
-             move_uploaded_file($_FILES['book_image']['tmp_name'], '../uploads/books_img/'.$book_filename);
-             $_SESSION['status'] = 'Book Added successfully';
-             $_SESSION['status_code'] = 'success';
-             header("Location: books.php");
-             exit(0);
-         } else {
-             $_SESSION['status'] = 'Book not Added';
-             $_SESSION['status_code'] = 'error';
-             header("Location: book_add.php");
-             exit(0);
-         }
-     } else {
-         $_SESSION['status'] = 'Please upload a book image';
-         $_SESSION['status_code'] = 'error';
-         header("Location: book_add.php");
-         exit(0);
-     }
- }
+if (isset($_POST['add_book'])) {
+    // Collect form data
+    $title = $_POST['title'];
+    $author = $_POST['author'];
+    $isbn = $_POST['isbn'];
+    $publisher = $_POST['publisher'];
+    $copyright_date = $_POST['copyright_date'];
+    $place_publication = $_POST['place_publication'];
+    $call_number = $_POST['call_number'];
+    $category_id = $_POST['lrc_location']; // Updated to category_id
+    $existing_image = $_POST['existing_image'];
+    $copy = intval($_POST['copy']); // Number of copies to add
+
+    // Handle the uploaded image
+    $book_image = '';
+    if (isset($_FILES['book_image']) && $_FILES['book_image']['error'] === UPLOAD_ERR_OK) {
+        $image_tmp_name = $_FILES['book_image']['tmp_name'];
+        $image_name = $_FILES['book_image']['name'];
+        $image_size = $_FILES['book_image']['size'];
+        $image_error = $_FILES['book_image']['error'];
+        $image_type = $_FILES['book_image']['type'];
+
+        $image_ext = pathinfo($image_name, PATHINFO_EXTENSION);
+        $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if (in_array($image_ext, $allowed_ext)) {
+            if ($image_error === 0) {
+                if ($image_size < 5000000) { // Limit to 5MB
+                    $new_image_name = uniqid('', true) . "." . $image_ext;
+                    $image_upload_path = '../uploads/books_img/' . $new_image_name;
+                    move_uploaded_file($image_tmp_name, $image_upload_path);
+                    $book_image = $new_image_name;
+                } else {
+                    echo "Your file is too large.";
+                    exit();
+                }
+            } else {
+                echo "There was an error uploading your file.";
+                exit();
+            }
+        } else {
+            echo "You cannot upload files of this type.";
+            exit();
+        }
+    } else {
+        // Use existing image if no new image is uploaded
+        $book_image = $existing_image;
+    }
+
+    // Prepare the SQL query
+    $query = "INSERT INTO book (title, author, isbn, publisher, copyright_date, place_publication, call_number, category_id, book_image, accession_number, barcode, date_added, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'Available')";
+    $stmt = mysqli_prepare($con, $query);
+
+    if ($stmt) {
+        // Insert copies into the database
+        $pre = "MCC"; // Prefix for the barcode
+        $suf = "LRC"; // Suffix for the barcode
+
+        for ($i = 1; $i <= $copy; $i++) {
+            $accession_number = $_POST['accession_number_' . $i];
+            $barcode = $pre . '-' . $suf . $accession_number;
+            
+            // Bind parameters and execute the statement
+            mysqli_stmt_bind_param($stmt, "sssssssssss", $title, $author, $isbn, $publisher, $copyright_date, $place_publication, $call_number, $category_id, $book_image, $accession_number, $barcode);
+            mysqli_stmt_execute($stmt);
+        }
+
+        mysqli_stmt_close($stmt);
+
+        echo "Book(s) added successfully.";
+        header("Location: books.php");
+        exit();
+    } else {
+        echo "Error preparing the statement: " . mysqli_error($con);
+    }
+}
 
 ?>
