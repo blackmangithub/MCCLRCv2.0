@@ -153,17 +153,20 @@ if(isset($_POST['add_book'])) {
  
          if($query_run) {             
              move_uploaded_file($_FILES['book_image']['tmp_name'], '../uploads/books_img/'.$book_filename);
-             $_SESSION['message_success'] = 'Book Added successfully';
+             $_SESSION['status'] = 'Book Added successfully';
+             $_SESSION['status_code'] = 'success';
              header("Location: books.php");
              exit(0);
          } else {
-             $_SESSION['message_error'] = 'Book not Added';
-             header("Location: books.php");
+             $_SESSION['status'] = 'Book not Added';
+             $_SESSION['status_code'] = 'error';
+             header("Location: book_add.php");
              exit(0);
          }
      } else {
-         $_SESSION['message_error'] = 'Please upload a book image';
-         header("Location: books.php");
+         $_SESSION['status'] = 'Please upload a book image';
+         $_SESSION['status_code'] = 'error';
+         header("Location: book_add.php");
          exit(0);
      }
  }
