@@ -13,7 +13,8 @@ if(isset($_POST['login_btn'])) {
     } elseif ($role == 'faculty' || $role == 'staff') {
         $login_query = "SELECT * FROM faculty WHERE username = ? LIMIT 1";
     } else {
-        $_SESSION['message_error'] = "Invalid role specified";
+        $_SESSION['status'] = "Invalid role specified";
+        $_SESSION['status_code'] = "warning";
         header("Location: login.php");
         exit(0);
     }
@@ -55,27 +56,28 @@ if(isset($_POST['login_btn'])) {
                     header("Location: index.php");
                     exit(0);
                 } elseif ($status == 'pending') {
-                    $_SESSION['message_error'] = "Your account is still pending for approval! Please wait..";
+                    $_SESSION['status'] = "Your account is still pending for approval! Please wait..";
                 } elseif ($status == 'blocked') {
-                    $_SESSION['message_error'] = "Your account has been blocked!";
+                    $_SESSION['status'] = "Your account has been blocked!";
                 }
                 else {
-                    $_SESSION['message_error'] = "Your account is inactive or disabled";
+                    $_SESSION['status'] = "Your account is inactive or disabled";
                 }
             } else {
-                $_SESSION['message_error'] = "Incorrect ID no. or Password";
+                $_SESSION['status'] = "Incorrect ID no. or Password";
             }
         } else {
-            $_SESSION['message_error'] = "Incorrect ID no. or Password";
+            $_SESSION['status'] = "Incorrect ID no. or Password";
         }
     } else {
-        $_SESSION['message_error'] = "Database error: Could not prepare statement";
+        $_SESSION['status'] = "Database error: Could not prepare statement";
     }
-
+    $_SESSION['status_code'] = "error";
     header("Location: login.php");
     exit(0);
 } else {
-    $_SESSION['message_error'] = "You are not allowed to access this file";
+    $_SESSION['status'] = "You are not allowed to access this file";
+    $_SESSION['status_code'] = "warning";
     header("Location: login.php");
     exit(0);
 }

@@ -109,11 +109,13 @@ if(isset($_POST['deny'])) {
         ";
         sendEmail($student_email, $subject, $message);
 
-        $_SESSION['message_success'] = 'Student Denied';
+        $_SESSION['status'] = 'Student Denied';
+        $_SESSION['status_code'] = "success";
         header("Location: user_student_approval.php");
         exit(0);
     } else {
-        $_SESSION['message_error'] = 'Student not Denied';
+        $_SESSION['status'] = 'Student not Denied';
+        $_SESSION['status_code'] = "error";
         header("Location: user_student_approval.php");
         exit(0);
     }
@@ -191,11 +193,13 @@ if(isset($_POST['approved'])) {
         ";
         sendEmail($student_email, $subject, $message);
 
-        $_SESSION['message_success'] = 'Student approved successfully';
+        $_SESSION['status'] = 'Student approved successfully';
+        $_SESSION['status_code'] = "success";
         header("Location: user_student_approval.php");
         exit(0);
     } else {
-        $_SESSION['message_error'] = 'Student not approved';
+        $_SESSION['status'] = 'Student not approved';
+        $_SESSION['status_code'] = "error";
         header("Location: user_student_approval.php");
         exit(0);
     }
