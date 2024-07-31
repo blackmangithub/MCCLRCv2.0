@@ -81,23 +81,19 @@ include('./includes/sidebar.php');
                                                                            <i class="bi bi-eye-fill"></i>
                                                                       </a>
                                                                       <!-- Block/Unblock Student Action-->
-                                                                      <form action="user_student_code.php" method="POST">
-                                                                           <?php if($user['status'] == 'approved'): ?>
-                                                                                <button type="submit" name="block_student" value="<?=$user['user_id'];?>" class="btn btn-sm border text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Block Student">
-                                                                                     <i class="bi bi-lock-fill"></i>
-                                                                                </button>
-                                                                           <?php else: ?>
-                                                                                <button type="submit" name="unblock_student" value="<?=$user['user_id'];?>" class="btn btn-sm border text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unblock Student">
-                                                                                     <i class="bi bi-unlock-fill"></i>
-                                                                                </button>
-                                                                           <?php endif; ?>
-                                                                      </form>
-                                                                      <!-- Delete Student Action-->
-                                                                      <form action="user_student_code.php" method="POST">
-                                                                           <button type="submit" name="delete_student" value="<?=$user['user_id'];?>" class="btn btn-sm border text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Student">
-                                                                                <i class="bi bi-trash-fill"></i>
+                                                                      <?php if($user['status'] == 'approved'): ?>
+                                                                           <button type="button" class="btn btn-sm border text-warning" onclick="confirmBlock('<?=$user['user_id'];?>')">
+                                                                                <i class="bi bi-lock-fill"></i>
                                                                            </button>
-                                                                      </form>
+                                                                      <?php else: ?>
+                                                                           <button type="button" class="btn btn-sm border text-success" onclick="confirmUnblock('<?=$user['user_id'];?>')">
+                                                                                <i class="bi bi-unlock-fill"></i>
+                                                                           </button>
+                                                                      <?php endif; ?>
+                                                                      <!-- Delete Student Action-->
+                                                                      <button type="button" class="btn btn-sm border text-danger" onclick="confirmDelete('<?=$user['user_id'];?>')">
+                                                                           <i class="bi bi-trash-fill"></i>
+                                                                      </button>
                                                                  </div>
                                                             </td>
                                                        </tr>
@@ -122,3 +118,91 @@ include('./includes/footer.php');
 include('./includes/script.php');
 include('../message.php');   
 ?>
+
+<script>
+function confirmBlock(userId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to block this student!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with the blocking
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'user_student_code.php';
+
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'block_student';
+            input.value = userId;
+
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+function confirmUnblock(userId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to unblock this student!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with the unblocking
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'user_student_code.php';
+
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'unblock_student';
+            input.value = userId;
+
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+function confirmDelete(userId) {
+    Swal.fire({
+        title: 'Are you sure to delete this?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with the deletion
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'user_student_code.php';
+
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'delete_student';
+            input.value = userId;
+
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>

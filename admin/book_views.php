@@ -142,10 +142,7 @@ $activeTabPane = isset($_GET['tab']) && $_GET['tab'] == 'copies' ? 'copies-tab-p
                                                             <!-- Edit Button -->
                                                             <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<?= $book['accession_number']; ?>">Edit</button>
                                                             <!-- Delete Button -->
-                                                            <form action="books_code.php" method="POST" class="d-inline">
-                                                                <input type="hidden" name="accession_number" value="<?= $book['accession_number']; ?>">
-                                                                <button type="submit" name="delete_book" class="btn btn-danger btn-sm">Delete</button>
-                                                            </form>
+                                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('<?= $book['accession_number']; ?>')">Delete</button>
                                                         </td>
                                                     </tr>
                                                     <!-- Edit Modal -->
@@ -248,5 +245,39 @@ function validateForm(form) {
         }
     }
     return true;
+}
+
+function confirmDelete(accessionNumber) {
+    Swal.fire({
+        title: 'Are you sure to delete this?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with the deletion
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'books_code.php';
+
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'accession_number';
+            input.value = accessionNumber;
+
+            var submit = document.createElement('input');
+            submit.type = 'hidden';
+            submit.name = 'delete_book';
+            submit.value = 'true';
+
+            form.appendChild(input);
+            form.appendChild(submit);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
 }
 </script>
