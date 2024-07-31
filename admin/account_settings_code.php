@@ -29,34 +29,39 @@ if(isset($_POST['change_password']))
 
                     if($change_pass_run)
                     {
-                         $_SESSION['message_success'] = '<small>Password updated successfully</small>';
+                         $_SESSION['status'] = '<small>Password updated successfully</small>';
+                         $_SESSION['status_code'] = "success";
                          header("Location: account_settings.php");
                          exit(0);
                     }
                     else
                     {
-                         $_SESSION['message_error'] = 'Password not updated';
+                         $_SESSION['status'] = 'Password not updated';
+                         $_SESSION['status_code'] = "error";
                          header("Location: account_settings.php");
                          exit(0);
                     }
                }
                else
                {
-                    $_SESSION['message_error'] = '<small>New password and confirm password do not match</small>';
+                    $_SESSION['status'] = '<small>New password and confirm password do not match</small>';
+                    $_SESSION['status_code'] = "warning";
                     header("Location: account_settings.php");
                     exit(0);
                }
           }
           else
           {
-               $_SESSION['message_error'] = 'Current password is incorrect';
+               $_SESSION['status'] = 'Current password is incorrect';
+               $_SESSION['status_code'] = "error";
                header("Location: account_settings.php");
                exit(0);
           }
      }
      else
      {
-          $_SESSION['message_error'] = 'Failed to fetch current password';
+          $_SESSION['status'] = 'Failed to fetch current password';
+          $_SESSION['status_code'] = "error";
           header("Location: account_settings.php");
           exit(0);
      }
@@ -115,13 +120,15 @@ if(isset($_POST['save_changes']))
           }
           move_uploaded_file($_FILES['admin_image']['tmp_name'], '../uploads/admin_profile/'.$admin_filename);
 
-          $_SESSION['message_success'] = 'Updated Successfully';
+          $_SESSION['status'] = 'Updated Successfully';
+          $_SESSION['status_code'] = "success";
           header("Location: account_settings.php");
           exit(0);
      }
      else
      {
-          $_SESSION['message_error'] = 'Not Updated';
+          $_SESSION['status'] = 'Not Updated';
+          $_SESSION['status_code'] = "error";
           header("Location: account_settings.php");
           exit(0);
      }

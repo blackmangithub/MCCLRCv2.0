@@ -2,9 +2,10 @@
 include('authentication.php');
 include('includes/header.php'); 
 include('includes/sidebar.php'); 
-
 ?>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <main id="main" class="main">
      <div class="pagetitle">
@@ -85,15 +86,11 @@ include('includes/sidebar.php');
                                                                  <i class="bi bi-pencil-fill"></i>
                                                             </a>
                                                             <!-- Delete Admin Action-->
-                                                            <form action="admin_code.php" method="POST">
-                                                                 <button type="submit" name="delete_admin"
-                                                                      value="<?=$admin['admin_id'];?>"
-                                                                      class="btn btn-sm  border text-danger"
-                                                                      data-bs-toggle="tooltip"
-                                                                      data-bs-placement="bottom" title="Delete Admin">
-                                                                      <i class="bi bi-trash-fill"></i>
-                                                                 </button>
-                                                            </form>
+                                                            <button type="button" class="btn btn-sm border text-danger"
+                                                                 data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                 title="Delete Admin" onclick="confirmDelete(<?=$admin['admin_id'];?>)">
+                                                                 <i class="bi bi-trash-fill"></i>
+                                                            </button>
                                                        </div>
                                                   </td>
                                              </tr>
@@ -108,6 +105,9 @@ include('includes/sidebar.php');
                                              ?>
                                         </tbody>
                                    </table>
+                                   <form id="delete-form" action="admin_code.php" method="POST" style="display: none;">
+                                        <input type="hidden" name="delete_admin" id="delete-admin-id">
+                                   </form>
                               </div>
                          </div>
                          <div class="card-footer"></div>
@@ -121,3 +121,21 @@ include('includes/footer.php');
 include('includes/script.php');
 include('message.php');   
 ?>
+
+<script>
+function confirmDelete(adminId) {
+    Swal.fire({
+        title: 'Are you sure to delete this?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-admin-id').value = adminId;
+            document.getElementById('delete-form').submit();
+        }
+    });
+}
+</script>

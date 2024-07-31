@@ -22,13 +22,15 @@ if(isset($_POST['delete_admin']))
                unlink("../uploads/admin_profile/".$admin_image);
           }
 
-          $_SESSION['message_success'] = 'Admin Deleted Successfully';
+          $_SESSION['status'] = 'Admin Deleted Successfully';
+          $_SESSION['status_code'] = "success";
           header("Location: admin.php");
           exit(0);
      }
      else
      {
-          $_SESSION['message_error'] = 'Admin Not Deleted';
+          $_SESSION['status'] = 'Admin Not Deleted';
+          $_SESSION['status_code'] = "error";
           header("Location: admin.php");
           exit(0);
      }
@@ -38,60 +40,54 @@ if(isset($_POST['delete_admin']))
 // Update Admin
 if(isset($_POST['edit_admin']))
 {
-     $admin_id =mysqli_real_escape_string($con, $_POST['admin_id']);
+    $admin_id = mysqli_real_escape_string($con, $_POST['admin_id']);
 
-     $firstname = mysqli_real_escape_string($con, $_POST['firstname']);
-     $middlename = mysqli_real_escape_string($con, $_POST['middlename']);
-     $lastname = mysqli_real_escape_string($con, $_POST['lastname']);
-     $email = mysqli_real_escape_string($con, $_POST['email']);
-     $address = mysqli_real_escape_string($con, $_POST['address']);
-     $phone_number = mysqli_real_escape_string($con, $_POST['phone_number']);
+    $firstname = mysqli_real_escape_string($con, $_POST['firstname']);
+    $middlename = mysqli_real_escape_string($con, $_POST['middlename']);
+    $lastname = mysqli_real_escape_string($con, $_POST['lastname']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $address = mysqli_real_escape_string($con, $_POST['address']);
+    $phone_number = mysqli_real_escape_string($con, $_POST['phone_number']);
+    $admin_type = mysqli_real_escape_string($con, $_POST['admin_type']);
     
+    $old_admin_filename = $_POST['old_admin_image'];
+    $admin_image = $_FILES['admin_image']['name'];
+    $update_admin_filename = $old_admin_filename;
 
+    if($admin_image != NULL)
+    {
+        // Rename the Image
+        $admin_extension = pathinfo($admin_image, PATHINFO_EXTENSION);
+        $admin_filename = time().'.'.$admin_extension;
+        $update_admin_filename =  $admin_filename;
+    }
 
-     $old_admin_filename = $_POST['old_admin_image'];
+    $query = "UPDATE `admin` SET firstname='$firstname', middlename='$middlename', lastname='$lastname', email='$email', address='$address', phone_number='$phone_number', admin_type='$admin_type', admin_image='$update_admin_filename' WHERE admin_id = '$admin_id'";
+    $query_run = mysqli_query($con, $query);
 
-     $admin_image = $_FILES['admin_image']['name'];
-
-     $update_admin_filename = "";
-
-     if($admin_image != NULL)
-     {
-           // Rename the Image
-           $admin_extension = pathinfo($admin_image, PATHINFO_EXTENSION);
-           $admin_filename = time().'.'.$admin_extension;
-
-           $update_admin_filename =  $admin_filename;
-     }
-     else
-     {
-          $update_admin_filename = $old_admin_filename;
-     }
-
-     $query = "UPDATE `admin` SET firstname='$firstname', middlename='$middlename', lastname='$lastname', email='$email', address='$address', phone_number='$phone_number', admin_image='$update_admin_filename' WHERE admin_id = '$admin_id'";
-     $query_run = mysqli_query($con, $query);
-
-     if($query_run)
-     {
-          if($admin_image != NULL)
-          {
-               if(file_exists('../uploads/admin_profile/'.$old_admin_filename))
-               {
-                    unlink("../uploads/admin_profile/".$old_admin_filename);
-               }
-          }
-          move_uploaded_file($_FILES['admin_image']['tmp_name'], '../uploads/admin_profile/'.$admin_filename);
-          
-          $_SESSION['message_success'] = 'Admin Updated successfully';
-          header("Location: admin.php");
-          exit(0);
-     }
-     else
-     {
-          $_SESSION['message_error'] = 'Admin not Updated';
-          header("Location: admin.php");
-          exit(0);
-     }
+    if($query_run)
+    {
+        if($admin_image != NULL)
+        {
+            if(file_exists('../uploads/admin_profile/'.$old_admin_filename))
+            {
+                unlink("../uploads/admin_profile/".$old_admin_filename);
+            }
+            move_uploaded_file($_FILES['admin_image']['tmp_name'], '../uploads/admin_profile/'.$admin_filename);
+        }
+        
+        $_SESSION['status'] = 'Admin Updated successfully';
+        $_SESSION['status_code'] = "success";
+        header("Location: admin_edit.php?id=$admin_id");
+        exit(0);
+    }
+    else
+    {
+        $_SESSION['status'] = 'Admin not Updated';
+        $_SESSION['status_code'] = "error";
+        header("Location: admin_edit.php?id=$admin_id");
+        exit(0);
+    }
 }
 
 
@@ -122,13 +118,15 @@ if(isset($_POST['add_admin']))
         if($query_run)
         {
             move_uploaded_file($_FILES['admin_image']['tmp_name'], '../uploads/admin_profile/'.$admin_filename);
-            $_SESSION['message_success'] = 'Admin Added successfully';
+            $_SESSION['status'] = 'Admin Added successfully';
+            $_SESSION['status_code'] = "success";
             header("Location: admin.php");
             exit(0);
         }
         else
         {
-            $_SESSION['message_error'] = 'Admin not Added';
+            $_SESSION['status'] = 'Admin not Added';
+            $_SESSION['status_code'] = "error";
             header("Location: admin.php");
             exit(0);
         }
@@ -141,13 +139,15 @@ if(isset($_POST['add_admin']))
 
         if($query_run)
         {
-            $_SESSION['message_success'] = 'Admin Added successfully';
+            $_SESSION['status'] = 'Admin Added successfully';
+            $_SESSION['status_code'] = "success";
             header("Location: admin.php");
             exit(0);
         }
         else
         {
-            $_SESSION['message_error'] = 'Admin not Added';
+            $_SESSION['status'] = 'Admin not Added';
+            $_SESSION['status_code'] = "error";
             header("Location: admin.php");
             exit(0);
         }

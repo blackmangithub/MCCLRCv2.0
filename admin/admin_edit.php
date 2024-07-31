@@ -19,7 +19,7 @@ include('./includes/sidebar.php');
                <div class="col-lg-12">
                     <div class="card">
                          <div class="card-header d-flex justify-content-end">
-
+                              <a href="admin.php" class="btn btn-primary">Back</a>
                          </div>
                          <div class="card-body">
                               <?php
@@ -34,7 +34,7 @@ include('./includes/sidebar.php');
                                    {
                                        $admin = mysqli_fetch_array($query_run);
                                         ?>
-                              <form action="admin_code.php" method="POST" enctype="multipart/form-data">
+                              <form action="admin_code.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePhoneNumber()">
 
                                    <div class="row d-flex justify-content-center mt-5">
                                         <input type="hidden" name="admin_id" value="<?=$admin['admin_id']?>">
@@ -78,10 +78,11 @@ include('./includes/sidebar.php');
                                         <div class="col-12 col-md-4">
                                              <div class="mb-3 mt-2">
                                                   <label for="">Phone Number</label>
-                                                  <input onkeydown="phoneFormatNumber()"
+                                                  <input type="tel"
                                                        value="<?=$admin['phone_number'];?>" name="phone_number"
-                                                       placeholder="639xxxxxxxxx" id=""
-                                                       class="form-control format_number" autocomplete="off">
+                                                       placeholder="09xxxxxxxxx" id="phone_number"
+                                                       class="form-control format_number" autocomplete="off"
+                                                       maxlength="11" pattern="09[0-9]{9}">
                                              </div>
                                         </div>
 
@@ -104,6 +105,19 @@ include('./includes/sidebar.php');
                                                        value="<?=$admin['admin_image'];?>">
                                                   <input type="file" name="admin_image" class="form-control"
                                                        autocomplete="off">
+                                             </div>
+                                        </div>
+                                   </div>
+
+                                   <div class="row d-flex justify-content-center">
+                                        <div class="col-12 col-md-5">
+                                             <div class="mb-3 mt-2">
+                                                  <label for="admin_type">Admin Type</label>
+                                                  <select id="admin_type" name="admin_type" class="form-control" required>
+                                                       <option value="" disabled>--Select Type--</option>
+                                                       <option value="Admin" <?= $admin['admin_type'] == 'Admin' ? 'selected' : '' ?>>Admin</option>
+                                                       <option value="Staff" <?= $admin['admin_type'] == 'Staff' ? 'selected' : '' ?>>Staff</option>
+                                                  </select>
                                              </div>
                                         </div>
                                    </div>
@@ -131,6 +145,19 @@ include('./includes/sidebar.php');
           </div>
      </section>
 </main>
+<script>
+function validatePhoneNumber() {
+    const phoneInput = document.getElementById('phone_number');
+    const phoneNumber = phoneInput.value;
+    const phonePattern = /^09\d{9}$/;
+
+    if (!phonePattern.test(phoneNumber)) {
+        alert('Invalid phone number. Please ensure it starts with 09 and is 11 digits long.');
+        return false;
+    }
+    return true;
+}
+</script>
 <?php 
 include('./includes/footer.php');
 include('./includes/script.php');

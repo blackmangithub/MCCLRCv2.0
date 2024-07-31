@@ -30,7 +30,7 @@ include('./includes/sidebar.php');
                                         <div class="col-12 col-md-3">
                                              <div class="mb-3 mt-2">
                                                   <label for="">First Name</label>
-                                                  <input type="text" name="firstname" class="form-control">
+                                                  <input type="text" name="firstname" class="form-control" required>
                                              </div>
                                         </div>
 
@@ -47,7 +47,7 @@ include('./includes/sidebar.php');
                                         <div class="col-12 col-md-3">
                                              <div class="mb-3 mt-2">
                                                   <label for="">Last Name</label>
-                                                  <input type="text" name="lastname" class="form-control">
+                                                  <input type="text" name="lastname" class="form-control" required>
                                              </div>
                                         </div>
 
@@ -58,7 +58,7 @@ include('./includes/sidebar.php');
                                         <div class="col-12 col-md-5">
                                              <div class="mb-3 mt-2">
                                                   <label for="">Email</label>
-                                                  <input type="email" name="email" class="form-control">
+                                                  <input type="email" name="email" class="form-control" required>
                                              </div>
                                         </div>
 
@@ -66,7 +66,7 @@ include('./includes/sidebar.php');
                                              <div class="mb-3 mt-2">
                                                   <label for="">Phone Number</label>
                                                   <input type="tel" id="phone_number" name="phone_number"
-                                                       placeholder="09xxxxxxxxx" class="form-control format_number" maxlength="11" oninput="validatePhoneNumber()">
+                                                       placeholder="09xxxxxxxxx" class="form-control format_number" maxlength="11" oninput="validatePhoneNumber()" required>
                                                   <small id="phone_warning" class="text-danger"></small>
                                              </div>
                                         </div>
@@ -78,7 +78,7 @@ include('./includes/sidebar.php');
                                         <div class="col-12 col-md-5">
                                              <div class="mb-3 mt-2">
                                                   <label for="">Address</label>
-                                                  <input type="text" name="address" class="form-control">
+                                                  <input type="text" name="address" class="form-control" required>
                                              </div>
                                         </div>
                                         <div class="col-12 col-md-4">
@@ -97,15 +97,16 @@ include('./includes/sidebar.php');
                                         <div class="col-12 col-md-5">
                                              <div class="mb-3 mt-2">
                                                   <label for="password">Password</label>
-                                                  <input type="password" id="password" name="password" class="form-control" style="margin-bottom: 5px;">
+                                                  <input type="password" id="password" name="password" class="form-control" style="margin-bottom: 5px;" minlength="8" required>
                                                   <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePassword()">
                                                   <label class="form-check-label" for="showPassword">Show Password</label>
+                                                  <small id="password_warning" class="text-danger"></small>
                                              </div>
                                         </div>
                                         <div class="col-12 col-md-4">
                                              <div class="mb-3 mt-2">
                                                   <label for="admin_type">Admin Type</label>
-                                                  <select id="admin_type" name="admin_type" class="form-control">
+                                                  <select id="admin_type" name="admin_type" class="form-control" required>
                                                   <option value="" id="optionLabel" disabled selected>--Select Type--</option>
                                                        <option value="Admin">Admin</option>
                                                        <option value="Staff">Staff</option>
@@ -160,6 +161,16 @@ function validateForm() {
     } else {
         warning.textContent = "";
     }
+
+    var password = document.getElementById("password").value;
+    var passwordWarning = document.getElementById("password_warning");
+    if (password.length < 8) {
+        passwordWarning.textContent = "Password must be at least 8 characters long.";
+        return false;
+    } else {
+        passwordWarning.textContent = "";
+    }
+    
     return true;
 }
 </script>
