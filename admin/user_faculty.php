@@ -2,11 +2,10 @@
 include('authentication.php');
 include('includes/header.php'); 
 include('./includes/sidebar.php'); 
-
 ?>
 
 <style>
-     #facultybadge{
+     #facultybadge {
           position: relative;
           top: -15px;
           left: 20px;
@@ -77,23 +76,13 @@ include('./includes/sidebar.php');
                                                                            <i class="bi bi-eye-fill"></i>
                                                                       </a>
                                                                       <!-- Block/Unblock Faculty Action-->
-                                                                      <form action="user_faculty_code.php" method="POST">
-                                                                           <?php if($user['status'] == 'approved'): ?>
-                                                                                <button type="submit" name="block_faculty" value="<?=$user['faculty_id'];?>" class="btn btn-sm border text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Block Faculty Staff">
-                                                                                     <i class="bi bi-lock-fill"></i>
-                                                                                </button>
-                                                                           <?php else: ?>
-                                                                                <button type="submit" name="unblock_faculty" value="<?=$user['faculty_id'];?>" class="btn btn-sm border text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unblock Faculty Staff">
-                                                                                     <i class="bi bi-unlock-fill"></i>
-                                                                                </button>
-                                                                           <?php endif; ?>
-                                                                      </form>
+                                                                      <button type="button" class="btn btn-sm border text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Block Faculty Staff" onclick="confirmBlock('<?=$user['faculty_id'];?>', '<?=$user['status'];?>')">
+                                                                           <i class="bi bi-lock-fill"></i>
+                                                                      </button>
                                                                       <!-- Delete Faculty Action-->
-                                                                      <form action="user_faculty_code.php" method="POST">
-                                                                           <button type="submit" name="delete_faculty" value="<?=$user['faculty_id'];?>" class="btn btn-sm border text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Faculty Staff">
-                                                                                <i class="bi bi-trash-fill"></i>
-                                                                           </button>
-                                                                      </form>
+                                                                      <button type="button" class="btn btn-sm border text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Faculty Staff" onclick="confirmDelete('<?=$user['faculty_id'];?>')">
+                                                                           <i class="bi bi-trash-fill"></i>
+                                                                      </button>
                                                                  </div>
                                                             </td>
                                                        </tr>
@@ -107,8 +96,7 @@ include('./includes/sidebar.php');
                                    </table>
                               </div>
                          </div>
-                         <div class="card-footer">
-                         </div>
+                         <div class="card-footer"></div>
                     </div>
                </div>
           </div>
@@ -119,3 +107,63 @@ include('./includes/footer.php');
 include('./includes/script.php');
 include('../message.php');   
 ?>
+
+<script>
+function confirmBlock(facultyId, status) {
+    let action = status === 'approved' ? 'block' : 'unblock';
+    Swal.fire({
+        title: 'Are you sure?',
+        text: `You are about to ${action} this faculty/staff!`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `Yes`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with the block/unblock
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'user_faculty_code.php';
+
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = status === 'approved' ? 'block_faculty' : 'unblock_faculty';
+            input.value = facultyId;
+
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+function confirmDelete(facultyId) {
+    Swal.fire({
+        title: 'Are you sure to delete this?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with the deletion
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'user_faculty_code.php';
+
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'delete_faculty';
+            input.value = facultyId;
+
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
