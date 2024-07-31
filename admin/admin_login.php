@@ -4,55 +4,52 @@ include('config/dbcon.php');
 
 if(isset($_POST['admin_login_btn']))
 {
-  $email = mysqli_real_escape_string($con, $_POST['email']);
-  $password = mysqli_real_escape_string($con, $_POST['password']);
-  $admin_types = mysqli_real_escape_string($con, $_POST['admin_type']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $password = mysqli_real_escape_string($con, $_POST['password']);
+    $admin_types = mysqli_real_escape_string($con, $_POST['admin_type']);
 
-  $admin_login_query = "SELECT * FROM admin WHERE email='$email' AND admin_type='$admin_types'";
-  $admin_login_query_run = mysqli_query($con, $admin_login_query);
+    $admin_login_query = "SELECT * FROM admin WHERE email='$email' AND admin_type='$admin_types'";
+    $admin_login_query_run = mysqli_query($con, $admin_login_query);
 
-  if(mysqli_num_rows($admin_login_query_run) > 0)
-  {
-    $data = mysqli_fetch_array($admin_login_query_run);
-    if(password_verify($password, $data['password'])) {
-      $admin_id = $data['admin_id'];  
-      $admin_name = $data['firstname'].' '.$data['lastname'];  
-      $admin_email = $data['email'];
-      $admin_type = $data['admin_type'];
+    if(mysqli_num_rows($admin_login_query_run) > 0)
+    {
+        $data = mysqli_fetch_array($admin_login_query_run);
+        if(password_verify($password, $data['password'])) {
+            $admin_id = $data['admin_id'];  
+            $admin_name = $data['firstname'].' '.$data['lastname'];  
+            $admin_email = $data['email'];
+            $admin_type = $data['admin_type'];
 
-      $_SESSION['auth'] = true;
-      $_SESSION['auth_role'] = "$admin_type"; 
-      $_SESSION['auth_admin'] = [
-        'admin_id'=>$admin_id,
-        'admin_name'=>$admin_name,
-        'email'=>$admin_email,
-      ];
+            $_SESSION['auth'] = true;
+            $_SESSION['auth_role'] = "$admin_type"; 
+            $_SESSION['auth_admin'] = [
+                'admin_id' => $admin_id,
+                'admin_name' => $admin_name,
+                'email' => $admin_email,
+            ];
 
-      if($admin_type == 'Admin')  // Admin
-      {
-        $_SESSION['message_success'] = "<small>Welcome to Dashboard Admin!</small>";
-        header("Location:index.php");
-        exit(0);
-      }
-      elseif($admin_type == 'Staff')  // Staff
-      {
-        $_SESSION['message_success'] = "<small>Welcome to Dashboard Staff!</small>";
-        header("Location:index.php");
+            $_SESSION['login_success'] = true;
+            header("Location: admin_login.php");
+            exit(0);
+        }
+        else
+        {
+            $_SESSION['status'] = "Invalid email, password, or admin type";
+            $_SESSION['status_code'] = "error";
+            header("Location: admin_login.php");
+            exit(0);
+        }
     }
-} else {
-    $_SESSION['message_error'] = "Invalid email, password, or admin type";
-    header("Location: admin_login.php");
-    exit(0);
-}
-}
-else
-{  
-  $_SESSION['message_error'] = "Invalid email, password, or admin type";
-  header("Location: admin_login.php");
-  exit(0);
-}
+    else
+    {  
+        $_SESSION['status'] = "Invalid email, password, or admin type";
+        $_SESSION['status_code'] = "error";
+        header("Location: admin_login.php");
+        exit(0);
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -152,4 +149,20 @@ else
         });
     </script>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        <?php if (isset($_SESSION['login_success']) && $_SESSION['login_success']): ?>
+            <?php unset($_SESSION['login_success']); // Clear session variable ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Successful',
+                showConfirmButton: true
+            }).then(() => {
+                window.location.href = 'index.php'; // Redirect after showing SweetAlert
+            });
+        <?php endif; ?>
+    });
+</script>
+
 </html>
