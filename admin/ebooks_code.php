@@ -27,13 +27,15 @@ if(isset($_POST['delete_book']))
                unlink("../uploads/ebook/".$ebook);
           }
 
-          $_SESSION['message_success'] = 'Book Deleted successfully';
+          $_SESSION['status'] = 'Book Deleted successfully';
+          $_SESSION['status_code'] = "success";
           header("Location: books.php");
           exit(0);
      }
      else
      {
-          $_SESSION['message_error'] = 'Book not Deleted';
+          $_SESSION['status'] = 'Book not Deleted';
+          $_SESSION['status_code'] = "error";
           header("Location: books.php");
           exit(0);
      }
@@ -92,13 +94,15 @@ if(isset($_POST['update_book']))
           move_uploaded_file($_FILES['opac_image']['tmp_name'], '../uploads/ebook_img/'.$opac_filename);
           move_uploaded_file($_FILES['ebook']['tmp_name'], '../uploads/ebook/'.$ebook_filename);
 
-          $_SESSION['message_success'] = 'Book Updated successfully';
+          $_SESSION['status'] = 'Book Updated successfully';
+          $_SESSION['status_code'] = "success";
           header("Location: books.php");
           exit(0);
      }
      else
      {
-          $_SESSION['message_error'] = 'Book not Updated';
+          $_SESSION['status'] = 'Book not Updated';
+          $_SESSION['status_code'] = "error";
           header("Location: books.php");
           exit(0);
      }
