@@ -17,6 +17,9 @@ $faculty_result = $faculty_stmt->get_result();
 $faculty_row = $faculty_result->fetch_assoc();
 ?>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Circulation</h1>
@@ -162,7 +165,12 @@ $faculty_row = $faculty_result->fetch_assoc();
 function validateForm() {
     const checkboxes = document.querySelectorAll('input[name="selected_books[]"]:checked');
     if (checkboxes.length === 0) {
-        alert('No books selected to return.');
+        Swal.fire({
+            icon: 'warning',
+            title: 'No Books Selected',
+            text: 'Please select at least one book to return.',
+            confirmButtonText: 'OK'
+        });
         return false;
     }
     return true;
