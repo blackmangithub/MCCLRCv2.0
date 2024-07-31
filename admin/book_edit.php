@@ -90,35 +90,12 @@ include('./includes/sidebar.php');
                                         </div>
                                         <div class="col-12 col-md-5">
                                              <div class="mb-2 input-group-sm">
-                                                  <label for="">LRC Location</label>
-                                                  <select name="category" class="form-control">
-                                                       <option value="<?=$book['category_id']; ?>"><?=$book['classname'];?></option>
-                                                       <?php
-                                                       $category = "SELECT * FROM category";
-                                                       $category_run = mysqli_query($con, $category);
-
-                                                       if(mysqli_num_rows($category_run) > 0)
-                                                       {
-                                                            foreach($category_run as $row)
-                                                            {
-                                                       ?>
-                                                       <option value="<?= $row['category_id']; ?>"><?=$row['classname']; ?></option>
-                                                       <?php
-                                                            }
-                                                       }
-                                                       ?>
-                                                  </select>
-                                             </div>
-                                        </div>
-                                   </div>
-                                   <div class="row d-flex justify-content-center">
-                                        <div class="col-12 col-md-5">
-                                             <div class="mb-2 input-group-sm">
                                                   <label for="">Image</label>
                                                   <input type="hidden" name="old_book_image" value="<?=$book['book_image'];?>">
                                                   <input type="file" name="book_image" class="form-control" autocomplete="off">
                                              </div>
                                         </div>
+                                   </div>
                                    </div>
                                    <div class="card-footer d-flex justify-content-end">
                                         <div>

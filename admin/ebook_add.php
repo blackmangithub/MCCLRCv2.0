@@ -2,29 +2,6 @@
 include('authentication.php');
 include('includes/header.php'); 
 include('./includes/sidebar.php'); 
-
-$query = "SELECT * FROM `barcode` ORDER BY mid_barcode DESC";
-$query_run = mysqli_query($con, $query);
-
-
-     $fetch = mysqli_fetch_array($query_run);
-     $mid_barcode = $fetch['mid_barcode'];
-
-     $new_barcode = $mid_barcode + 1;
-     $pre_barcode = "MCC";
-     $suf_barcode = "LRC";
-     $generate_barcode = $pre_barcode.$new_barcode.$suf_barcode;
-
-
-						// $query = mysqli_query($con,"SELECT * FROM `barcode` ORDER BY mid_barcode DESC ") or die (mysqli_error());
-						// $fetch = mysqli_fetch_array($query);
-						// $mid_barcode = $fetch['mid_barcode'];
-						
-						// $new_barcode =  $mid_barcode + 1;
-						// $pre_barcode = "VNHS";
-						// $suf_barcode = "LMS";
-						// $generate_barcode = $pre_barcode.$new_barcode.$suf_barcode;
-
 ?>
 <main id="main" class="main">
      <div class="pagetitle">
@@ -32,7 +9,7 @@ $query_run = mysqli_query($con, $query);
           <nav>
                <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="web_opac.php">Web OPAC</a></li>
+                    <li class="breadcrumb-item"><a href="books.php">Web OPAC</a></li>
                     <li class="breadcrumb-item active">Add Book</li>
                </ol>
           </nav>

@@ -153,7 +153,7 @@ $activeTabPane = isset($_GET['tab']) && $_GET['tab'] == 'copies' ? 'copies-tab-p
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="editModalLabel">Edit Accession Number</h5>
+                                                                    <h5 class="modal-title" id="editModalLabel">Edit Accession Number & LRC Location</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <form action="books_code.php" method="POST" onsubmit="return validateForm(this);">
@@ -163,6 +163,20 @@ $activeTabPane = isset($_GET['tab']) && $_GET['tab'] == 'copies' ? 'copies-tab-p
                                                                             <label for="accession_number" class="form-label">Accession Number</label>
                                                                             <input type="number" name="accession_number" class="form-control" value="<?= $book['accession_number']; ?>" pattern="[0-9]*" title="Please enter only numbers" required oninput="validateNumberInput(this)">
                                                                             <div id="accession_number_error" class="text-danger" style="display: none;"></div>
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label for="category_id" class="form-label">LRC Location</label>
+                                                                            <select name="category_id" class="form-select" required>
+                                                                                <?php
+                                                                                // Fetch categories from the database
+                                                                                $categories_query = "SELECT category_id, classname FROM category";
+                                                                                $categories_result = mysqli_query($con, $categories_query);
+                                                                                while ($category = mysqli_fetch_assoc($categories_result)) {
+                                                                                    $selected = ($category['category_id'] == $book['category_id']) ? 'selected' : '';
+                                                                                    echo "<option value='{$category['category_id']}' {$selected}>{$category['classname']}</option>";
+                                                                                }
+                                                                                ?>
+                                                                            </select>
                                                                         </div>
                                                                         <input type="hidden" name="title" value="<?= $book_title; ?>">
                                                                         <input type="hidden" name="accession_number_check" value="true">

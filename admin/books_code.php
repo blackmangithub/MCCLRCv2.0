@@ -102,31 +102,37 @@ if (isset($_POST['update_book'])) {
 if (isset($_POST['update_accession_number'])) {
     $old_accession_number = mysqli_real_escape_string($con, $_POST['old_accession_number']);
     $new_accession_number = mysqli_real_escape_string($con, $_POST['accession_number']);
-    $barcode = 'MCC-LRC' . $new_accession_number;
-    $check_query = "SELECT * FROM book WHERE accession_number = '$new_accession_number'";
-    $check_query_run = mysqli_query($con, $check_query);
+    $category_id = mysqli_real_escape_string($con, $_POST['category_id']);
 
-    if (mysqli_num_rows($check_query_run) > 0) {
-        $_SESSION['status'] = "The new Accession Number already exists. Please choose a different one.";
-        $_SESSION['status_code'] = "warning";
-        header("Location: book_views.php?title=" . urlencode($_POST['title']) . "&tab=copies");
-        exit(0);
+    $select_query = "SELECT title FROM book WHERE accession_number = '$old_accession_number'";
+    $select_query_run = mysqli_query($con, $select_query);
+
+    if (mysqli_num_rows($select_query_run) > 0) {
+        $row = mysqli_fetch_assoc($select_query_run);
+        $title = $row['title'];
+
+    // Check if the new accession number already exists
+    $check_query = "SELECT * FROM book WHERE accession_number = '$new_accession_number' AND accession_number != '$old_accession_number'";
+    $check_result = mysqli_query($con, $check_query);
+
+    if (mysqli_num_rows($check_result) > 0) {
+        $_SESSION['status'] = 'This accession number already exists.';
+        $_SESSION['status_code'] = 'error';
     } else {
-        $query = "UPDATE book SET accession_number = '$new_accession_number', barcode = '$barcode' WHERE accession_number = '$old_accession_number'";
-        $query_run = mysqli_query($con, $query);
-
-        if ($query_run) {
-            $_SESSION['status'] = "Accession Number updated successfully";
-            $_SESSION['status_code'] = "success";
-            header("Location: book_views.php?title=" . urlencode($_POST['title']) . "&tab=copies");
-            exit(0);
+        // Update the book details
+        $update_query = "UPDATE book SET accession_number = '$new_accession_number', category_id = '$category_id' WHERE accession_number = '$old_accession_number'";
+        if (mysqli_query($con, $update_query)) {
+            $_SESSION['status'] = 'Book updated successfully.';
+            $_SESSION['status_code'] = 'success';
         } else {
-            $_SESSION['status'] = "Failed to update Accession Number";
-            $_SESSION['status_code'] = "error";
-            header("Location: book_views.php?title=" . urlencode($_POST['title']) . "&tab=copies");
-            exit(0);
+            $_SESSION['status'] = 'Failed to update book.';
+            $_SESSION['status_code'] = 'error';
         }
     }
+
+    header("Location: book_views.php?title=" . urlencode($title) . "&tab=copies");
+    exit();
+}
 }
 
 // Check accession number already exists
