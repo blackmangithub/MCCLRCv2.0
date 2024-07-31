@@ -30,24 +30,25 @@
 <script src="assets/js/jspdf.umd.min.js"></script>
 <script src="assets/js/jspdf.plugin.autotable.min.js"></script>
 <script src="assets/js/xlsx.full.min.js"></script>
+<script src="assets/js/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.all.min.js"></script>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <?php
 if(isset($_SESSION['status']) && $_SESSION['status'] !='')
 {
     ?>
     <script>
-        swal({
+        Swal.fire({
             title: "<?php echo $_SESSION['status']; ?>",
-            // text: "You clicked the button!",
             icon: "<?php echo $_SESSION['status_code']; ?>",
-            button: "OK",
+            confirmButtonText: "OK"
         });
     </script>
     <?php
     unset($_SESSION['status']);
 }
 ?>
+
 <script>
     // Initialize AOS (Animate On Scroll)
     AOS.init();

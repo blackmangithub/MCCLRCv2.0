@@ -61,7 +61,10 @@ include('./includes/sidebar.php');
                                 }
                                 else
                                 {
-                                    $_SESSION['message_error'] = 'No ID or Username Found';
+                                    $_SESSION['status'] = 'No ID or Username Found';
+                                    $_SESSION['status_code'] = "error";
+                                    header("Location: hold_list.php");
+                                    exit(0);
                                 }
                             }
                             ?>
@@ -135,7 +138,10 @@ include('./includes/sidebar.php');
                                                     $query_run = mysqli_query($con, $query);
                                                     if($query_run)
                                                     {
-                                                        echo "<script>alert('Deleted successfully'); window.location='hold_list.php'</script>";
+                                                        $_SESSION['status'] = "Deleted Successfully.";
+                                                        $_SESSION['status_code'] = "success";
+                                                        header("Location:hold_list.php");
+                                                        exit(0);
                                                     }
                                                 }
                                                 ?>

@@ -180,20 +180,20 @@ if (isset($_POST['add_book'])) {
                 } else {
                     $_SESSION['status'] = "Your file is too large.";
                     $_SESSION['status_code'] = "warning";
-                    header("Location:book_add.php");
+                    header("Location: book_add.php");
                     exit(0);
                 }
             } else {
                 $_SESSION['status'] = "There was an error uploading your file.";
                 $_SESSION['status_code'] = "error";
-                header("Location:book_add.php");
+                header("Location: book_add.php");
                 exit(0);
             }
         } else {
             echo "You cannot upload files of this type.";
             $_SESSION['status'] = "You cannot upload files of this type.";
             $_SESSION['status_code'] = "warning";
-            header("Location:book_add.php");
+            header("Location: book_add.php");
             exit(0);
         }
     } else {
@@ -201,25 +201,54 @@ if (isset($_POST['add_book'])) {
         $book_image = $existing_image;
     }
 
-    // Prepare the SQL query
-    $query = "INSERT INTO book (title, author, isbn, publisher, copyright_date, place_publication, call_number, category_id, book_image, accession_number, barcode, date_added, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'Available')";
-    $stmt = mysqli_prepare($con, $query);
+    // Prepare the SQL query to check for existing accession numbers
+    $check_query = "SELECT COUNT(*) FROM book WHERE accession_number = ?";
+    $check_stmt = mysqli_prepare($con, $check_query);
 
-    if ($stmt) {
-        // Insert copies into the database
+    if ($check_stmt) {
         $pre = "MCC"; // Prefix for the barcode
         $suf = "LRC"; // Suffix for the barcode
 
         for ($i = 1; $i <= $copy; $i++) {
             $accession_number = $_POST['accession_number_' . $i];
+            
+            // Bind the accession number parameter and execute the statement
+            mysqli_stmt_bind_param($check_stmt, "s", $accession_number);
+            mysqli_stmt_execute($check_stmt);
+            mysqli_stmt_bind_result($check_stmt, $count);
+            mysqli_stmt_fetch($check_stmt);
+
+            if ($count > 0) {
+                $_SESSION['status'] = "Accession number " . $accession_number . " already exists.";
+                $_SESSION['status_code'] = "error";
+                header("Location: book_add.php");
+                exit(0);
+            }
+        }
+
+        mysqli_stmt_close($check_stmt);
+    } else {
+        $_SESSION['status'] = "Error preparing the statement: " . mysqli_error($con);
+        $_SESSION['status_code'] = "error";
+        header("Location: book_add.php");
+        exit(0);
+    }
+
+    // Prepare the SQL query to insert new books
+    $insert_query = "INSERT INTO book (title, author, isbn, publisher, copyright_date, place_publication, call_number, category_id, book_image, accession_number, barcode, date_added, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'Available')";
+    $insert_stmt = mysqli_prepare($con, $insert_query);
+
+    if ($insert_stmt) {
+        for ($i = 1; $i <= $copy; $i++) {
+            $accession_number = $_POST['accession_number_' . $i];
             $barcode = $pre . '-' . $suf . $accession_number;
             
             // Bind parameters and execute the statement
-            mysqli_stmt_bind_param($stmt, "sssssssssss", $title, $author, $isbn, $publisher, $copyright_date, $place_publication, $call_number, $category_id, $book_image, $accession_number, $barcode);
-            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_param($insert_stmt, "sssssssssss", $title, $author, $isbn, $publisher, $copyright_date, $place_publication, $call_number, $category_id, $book_image, $accession_number, $barcode);
+            mysqli_stmt_execute($insert_stmt);
         }
 
-        mysqli_stmt_close($stmt);
+        mysqli_stmt_close($insert_stmt);
 
         $_SESSION['status'] = "Book(s) added successfully.";
         $_SESSION['status_code'] = "success";

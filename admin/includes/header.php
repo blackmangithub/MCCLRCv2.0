@@ -37,6 +37,8 @@
 
      <!-- Custom CSS -->
      <link href="assets/css/style.css" rel="stylesheet" />
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css">
+     <link href="assets/css/sweetalert2.min.css" rel="stylesheet" />
 
      <!-- Animation -->
      <link rel="stylesheet" href="https://www.cssportal.com/css-loader-generator/" />

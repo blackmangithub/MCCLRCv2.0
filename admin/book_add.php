@@ -5,6 +5,10 @@ include('includes/header.php');
 include('./includes/sidebar.php'); 
 ?>
 
+<!-- Include SweetAlert CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.all.min.js"></script>
+
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Add Book</h1>
@@ -22,7 +26,7 @@ include('./includes/sidebar.php');
                 <div class="card">
                     <div class="card-header d-flex justify-content-end"></div>
                     <div class="card-body">
-                        <form action="books_code.php" method="POST" enctype="multipart/form-data">
+                        <form id="addBookForm" action="books_code.php" method="POST" enctype="multipart/form-data" onsubmit="return checkDuplicateAccessionNumbers()">
                             <div class="row d-flex justify-content-center mt-5">
                                 <div class="col-12 col-md-5">
                                     <div class="mb-2 input-group-sm">
@@ -86,7 +90,7 @@ include('./includes/sidebar.php');
                                 <div class="col-12 col-md-5">
                                     <div class="mb-2 input-group-sm">
                                         <label for="call_number">Call Number</label>
-                                        <input type="number" name="call_number" id="book_call_number" class="form-control" required>
+                                        <input type="text" name="call_number" id="book_call_number" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-5">
@@ -166,17 +170,38 @@ include('../message.php');
 
 <script>
 function generateAccessionFields() {
-     const copyCount = document.getElementById('copy').value;
-     const container = document.getElementById('accession_numbers_container');
-     container.innerHTML = '';
-     for (let i = 1; i <= copyCount; i++) {
-          const input = document.createElement('input');
-          input.type = 'number';
-          input.name = 'accession_number_' + i;
-          input.className = 'form-control mb-2';
-          input.placeholder = 'Accession Number ' + i;
-          container.appendChild(input);
-     }
+    const copyCount = document.getElementById('copy').value;
+    const container = document.getElementById('accession_numbers_container');
+    container.innerHTML = '';
+    for (let i = 1; i <= copyCount; i++) {
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.name = 'accession_number_' + i;
+        input.className = 'form-control mb-2';
+        input.placeholder = 'Accession Number ' + i;
+        input.required = true;
+        container.appendChild(input);
+    }
+}
+
+function checkDuplicateAccessionNumbers() {
+    const accessionNumbers = [];
+    const inputs = document.querySelectorAll('[name^="accession_number_"]');
+    
+    for (let input of inputs) {
+        const accessionNumber = input.value;
+        if (accessionNumbers.includes(accessionNumber)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Duplicate Accession Number',
+                text: 'Duplicate accession number ' + accessionNumber + ' found.',
+            });
+            return false; // Prevent form submission
+        }
+        accessionNumbers.push(accessionNumber);
+    }
+    
+    return true; // Allow form submission
 }
 
 $(document).ready(function() {

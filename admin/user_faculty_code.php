@@ -109,11 +109,13 @@ if(isset($_POST['deny'])) {
 
         sendEmail($faculty_email, $subject, $message);
 
-        $_SESSION['message_success'] = 'Faculty Denied';
+        $_SESSION['status'] = 'Faculty Denied';
+        $_SESSION['status_code'] = "success";
         header("Location: user_faculty_approval.php");
         exit(0);
     } else {
-        $_SESSION['message_error'] = 'Faculty not Denied';
+        $_SESSION['status'] = 'Faculty not Denied';
+        $_SESSION['status_code'] = "error";
         header("Location: user_faculty_approval.php");
         exit(0);
     }
@@ -191,11 +193,13 @@ if(isset($_POST['approved'])) {
         ";
         sendEmail($faculty_email, $subject, $message);
 
-        $_SESSION['message_success'] = 'Faculty approved successfully';
+        $_SESSION['status'] = 'Faculty approved successfully';
+        $_SESSION['status_code'] = "success";
         header("Location: user_faculty_approval.php");
         exit(0);
     } else {
-        $_SESSION['message_error'] = 'Faculty not approved';
+        $_SESSION['status'] = 'Faculty not approved';
+        $_SESSION['status_code'] = "error";
         header("Location: user_faculty_approval.php");
         exit(0);
     }
@@ -274,11 +278,13 @@ if(isset($_POST['block_faculty'])) {
 
         sendEmail($faculty_email, $subject, $message);
 
-        $_SESSION['message'] = "Faculty staff has been blocked successfully.";
+        $_SESSION['status'] = "Faculty staff has been blocked successfully.";
+        $_SESSION['status_code'] = "success";
         header("Location: user_faculty.php");
         exit(0);
     } else {
-        $_SESSION['message'] = "Something went wrong.";
+        $_SESSION['status'] = "Something went wrong.";
+        $_SESSION['status_code'] = "error";
         header("Location: user_faculty.php");
         exit(0);
     }
@@ -356,11 +362,13 @@ if(isset($_POST['unblock_faculty'])) {
 
         sendEmail($faculty_email, $subject, $message);
 
-        $_SESSION['message'] = "Faculty staff has been unblocked successfully.";
+        $_SESSION['status'] = "Faculty staff has been unblocked successfully.";
+        $_SESSION['status_code'] = "success";
         header("Location: user_faculty.php");
         exit(0);
     } else {
-        $_SESSION['message'] = "Something went wrong.";
+        $_SESSION['status'] = "Something went wrong.";
+        $_SESSION['status_code'] = "error";
         header("Location: user_faculty.php");
         exit(0);
     }
@@ -373,11 +381,13 @@ if(isset($_POST['delete_faculty'])) {
     $query_run = mysqli_query($con, $query);
 
     if($query_run) {
-        $_SESSION['message_success'] = 'Faculty deleted successfully';
+        $_SESSION['status'] = 'Faculty deleted successfully';
+        $_SESSION['status_code'] = "success";
         header("Location: user_faculty.php");
         exit(0);
     } else {
-        $_SESSION['message_error'] = 'Faculty not deleted';
+        $_SESSION['status'] = 'Faculty not deleted';
+        $_SESSION['status_code'] = "error";
         header("Location: user_faculty.php");
         exit(0);
     }

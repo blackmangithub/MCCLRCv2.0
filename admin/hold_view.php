@@ -128,9 +128,15 @@ if (isset($_POST['approved'])) {
         $book_stmt->bind_param("i", $hold_id);
         $book_stmt->execute();
         
-        echo "<script>alert('Hold has been approved.'); window.location = 'hold_list.php';</script>";
+        $_SESSION['status'] = "Hold has been approved.";
+        $_SESSION['status_code'] = "success";
+        header("Location:hold_list.php");
+        exit(0);
     } else {
-        echo "<script>alert('Failed to approve the hold.'); window.location = 'hold_list.php';</script>";
+        $_SESSION['status'] = "Failed to approve the hold.";
+        $_SESSION['status_code'] = "error";
+        header("Location:hold_list.php");
+        exit(0);
     }
 }
 
@@ -159,9 +165,15 @@ if (isset($_POST['cancel'])) {
         $book_update_stmt->bind_param("i", $book_id);
         $book_update_stmt->execute();
         
-        echo "<script>alert('Hold has been canceled.'); window.location = 'hold_list.php';</script>";
+        $_SESSION['status'] = "Hold has been canceled.";
+        $_SESSION['status_code'] = "success";
+        header("Location:hold_list.php");
+        exit(0);
     } else {
-        echo "<script>alert('Failed to cancel the hold.'); window.location = 'hold_list.php';</script>";
+        $_SESSION['status'] = "Failed to cancel the hold.";
+        $_SESSION['status_code'] = "error";
+        header("Location:hold_list.php");
+        exit(0);
     }
 }
 ?>
