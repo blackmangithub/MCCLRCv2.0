@@ -101,7 +101,9 @@ if (!in_array($_SESSION['auth_role'], ['student', 'faculty', 'staff'])) {
                                                     <div class="col-lg-3 col-md-4 fw-semibold text-primary">
                                                         <form action="" method="POST">
                                                             <input type="hidden" name="book_id" value="<?= htmlspecialchars($book_id) ?>">
-                                                            <button type="submit" name="hold" class="btn btn-primary px-4" <?= $unavailable_count > 0 ? '' : 'disabled' ?>>Hold</button>
+                                                            <button type="submit" name="hold" class="btn btn-primary px-4" <?= $book['available_count'] > 0 ? 'disabled' : '' ?>>
+                                                                Hold
+                                                            </button>
                                                         </form>
                                                     </div>
                                                 </div>
