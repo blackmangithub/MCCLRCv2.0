@@ -1,6 +1,7 @@
-<?php 
+<?php
+ob_start(); // Start output buffering
 include('authentication.php');
-include('includes/header.php'); 
+include('includes/header.php');
 include('./includes/sidebar.php'); 
 ?>
 
@@ -27,7 +28,7 @@ include('./includes/sidebar.php');
                                 <form action="" method="GET">
                                     <div class="input-group mb-3 input-group-sm">
                                         <input type="text" name="id_no"
-                                               value="<?php echo isset($_GET['id_no']) ? $_GET['id_no'] : ''; ?>"
+                                               value="<?php echo isset($_GET['id_no']) ? htmlspecialchars($_GET['id_no']) : ''; ?>"
                                                class="form-control" placeholder="Enter Student ID or Faculty Name"
                                                aria-label="ID" aria-describedby="basic-addon1" autofocus required>
                                         <button class="input-group-text bg-primary text-white"
@@ -37,8 +38,7 @@ include('./includes/sidebar.php');
                             </div>
 
                             <?php
-                            if(isset($_GET['id_no']))
-                            {
+                            if (isset($_GET['id_no'])) {
                                 $id_no = mysqli_real_escape_string($con, $_GET['id_no']);
                                 
                                 $query_user = "SELECT * FROM user WHERE student_id_no='$id_no'";
@@ -47,20 +47,17 @@ include('./includes/sidebar.php');
                                 $query_run_user = mysqli_query($con, $query_user);
                                 $query_run_faculty = mysqli_query($con, $query_faculty);
 
-                                if(mysqli_num_rows($query_run_user) > 0)
-                                {
+                                if (mysqli_num_rows($query_run_user) > 0) {
                                     $row = mysqli_fetch_assoc($query_run_user);
                                     $user_id = $row['user_id'];
-                                    echo ('<script> location.href="hold_view.php?id='.$user_id.'&type=user";</script>');
-                                }
-                                elseif(mysqli_num_rows($query_run_faculty) > 0)
-                                {
+                                    echo '<script> location.href="hold_view.php?id='.$user_id.'&type=user";</script>';
+                                    exit(0); // Make sure script execution stops here
+                                } elseif (mysqli_num_rows($query_run_faculty) > 0) {
                                     $row = mysqli_fetch_assoc($query_run_faculty);
                                     $faculty_id = $row['faculty_id'];
-                                    echo ('<script> location.href="hold_view.php?id='.$faculty_id.'&type=faculty";</script>');
-                                }
-                                else
-                                {
+                                    echo '<script> location.href="hold_view.php?id='.$faculty_id.'&type=faculty";</script>';
+                                    exit(0); // Make sure script execution stops here
+                                } else {
                                     $_SESSION['status'] = 'No ID or Username Found';
                                     $_SESSION['status_code'] = "error";
                                     header("Location: hold_list.php");
@@ -108,48 +105,23 @@ include('./includes/sidebar.php');
                                     ?>
                                     <tr>
                                         <td style="text-transform: capitalize">
-                                            <?php echo $name; ?>
+                                            <?php echo htmlspecialchars($name); ?>
                                         </td>
-                                        <td><?=$holdlist['num_hold_books'];?></td>
+                                        <td><?= htmlspecialchars($holdlist['num_hold_books']); ?></td>
                                         <td class="justify-content-center">
                                             <div class="btn-group" style="background: #DFF6FF;">
                                                 <!-- View Hold Books Action -->
-                                                <a href="hold_view.php?id=<?=$id;?>&type=<?=$holdlist['user_id'] ? 'user' : 'faculty';?>"
+                                                <a href="hold_view.php?id=<?= htmlspecialchars($id); ?>&type=<?= htmlspecialchars($holdlist['user_id'] ? 'user' : 'faculty'); ?>"
                                                    class="viewBookBtn btn btn-sm border text-primary"
                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                    title="View Hold Books">
                                                    <i class="bi bi-eye-fill"></i>
                                                 </a>
-                                                <!-- Delete Hold Action -->
-                                                <form action="" method="POST">
-                                                    <input type="hidden" name="hold_id" value="<?=$holdlist['hold_id'];?>">
-                                                    <button type="submit" name="delete"
-                                                            class="btn btn-sm border text-danger"
-                                                            data-bs-toggle="tooltip"
-                                                            data-bs-placement="bottom" title="Delete Holder">
-                                                            <i class="bi bi-trash-fill"></i>
-                                                    </button>
-                                                </form>
-                                                <?php
-                                                if(isset($_POST['delete']))
-                                                {
-                                                    $hold_id = mysqli_real_escape_string($con, $_POST['hold_id']);
-                                                    $query = "DELETE FROM holds WHERE hold_id = $hold_id";
-                                                    $query_run = mysqli_query($con, $query);
-                                                    if($query_run)
-                                                    {
-                                                        $_SESSION['status'] = "Deleted Successfully.";
-                                                        $_SESSION['status_code'] = "success";
-                                                        header("Location:hold_list.php");
-                                                        exit(0);
-                                                    }
-                                                }
-                                                ?>
                                             </div>
                                         </td>
                                     </tr>
                                     <?php } 
-                                    if ($borrow_count <= 0){
+                                    if ($borrow_count <= 0) {
                                         echo '
                                             <table style="float:right;">
                                                 <tr>
@@ -174,6 +146,7 @@ include('./includes/sidebar.php');
 include('./includes/footer.php');
 include('./includes/script.php');
 include('../message.php');   
+ob_end_flush(); // End output buffering and flush output
 ?>
 
 <script>

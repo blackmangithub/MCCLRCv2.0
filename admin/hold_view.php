@@ -1,4 +1,8 @@
-<?php 
+<?php
+// Start output buffering
+ob_start();
+
+// Include necessary files
 include('authentication.php');
 include('includes/header.php'); 
 include('./includes/sidebar.php'); 
@@ -6,6 +10,7 @@ include('./includes/sidebar.php');
 $id = $_GET['id'];
 $type = $_GET['type'];
 
+// Prepare and execute the query based on type
 $query = "";
 if ($type == "user") {
     $query = "SELECT * FROM user WHERE user_id = ?";
@@ -13,11 +18,19 @@ if ($type == "user") {
     $query = "SELECT * FROM faculty WHERE faculty_id = ?";
 }
 
-$user_stmt = $con->prepare($query);
-$user_stmt->bind_param("s", $id);
-$user_stmt->execute();
-$user_result = $user_stmt->get_result();
-$user_row = $user_result->fetch_assoc();
+if ($query) {
+    $user_stmt = $con->prepare($query);
+    $user_stmt->bind_param("i", $id);
+    $user_stmt->execute();
+    $user_result = $user_stmt->get_result();
+    $user_row = $user_result->fetch_assoc();
+} else {
+    // Handle invalid type
+    $_SESSION['status'] = 'Invalid type parameter.';
+    $_SESSION['status_code'] = 'error';
+    header("Location: hold_list.php");
+    exit(0);
+}
 ?>
 
 <main id="main" class="main">
@@ -54,7 +67,7 @@ $user_row = $user_result->fetch_assoc();
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $borrow_query = mysqli_query($con, "
+                                    $borrow_query = "
                                         SELECT holds.hold_id, holds.hold_date, 
                                                book.*, book.book_image, book.title, book.accession_number,
                                                user.user_id, faculty.faculty_id
@@ -62,34 +75,39 @@ $user_row = $user_result->fetch_assoc();
                                         LEFT JOIN book ON holds.book_id = book.book_id 
                                         LEFT JOIN user ON holds.user_id = user.user_id AND holds.hold_status = 'Hold'
                                         LEFT JOIN faculty ON holds.faculty_id = faculty.faculty_id AND holds.hold_status = 'Hold'
-                                        WHERE holds.hold_status = 'Hold' AND (user.user_id = '$id' OR faculty.faculty_id = '$id')
+                                        WHERE holds.hold_status = 'Hold' AND (user.user_id = ? OR faculty.faculty_id = ?)
                                         ORDER BY holds.hold_id DESC
-                                    ");
-                                    $borrow_count = mysqli_num_rows($borrow_query);
-                                    while ($borrow_row = mysqli_fetch_array($borrow_query)) {
-                                        $book_title = $borrow_row['title'];
+                                    ";
+                                    
+                                    $borrow_stmt = $con->prepare($borrow_query);
+                                    $borrow_stmt->bind_param("ii", $id, $id);
+                                    $borrow_stmt->execute();
+                                    $borrow_result = $borrow_stmt->get_result();
+                                    $borrow_count = $borrow_result->num_rows;
+                                    while ($borrow_row = $borrow_result->fetch_assoc()) {
+                                        $book_title = htmlspecialchars($borrow_row['title']);
                                         $hold_id = $borrow_row['hold_id']; // Added hold_id for action handling
                                     ?>
                                     <tr>
                                         <td>
                                             <center>
                                                 <?php if ($borrow_row['book_image'] != ""): ?>
-                                                <img src="../uploads/books_img/<?php echo $borrow_row['book_image']; ?>" alt="" width="80px" height="80px">
+                                                <img src="../uploads/books_img/<?php echo htmlspecialchars($borrow_row['book_image']); ?>" alt="" width="80px" height="80px">
                                                 <?php else: ?>
                                                 <img src="../uploads/books_img/book_image.jpg" alt="" width="80px" height="80px">
                                                 <?php endif; ?>
                                             </center>
                                         </td>
                                         <td style="text-transform: capitalize"><?php echo $book_title; ?></td>
-                                        <td><?php echo $borrow_row['accession_number']; ?></td>
+                                        <td><?php echo htmlspecialchars($borrow_row['accession_number']); ?></td>
                                         <td><?php echo date("M d, Y h:i:s a", strtotime($borrow_row['hold_date'])); ?></td>
                                         <td>
                                             <form action="" method="post" style="display: inline;">
-                                                <input type="hidden" name="hold_id" value="<?php echo $hold_id; ?>">
+                                                <input type="hidden" name="hold_id" value="<?php echo htmlspecialchars($hold_id); ?>">
                                                 <button type="submit" class="btn btn-success" name="approved">Approved</button>
                                             </form>
                                             <form action="" method="post" style="display: inline;">
-                                                <input type="hidden" name="hold_id" value="<?php echo $hold_id; ?>">
+                                                <input type="hidden" name="hold_id" value="<?php echo htmlspecialchars($hold_id); ?>">
                                                 <button type="submit" class="btn btn-danger" name="cancel">Cancel</button>
                                             </form>
                                         </td>
@@ -112,6 +130,7 @@ $user_row = $user_result->fetch_assoc();
 </main>
 
 <?php 
+// Redirect or header operations
 if (isset($_POST['approved'])) {
     $hold_id = mysqli_real_escape_string($con, $_POST['hold_id']);
     
@@ -130,12 +149,14 @@ if (isset($_POST['approved'])) {
         
         $_SESSION['status'] = "Hold has been approved.";
         $_SESSION['status_code'] = "success";
-        header("Location:hold_list.php");
+        header("Location: hold_list.php");
+        ob_end_flush(); // Flush and turn off buffering
         exit(0);
     } else {
         $_SESSION['status'] = "Failed to approve the hold.";
         $_SESSION['status_code'] = "error";
-        header("Location:hold_list.php");
+        header("Location: hold_list.php");
+        ob_end_flush(); // Flush and turn off buffering
         exit(0);
     }
 }
@@ -167,12 +188,14 @@ if (isset($_POST['cancel'])) {
         
         $_SESSION['status'] = "Hold has been canceled.";
         $_SESSION['status_code'] = "success";
-        header("Location:hold_list.php");
+        header("Location: hold_list.php");
+        ob_end_flush(); // Flush and turn off buffering
         exit(0);
     } else {
         $_SESSION['status'] = "Failed to cancel the hold.";
         $_SESSION['status_code'] = "error";
-        header("Location:hold_list.php");
+        header("Location: hold_list.php");
+        ob_end_flush(); // Flush and turn off buffering
         exit(0);
     }
 }

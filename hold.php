@@ -1,21 +1,22 @@
-<?php 
+<?php
+ob_start(); // Start output buffering
 include('includes/header.php');
 include('includes/navbar.php');
 include('admin/config/dbcon.php');
 
-if(empty($_SESSION['auth'])){
+if (empty($_SESSION['auth'])) {
     header('Location: home.php');
     exit(0);
 }
-if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" && $_SESSION['auth_role'] != "staff")
-{
+
+if ($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" && $_SESSION['auth_role'] != "staff") {
     header("Location:index.php");
     exit(0);
 }
 ?>
 
 <style>
-     .center{
+     .center {
           text-align: center;
           margin-top: -20px;
           margin-bottom: 20px;
@@ -45,36 +46,34 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
                                 // Define maximum number of books a user can hold
                                 $max_books_hold = 5;
 
-                                if($book_count > 0)
-                                {
-                                    echo '<h5 class="center">Hold books : '.$book_count.' / '.$max_books_hold.'</h5>'; // Display the count
-                                    foreach($query_run as $hold)
-                                    {
+                                if ($book_count > 0) {
+                                    echo '<h5 class="center">Hold books : ' . $book_count . ' / ' . $max_books_hold . '</h5>'; // Display the count
+                                    foreach ($query_run as $hold) {
                                         $hold_book = $hold['hold_id'];
                                         $book_hold = $hold['book_id'];
                                 ?>
 
                                 <div class="col-lg-3 col-md-3 label text-center mb-3">
-                                    <?php if($hold['book_image'] != ""): ?>
-                                    <img src="uploads/books_img/<?php echo $hold['book_image']?>" width="100px" alt="">
+                                    <?php if ($hold['book_image'] != ""): ?>
+                                    <img src="uploads/books_img/<?php echo htmlspecialchars($hold['book_image']); ?>" width="100px" alt="">
                                     <?php else: ?>
                                     <img src="uploads/books_img/book_image.jpg" alt="">
                                     <?php endif; ?>
                                 </div>
                                 <div class="col-lg-6 col-md-6 label">
                                     <div>
-                                        <?=$hold['title'].' '.$hold['copyright_date'].' by '.$hold['author'];?>
+                                        <?= htmlspecialchars($hold['title'] . ' ' . $hold['copyright_date'] . ' by ' . $hold['author']); ?>
                                         <br>
-                                        Accession No. <b><?=$hold['accession_number'];?></b>
+                                        Accession No. <b><?= htmlspecialchars($hold['accession_number']); ?></b>
                                     </div>
                                     <div class="text-muted">
-                                        <?=date("M d, Y", strtotime($hold['hold_date']));?>
+                                        <?= date("M d, Y", strtotime($hold['hold_date'])); ?>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-3 label text-center mb-3">
                                     <form action="" method="POST">
-                                        <button type="submit" value="<?=$hold['hold_id'];?>"
-                                            class="btn btn-danger " name="cancel_hold">
+                                        <button type="submit" value="<?= htmlspecialchars($hold['hold_id']); ?>"
+                                            class="btn btn-danger" name="cancel_hold">
                                             Cancel
                                         </button>
                                     </form>
@@ -82,9 +81,7 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
 
                                 <?php
                                     }
-                                }
-                                else
-                                {
+                                } else {
                                     echo '<div class="col-lg-12 col-md-12">
                                               <div class="text-center">No held books</div>
                                           </div>';
@@ -101,8 +98,7 @@ if($_SESSION['auth_role'] != "student" && $_SESSION['auth_role'] != "faculty" &&
 </div>
 
 <?php
-if(isset($_POST['cancel_hold']))
-{
+if (isset($_POST['cancel_hold'])) {
     $holdbook_id = mysqli_real_escape_string($con, $_POST['cancel_hold']);
 
     $query = "SELECT book_id FROM holds WHERE hold_id = '$holdbook_id'";
@@ -143,4 +139,5 @@ if(isset($_POST['cancel_hold']))
 include('includes/footer.php');
 include('includes/script.php');
 include('message.php');
+ob_end_flush(); // End output buffering and flush output
 ?>
