@@ -127,6 +127,7 @@ if (!in_array($_SESSION['auth_role'], ['student', 'faculty', 'staff'])) {
 if (isset($_POST['hold'])) {
     $book_id = mysqli_real_escape_string($con, $_POST['book_id']);
 
+    // Get the book title
     $book_title_query = $con->prepare("SELECT title FROM book WHERE book_id = ?");
     $book_title_query->bind_param('i', $book_id);
     $book_title_query->execute();
@@ -134,10 +135,16 @@ if (isset($_POST['hold'])) {
     $book_title_row = $book_title_result->fetch_assoc();
     $book_title = $book_title_row['title'];
 
+    // Get user ID or faculty ID
     $user_id = $_SESSION['auth_role'] == "student" ? $_SESSION['auth_stud']['stud_id'] : null;
     $faculty_id = ($_SESSION['auth_role'] == "faculty" || $_SESSION['auth_role'] == "staff") ? $_SESSION['auth_stud']['stud_id'] : null;
 
-    $check_query = $con->prepare("SELECT * FROM holds WHERE book_title = ? AND (user_id = ? OR faculty_id = ?)");
+    // Check if the user is already holding or borrowing the book
+    $check_query = $con->prepare("
+        SELECT * FROM holds 
+        WHERE book_title = ? 
+        AND (user_id = ? OR faculty_id = ?)
+    ");
     $check_query->bind_param('sii', $book_title, $user_id, $faculty_id);
     $check_query->execute();
     $check_result = $check_query->get_result();
@@ -147,43 +154,63 @@ if (isset($_POST['hold'])) {
         $_SESSION['status_code'] = "warning";
         header("Location: book_details.php?title=" . urlencode($book_title) . "&id=" . urlencode($book_id));
         exit(0);
-    } else {
-        $count_query = $con->prepare("SELECT COUNT(*) AS count_books FROM holds WHERE (user_id = ? OR faculty_id = ?)");
-        $count_query->bind_param('ii', $user_id, $faculty_id);
-        $count_query->execute();
-        $count_result = $count_query->get_result();
-        $count_row = $count_result->fetch_assoc();
-        $current_hold_count = $count_row['count_books'];
+    }
 
-        if ($current_hold_count >= 3) {
-            $_SESSION['status'] = "You cannot hold more than 3 books!";
-            $_SESSION['status_code'] = "warning";
-            header("Location: book_details.php?title=" . urlencode($book_title) . "&id=" . urlencode($book_id));
+    $borrow_check_query = $con->prepare("
+    SELECT * FROM borrow_book
+    WHERE book_id = ? 
+    AND borrowed_status = 'borrowed' 
+    AND (user_id = ? OR faculty_id = ?)
+    ");
+    $borrow_check_query->bind_param('iii', $book_id, $user_id, $faculty_id);
+    $borrow_check_query->execute();
+    $borrow_check_result = $borrow_check_query->get_result();
+
+    if ($borrow_check_result->num_rows > 0) {
+        $_SESSION['status'] = "You are already borrowing this book!";
+        $_SESSION['status_code'] = "warning";
+        header("Location: book_details.php?title=" . urlencode($book_title) . "&id=" . urlencode($book_id));
+        exit();
+    }
+
+    // Check the current number of holds for the user
+    $count_query = $con->prepare("SELECT COUNT(*) AS count_books FROM holds WHERE (user_id = ? OR faculty_id = ?)");
+    $count_query->bind_param('ii', $user_id, $faculty_id);
+    $count_query->execute();
+    $count_result = $count_query->get_result();
+    $count_row = $count_result->fetch_assoc();
+    $current_hold_count = $count_row['count_books'];
+
+    if ($current_hold_count >= 3) {
+        $_SESSION['status'] = "You cannot hold more than 3 books!";
+        $_SESSION['status_code'] = "warning";
+        header("Location: book_details.php?title=" . urlencode($book_title) . "&id=" . urlencode($book_id));
+        exit(0);
+    } else {
+        // Update the book status to "Hold"
+        $update_query = $con->prepare("UPDATE book SET status_hold = 'Hold' WHERE book_id = ?");
+        $update_query->bind_param('i', $book_id);
+        $update_query->execute();
+
+        // Insert hold record
+        if ($_SESSION['auth_role'] == "student") {
+            $insert_query = $con->prepare("INSERT INTO holds (book_id, book_title, user_id, hold_status, hold_date) VALUES (?, ?, ?, 'Hold', NOW())");
+            $insert_query->bind_param('isi', $book_id, $book_title, $user_id);
+        } elseif ($_SESSION['auth_role'] == "faculty" || $_SESSION['auth_role'] == "staff") {
+            $insert_query = $con->prepare("INSERT INTO holds (book_id, book_title, faculty_id, hold_status, hold_date) VALUES (?, ?, ?, 'Hold', NOW())");
+            $insert_query->bind_param('isi', $book_id, $book_title, $faculty_id);
+        }
+
+        if ($insert_query->execute()) {
+            $_SESSION['status'] = "Book held successfully";
+            $_SESSION['status_code'] = "success";
+            header("Location:index.php");
             exit(0);
         } else {
-            $update_query = $con->prepare("UPDATE book SET status_hold = 'Hold' WHERE book_id = ?");
-            $update_query->bind_param('i', $book_id);
-            $update_query->execute();
-
-            if ($_SESSION['auth_role'] == "student") {
-                $insert_query = $con->prepare("INSERT INTO holds (book_id, book_title, user_id, hold_status, hold_date) VALUES (?, ?, ?, 'Hold', NOW())");
-                $insert_query->bind_param('isi', $book_id, $book_title, $user_id);
-            } elseif ($_SESSION['auth_role'] == "faculty" || $_SESSION['auth_role'] == "staff") {
-                $insert_query = $con->prepare("INSERT INTO holds (book_id, book_title, faculty_id, hold_status, hold_date) VALUES (?, ?, ?, 'Hold', NOW())");
-                $insert_query->bind_param('isi', $book_id, $book_title, $faculty_id);
-            }
-
-            if ($insert_query->execute()) {
-                $_SESSION['status'] = "Book held successfully";
-                $_SESSION['status_code'] = "success";
-                header("Location:index.php");
-                exit(0);
-            } else {
-                $_SESSION['status'] = "Failed to hold the book";
-                $_SESSION['status_code'] = "error";
-                header("Location: book_details.php?title=" . urlencode($book_title) . "&id=" . urlencode($book_id));
-                exit(0);
-            }
+            $_SESSION['status'] = "Failed to hold the book";
+            $_SESSION['status_code'] = "error";
+            header("Location: book_details.php?title=" . urlencode($book_title) . "&id=" . urlencode($book_id));
+            exit(0);
         }
     }
 }
