@@ -123,7 +123,7 @@ $user_row = mysqli_fetch_array($user_query);
                                         if (isset($_POST['borrow'])) {
                                             $user_id = $_POST['user_id'];
                                             $book_id = $_POST['book_id'];
-                                            $date_borrowed = $_POST['date_borrowed'];
+                                            $date_borrowed = date('Y-m-d');
                                             $due_date = $_POST['due_date'];
 
                                             $book_details_query = mysqli_query($con, "SELECT title, category_id FROM book WHERE book_id = $book_id");

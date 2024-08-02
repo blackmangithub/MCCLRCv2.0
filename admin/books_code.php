@@ -1,31 +1,47 @@
 <?php
 include('authentication.php');
 
-
-
 // Delete Book
 if (isset($_POST['delete_book'])) {
     $accession_number = mysqli_real_escape_string($con, $_POST['accession_number']);
 
-    // First, select the title from the book table based on the accession number
-    $select_query = "SELECT title FROM book WHERE accession_number = '$accession_number'";
+    $select_query = "SELECT book_id, title FROM book WHERE accession_number = '$accession_number'";
     $select_query_run = mysqli_query($con, $select_query);
 
     if (mysqli_num_rows($select_query_run) > 0) {
         $row = mysqli_fetch_assoc($select_query_run);
+        $book_id = $row['book_id'];
         $title = $row['title'];
 
-        // Now delete the book
-        $delete_query = "DELETE FROM book WHERE accession_number = '$accession_number'";
-        $delete_query_run = mysqli_query($con, $delete_query);
+        // Begin transaction
+        mysqli_begin_transaction($con);
 
-        if ($delete_query_run) {
-            $_SESSION['status'] = "Book accession number '$accession_number' deleted successfully";
-            $_SESSION['status_code'] = "success";
-            header("Location: book_views.php?title=" . urlencode($title) . "&tab=copies");
-            exit(0);
-        } else {
-            $_SESSION['status'] = "Failed to delete book accession number '$accession_number'";
+        try {
+            // Delete related records in borrow_book and return_book tables
+            $delete_borrow_query = "DELETE FROM borrow_book WHERE book_id = '$book_id'";
+            mysqli_query($con, $delete_borrow_query);
+
+            $delete_return_query = "DELETE FROM return_book WHERE book_id = '$book_id'";
+            mysqli_query($con, $delete_return_query);
+
+            // Delete the book
+            $delete_query = "DELETE FROM book WHERE accession_number = '$accession_number'";
+            $delete_query_run = mysqli_query($con, $delete_query);
+
+            if ($delete_query_run) {
+                // Commit transaction
+                mysqli_commit($con);
+                $_SESSION['status'] = "Book accession number '$accession_number' deleted successfully";
+                $_SESSION['status_code'] = "success";
+                header("Location: book_views.php?title=" . urlencode($title) . "&tab=copies");
+                exit(0);
+            } else {
+                throw new Exception("Failed to delete book accession number '$accession_number'");
+            }
+        } catch (Exception $e) {
+            // Rollback transaction
+            mysqli_rollback($con);
+            $_SESSION['status'] = $e->getMessage();
             $_SESSION['status_code'] = "error";
             header("Location: book_views.php?title=" . urlencode($title) . "&tab=copies");
             exit(0);
@@ -51,7 +67,9 @@ if (isset($_POST['update_book'])) {
     $isbn = mysqli_real_escape_string($con, $_POST['isbn']);
     $place_publication = mysqli_real_escape_string($con, $_POST['place_publication']);
     $call_number = mysqli_real_escape_string($con, $_POST['call_number']);
-    $category = mysqli_real_escape_string($con, $_POST['category']);
+    $subject = mysqli_real_escape_string($con, $_POST['subject']);
+    $subject1 = mysqli_real_escape_string($con, $_POST['subject1']);
+    $subject2 = mysqli_real_escape_string($con, $_POST['subject2']);
 
     $old_book_filename = $_POST['old_book_image'];
 
@@ -72,7 +90,8 @@ if (isset($_POST['update_book'])) {
     // Update query
     $query = "UPDATE book SET title='$title', author='$author', copyright_date='$copyright_date', 
               publisher='$publisher', isbn='$isbn', place_publication='$place_publication', 
-              call_number='$call_number', category_id='$category', book_image='$update_book_filename' 
+              call_number='$call_number', book_image='$update_book_filename',
+              subject='$subject', subject1='$subject1', subject2='$subject2'
               WHERE title = '$old_book_title'"; // Update based on old title
 
     $query_run = mysqli_query($con, $query);
@@ -157,12 +176,24 @@ if (isset($_POST['add_book'])) {
     $author = $_POST['author'];
     $isbn = $_POST['isbn'];
     $publisher = $_POST['publisher'];
-    $copyright_date = $_POST['copyright_date'];
+    $copyright_date = intval($_POST['copyright_date']); // Ensure it's an integer
     $place_publication = $_POST['place_publication'];
     $call_number = $_POST['call_number'];
     $category_id = $_POST['lrc_location']; // Updated to category_id
     $existing_image = $_POST['existing_image'];
     $copy = intval($_POST['copy']); // Number of copies to add
+    $subject = $_POST['subject'];
+    $subject1 = $_POST['subject1'];
+    $subject2 = $_POST['subject2'];
+
+    // Validate the copyright_date
+    $currentYear = date('Y');
+    if ($copyright_date > $currentYear) {
+        $_SESSION['status'] = "Year cannot be greater than the current year.";
+        $_SESSION['status_code'] = "warning";
+        header("Location: book_add.php");
+        exit(0);
+    }
 
     // Handle the uploaded image
     $book_image = '';
@@ -196,7 +227,6 @@ if (isset($_POST['add_book'])) {
                 exit(0);
             }
         } else {
-            echo "You cannot upload files of this type.";
             $_SESSION['status'] = "You cannot upload files of this type.";
             $_SESSION['status_code'] = "warning";
             header("Location: book_add.php");
@@ -241,7 +271,7 @@ if (isset($_POST['add_book'])) {
     }
 
     // Prepare the SQL query to insert new books
-    $insert_query = "INSERT INTO book (title, author, isbn, publisher, copyright_date, place_publication, call_number, category_id, book_image, accession_number, barcode, date_added, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'Available')";
+    $insert_query = "INSERT INTO book (title, author, isbn, publisher, copyright_date, place_publication, call_number, category_id, book_image, accession_number, barcode, subject, subject1, subject2, date_added, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'Available')";
     $insert_stmt = mysqli_prepare($con, $insert_query);
 
     if ($insert_stmt) {
@@ -250,7 +280,7 @@ if (isset($_POST['add_book'])) {
             $barcode = $pre . '-' . $suf . $accession_number;
             
             // Bind parameters and execute the statement
-            mysqli_stmt_bind_param($insert_stmt, "sssssssssss", $title, $author, $isbn, $publisher, $copyright_date, $place_publication, $call_number, $category_id, $book_image, $accession_number, $barcode);
+            mysqli_stmt_bind_param($insert_stmt, "ssssssssssssss", $title, $author, $isbn, $publisher, $copyright_date, $place_publication, $call_number, $category_id, $book_image, $accession_number, $barcode, $subject, $subject1, $subject2);
             mysqli_stmt_execute($insert_stmt);
         }
 
@@ -267,5 +297,4 @@ if (isset($_POST['add_book'])) {
         exit(0);
     }
 }
-
 ?>

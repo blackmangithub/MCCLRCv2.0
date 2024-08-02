@@ -70,12 +70,8 @@ include('./includes/sidebar.php');
                             <div class="row d-flex justify-content-center">
                                 <div class="col-12 col-md-5">
                                     <div class="mb-2 input-group-sm">
-                                        <label for="copyright_date">Copyright Date</label>
-                                        <input type="text" id="copyright_date"
-                                               name="copyright_date"
-                                               class="form-control"
-                                               required
-                                               autocomplete="off">
+                                        <label for="copyright_date">Copyright Year</label>
+                                        <input type="text" id="copyright_date" name="copyright_date" class="form-control" required autocomplete="off" pattern="\d{4}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-5">
@@ -132,6 +128,11 @@ include('./includes/sidebar.php');
                                         <?php
                                         }
                                         ?>
+                                        <br>
+                                        <label for="subject">Subject/s</label>
+                                        <input type="text" name="subject" class="form-control mb-2">
+                                        <input type="text" name="subject1" class="form-control mb-2">
+                                        <input type="text" name="subject2" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-5">
@@ -184,6 +185,31 @@ function generateAccessionFields() {
     }
 }
 
+$(document).ready(function() {
+    // Restrict input to numeric values only
+    $('#copyright_date').on('keypress', function(event) {
+        var key = String.fromCharCode(event.which);
+        if (!/[0-9]/.test(key)) {
+            event.preventDefault();
+        }
+    });
+
+    // Ensure the year is not greater than the current year
+    $('#copyright_date').on('change', function() {
+        var inputYear = parseInt($(this).val(), 10);
+        var currentYear = new Date().getFullYear();
+        if (inputYear > currentYear) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Invalid Year',
+                text: 'Year cannot be greater than the current year.',
+                confirmButtonText: 'OK'
+            });
+            $(this).val(''); // Clear the input
+        }
+    });
+});
+
 function checkDuplicateAccessionNumbers() {
     const accessionNumbers = [];
     const inputs = document.querySelectorAll('[name^="accession_number_"]');
@@ -204,16 +230,6 @@ function checkDuplicateAccessionNumbers() {
     return true; // Allow form submission
 }
 
-$(document).ready(function() {
-    $('#copyright_date').datepicker({
-        format: "yyyy",
-        viewMode: "years",
-        minViewMode: "years",
-        autoclose: true,
-        clearBtn: true,
-        todayHighlight: true
-    });
-});
 
 function populateBookDetails() {
     const selectedBook = document.getElementById('title_select').value;

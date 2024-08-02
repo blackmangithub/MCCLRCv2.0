@@ -33,7 +33,7 @@ include('./includes/sidebar.php');
                                    {
                                         $book = mysqli_fetch_array($query_run);
                               ?>
-                              <form action="books_code.php" method="POST" enctype="multipart/form-data">
+                              <form id="editBookForm" action="books_code.php" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
                                    <div class="row d-flex justify-content-center mt-2">
                                         <div class="col-12 col-md-5">
                                              <div class="mb-2 input-group-sm">
@@ -51,12 +51,14 @@ include('./includes/sidebar.php');
                                    <div class="row d-flex justify-content-center">
                                    <div class="col-12 col-md-5">
                                         <div class="mb-2 input-group-sm">
-                                             <label for="copyright_date">Copyright Date</label>
+                                             <label for="copyright_date">Copyright Year</label>
                                              <input type="text" id="copyright_date"
                                                        name="copyright_date"
                                                        value="<?= $book['copyright_date']; ?>"
                                                        class="form-control"
-                                                       autocomplete="off">
+                                                       autocomplete="off"
+                                                       pattern="\d{4}"
+                                                       required>
                                         </div>
                                         </div>
                                         <div class="col-12 col-md-5">
@@ -96,6 +98,16 @@ include('./includes/sidebar.php');
                                              </div>
                                         </div>
                                    </div>
+                                   <div class="row d-flex justify-content-center">
+                                        <div class="col-12 col-md-5">
+                                             <div class="mb-2 input-group-sm">
+                                                  <label for="subject">Subject/s</label>
+                                                  <input type="text" id="subject" name="subject" value="<?=$book['subject'];?>" class="form-control mb-2">
+                                                  <input type="text" id="subject" name="subject1" value="<?=$book['subject1'];?>" class="form-control mb-2">
+                                                  <input type="text" id="subject" name="subject2" value="<?=$book['subject2'];?>" class="form-control">
+                                             </div>
+                                        </div>
+                                   </div>
                                    </div>
                                    <div class="card-footer d-flex justify-content-end">
                                         <div>
@@ -119,21 +131,39 @@ include('./includes/sidebar.php');
      </section>
 </main>
 
-<script>
-     $(document).ready(function() {
-    $('#copyright_date').datepicker({
-        format: "yyyy",
-        viewMode: "years",
-        minViewMode: "years",
-        autoclose: true,
-        clearBtn: true,
-        todayHighlight: true
-    });
-});
-</script>
+<!-- Include SweetAlert CSS and JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.all.min.js"></script>
 
 <?php 
 include('./includes/footer.php');
 include('./includes/script.php');
 include('../message.php');
 ?>
+
+<script>
+    $(document).ready(function() {
+        // Restrict input to numeric values only
+        $('#copyright_date').on('keypress', function(event) {
+            var key = String.fromCharCode(event.which);
+            if (!/[0-9]/.test(key)) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    // Ensure the year is not greater than the current year
+    function validateForm() {
+        var inputYear = parseInt($('#copyright_date').val(), 10);
+        var currentYear = new Date().getFullYear();
+        if (inputYear > currentYear) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Invalid Year',
+                text: 'Year cannot be greater than the current year.',
+                confirmButtonText: 'OK'
+            });
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>

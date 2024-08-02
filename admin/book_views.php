@@ -8,6 +8,53 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] == 'copies' ? 'copies-tab' : 'd
 $activeTabPane = isset($_GET['tab']) && $_GET['tab'] == 'copies' ? 'copies-tab-pane' : 'details-tab-pane';
 ?>
 
+<style>
+    .wrap-text {
+        word-break: break-word;
+        line-height: 1.5;
+    }
+    .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #000;
+            margin: 0 -5px;
+        }
+        .divider span {
+            display: inline-block;
+            padding: 0 10px;
+            font-weight: bold;
+            margin-left: -8px;
+            font-size: 20px;
+        }
+        .subject-list {
+            list-style-type: none; /* Remove default list styling */
+            padding-left: 0; /* Remove default padding */
+            margin: 0; /* Remove default margin */
+        }
+        .subject-list li {
+            display: flex;
+            align-items: flex-start; /* Align items at the start */
+            margin-bottom: 5px; /* Space between items */
+        }
+        .subject-list li::before {
+            content: '•'; /* Bullet character */
+            font-size: 20px; /* Size of the bullet */
+            color: #000; /* Color of the bullet */
+            margin-right: 10px; /* Space between bullet and text */
+        }
+        .subject-list li .text {
+            flex: 1; /* Allow text to take remaining space */
+            word-wrap: break-word; /* Ensure text wraps */
+        }
+</style>
+
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>View Book</h1>
@@ -87,16 +134,38 @@ $activeTabPane = isset($_GET['tab']) && $_GET['tab'] == 'copies' ? 'copies-tab-p
                                                         <p class="d-inline">: <?= $book['place_publication']; ?></p>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <span class="fw-semibold">LRC Location</span>
-                                                        <p class="d-inline">: <?= $book['classname']; ?></p>
-                                                    </div>
-                                                    <div class="mb-3">
                                                         <span class="fw-semibold">Copy</span>
                                                         <p class="d-inline">: <?= $book['available_count']; ?> of <?= $book['copy_count']; ?> available</p>
                                                     </div>
                                                     <div class="mb-3 mt-2">
                                                         <span class="fw-semibold">Call Number</span>
                                                         <p class="d-inline">: <?= $book['call_number']; ?></p>
+                                                    </div>
+                                                    <div class="divider">
+                                                        <span>Explore!</span>
+                                                    </div>                                  
+                                                    <div class="mb-3 mt-1">
+                                                    <div class="text-with-circles">
+                                                        <ul class="subject-list">
+                                                            <?php
+                                                                // Get the subjects from each field and split them into arrays
+                                                                $subjects = explode("\n", htmlspecialchars($book['subject']));
+                                                                $subjects1 = explode("\n", htmlspecialchars($book['subject1']));
+                                                                $subjects2 = explode("\n", htmlspecialchars($book['subject2']));
+
+                                                                // Combine all subjects into one array
+                                                                $all_subjects = array_merge($subjects, $subjects1, $subjects2);
+
+                                                                // Output each subject as a list item
+                                                                foreach ($all_subjects as $subject) {
+                                                                    // Check if the subject is not empty
+                                                                    if (!empty(trim($subject))) {
+                                                                        echo '<li><span class="text">' . nl2br(trim($subject)) . '</span></li>';
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </ul>
+                                                    </div>
                                                     </div>
                                                 </div>
                                             </div>
