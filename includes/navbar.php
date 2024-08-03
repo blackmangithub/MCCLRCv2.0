@@ -77,7 +77,7 @@ include('admin/config/dbcon.php');
                          <a href="login.php" class="nav-link text-white fw-semibold">Login</a>
                     </li>
                     <li class="nav-item">
-                         <a href="signup.php"
+                         <a href="ms_verify.php"
                               class="nav-link text-white bg-info px-3 fw-semibold rounded-pill">Signup</a>
                     </li>
                     <?php endif; ?>
