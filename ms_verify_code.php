@@ -82,8 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Port       = 465;
 
             $mail->setFrom('richmann276@gmail.com', 'MCC-LRC ADMIN');
-            $mail->addAddress($email);"Please click the link below to create a MCC-LRC Account<br><br>
-                               <a href='http://localhost/MCCLRCV2.0/signup.php?code=$verification_code'>Register</a>";
+            $mail->addAddress($email);
 
             $mail->isHTML(true);
             $mail->Subject = 'MCC-LRC Creating Account';
@@ -135,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class='content'>
                         <p>Hello,</p>
                         <p>Please click the button below to create a MCC-LRC Account:</p>
-                        <p><a style='color: white;' href='http://localhost/MCCLRCV2.0/signup.php?code=$verification_code' class='button'>Register</a></p>
+                        <p><a style='color: white;' href='http://mcc-lrc.com/signup.php?code=$verification_code' class='button'>Register</a></p>
                         <p>If you did not request a link registration, please ignore this email.</p>
                     </div>
                 </div>
