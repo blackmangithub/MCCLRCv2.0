@@ -111,7 +111,7 @@ include('./admin/config/dbcon.php');
                                         <div class="text-center mb-3">
                                              <p>
                                                   Don't have an account?
-                                                  <a href="./signup.php" class="text-primary text-decoration-none fw-semibold">Signup</a>
+                                                  <a href="./ms_verify.php" class="text-primary text-decoration-none fw-semibold">Signup</a>
                                              </p>
                                              
                                         </div>

@@ -1,7 +1,15 @@
 <?php 
 session_start();
-
 include('./admin/config/dbcon.php');
+
+$code = $_GET['code'];
+
+$code_query = "SELECT email FROM email_verifications WHERE verification_code = ?";
+$code_stmt = $con->prepare($code_query);
+$code_stmt->bind_param("s", $code);
+$code_stmt->execute();
+$code_result = $code_stmt->get_result();
+$code_row = $code_result->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,25 +21,23 @@ include('./admin/config/dbcon.php');
     <link rel="icon" href="./assets/img/mcc-logo.png">
     <title>MCC Learning Resource Center</title>
     <style>
-        #year_levelField{
+        #year_levelField {
             display: none;
         }
 
-        /* Custom styles for toggle password icon */
         .toggle-password {
             position: absolute;
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #777; /* Adjust color as needed */
+            color: #777;
         }
 
         .toggle-password-icon {
-            font-size: 16px; /* Adjust icon size */
+            font-size: 16px;
         }
 
-        /* Adjust icon color when hovered */
         .toggle-password:hover .toggle-password-icon {
             color: #333;
         }
@@ -40,23 +46,23 @@ include('./admin/config/dbcon.php');
             color: red;
             font-size: 12px;
             margin-top: 5px;
-            display: none; /* Initially hide the feedback */
+            display: none;
         }
 
         .is-invalid {
-            border: 1px solid red; /* Example border color for invalid input */
+            border: 1px solid red;
         }
 
         .field {
             margin-bottom: 15px;
-            position: relative; /* Ensure relative positioning for proper absolute positioning */
+            position: relative;
         }
 
         .invalid-feedback {
             position: absolute;
-            bottom: -20px; /* Adjust the position as needed */
+            bottom: -20px;
             left: 0;
-            display: none; /* Show the feedback message when invalid */
+            display: none;
         }
 
         .warning {
@@ -75,7 +81,6 @@ include('./admin/config/dbcon.php');
 <link rel="stylesheet" href="assets/css/signup.css">
 
 <body>
-
     <div class="container">
         <header>
             <h5>SIGN<span>UP</span></h5>
@@ -159,9 +164,8 @@ include('./admin/config/dbcon.php');
 
                 <!-- Second Slide Page start-->
                 <div class="page">
-
                     <div class="field">
-                        <div class="label" for="type">User Type</div>
+                        <div class="label" for="role">User Type</div>
                         <select name="role" id="role">
                             <option value="" disabled selected>--Select Type--</option>
                             <option value="student">Student</option>
@@ -199,7 +203,7 @@ include('./admin/config/dbcon.php');
                     </div>
 
                     <div class="field" id="year_levelField">
-                        <div class="label" for="course">Year Level</div>
+                        <div class="label" for="year_level">Year Level</div>
                         <select name="year_level" id="year_level">
                             <option value="" disabled selected>--Select Year Level--</option>
                             <option value="4th year">4th year</option>
@@ -234,7 +238,7 @@ include('./admin/config/dbcon.php');
 
                     <div class="field">
                         <div class="label">Email</div>
-                        <input type="email" placeholder="example@gmail.com" name="email" />
+                        <input type="email" placeholder="MS 365 Email" name="email" value="<?=$code_row['email'];?>" readonly />
                     </div>
 
                     <div class="field">
@@ -242,6 +246,11 @@ include('./admin/config/dbcon.php');
                         <input type="text" id="cell_no" name="cell_no" class="format_number" maxlength="11" placeholder="09xxxxxxxxx" oninput="validateCellphone(this)">
                     </div>
                     <span id="warning_message" style="color:red;" class="warning"></span>
+
+                    <div class="field">
+                        <div class="label">Profile Image</div>
+                        <input type="file" id="profile_image" name="profile_image" accept="image/*">
+                    </div>
 
                     <div class="field btns">
                         <button class="prev-3 prev">Previous</button>
@@ -262,7 +271,7 @@ include('./admin/config/dbcon.php');
                     <div class="field">
                         <div class="label">Password</div>
                         <input type="password" name="password" id="passwordInput" oninput="validatePassword(this)">
-                        <span class="toggle-password" onclick="togglePasswordVisibility()">
+                        <span class="toggle-password" onclick="togglePasswordVisibility('passwordInput')">
                             <i class="fas fa-eye toggle-password-icon"></i>
                         </span>
                         <div id="passwordLengthFeedback" class="invalid-feedback">
@@ -273,7 +282,7 @@ include('./admin/config/dbcon.php');
                     <div class="field">
                         <div class="label">Confirm Password</div>
                         <input type="password" name="cpassword" id="confirmPasswordInput">
-                        <span class="toggle-password" onclick="toggleConfirmPasswordVisibility()">
+                        <span class="toggle-password" onclick="togglePasswordVisibility('confirmPasswordInput')">
                             <i class="fas fa-eye toggle-password-icon"></i>
                         </span>
                     </div>
@@ -301,23 +310,9 @@ include('./admin/config/dbcon.php');
     <script src="assets/js/script.js"></script>
 
     <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('passwordInput');
-            const passwordIcon = document.querySelector('.toggle-password-icon');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                passwordIcon.classList.remove('fa-eye');
-                passwordIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                passwordIcon.classList.remove('fa-eye-slash');
-                passwordIcon.classList.add('fa-eye');
-            }
-        }
-
-        function toggleConfirmPasswordVisibility() {
-            const passwordInput = document.getElementById('confirmPasswordInput');
-            const passwordIcon = document.querySelector('.toggle-password-icon');
+        function togglePasswordVisibility(id) {
+            const passwordInput = document.getElementById(id);
+            const passwordIcon = passwordInput.nextElementSibling.querySelector('.toggle-password-icon');
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 passwordIcon.classList.remove('fa-eye');
@@ -335,16 +330,13 @@ include('./admin/config/dbcon.php');
             const selectedRole = roleSelect.value;
 
             if (selectedRole === 'student') {
-                let studentID = studentIDInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+                let studentID = studentIDInput.value.replace(/\D/g, '');
 
-                // Format based on the length of studentID
                 if (studentID.length > 4) {
-                    studentID = studentID.slice(0, 4) + '-' + studentID.slice(4); // Format as YYYY-XXXX
-                } else if (studentID.length > 0) {
-                    studentID = studentID.slice(0, 4); // If less than 4 characters, keep as is (possibly incomplete)
+                    studentID = studentID.slice(0, 4) + '-' + studentID.slice(4);
                 }
 
-                studentIDInput.value = studentID; // Update the input value
+                studentIDInput.value = studentID;
             }
         }
 
@@ -357,11 +349,11 @@ include('./admin/config/dbcon.php');
             if (selectedRole === 'student') {
                 yearLevelField.style.display = 'block';
                 stud_idLabel.textContent = 'Student ID No.';
-                studentIDInput.value = ''; // Clear the input value
-            } else if (selectedRole === 'faculty' || selectedRole === 'staff') {
+                studentIDInput.value = '';
+            } else {
                 yearLevelField.style.display = 'none';
                 stud_idLabel.textContent = 'Username';
-                studentIDInput.value = ''; // Clear the input value
+                studentIDInput.value = '';
             }
         });
 

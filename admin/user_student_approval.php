@@ -35,11 +35,11 @@ include('./includes/sidebar.php');
                                    <table id="myDataTable" class="table table-bordered table-striped table-sm">
                                         <thead>
                                              <tr>
-                                                  <th>Student QRCode</th>
-                                                  <th>Full Name</th>
-                                                  <th>Student No</th>
-                                                  <th>Course</th>
-                                                  <th>Action</th>
+                                                  <th><center>Student Profile</center></th>
+                                                  <th><center>Full Name</center></th>
+                                                  <th><center>Student No</center></th>
+                                                  <th><center>Course</center></th>
+                                                  <th><center>Action</center></th>
                                              </tr>
                                         </thead>
                                         <tbody>
@@ -56,26 +56,34 @@ include('./includes/sidebar.php');
 
                                                   <td>
                                                        <center>
-                                                            <?php if($user['qr_code'] != ""): ?>
-                                                            <img src="../qrcodes/<?php echo $user['qr_code']; ?>"
-                                                                 alt="" width="150px" height="150px">
+                                                            <?php if($user['profile_image'] != ""): ?>
+                                                            <img src="../uploads/profile_images/<?php echo $user['profile_image']; ?>"
+                                                                 alt="image" width="120px" height="100px">
                                                             <?php else: ?>
                                                             <img src="uploads/books_img/book_image.jpg" alt=""
-                                                                 width="200px" height="250px">
+                                                                 width="120px" height="100px">
                                                             <?php endif; ?>
                                                        </center>
                                                   </td>
 
                                                   <td>
+                                                       <center>
                                                        <?=$user['firstname'].' '.$user['middlename'].' '.$user['lastname']?>
+                                                       </center>
                                                   </td>
-                                                  <td><?=$user['student_id_no'];?></td>
-                                                  <td><?=$user['course'];?></td>
-
-
-
+                                                  <td>
+                                                       <center>
+                                                       <?=$user['student_id_no'];?>
+                                                       </center>
+                                                  </td>
+                                                  <td>
+                                                       <center>
+                                                       <?=$user['course'];?>
+                                                       </center>
+                                                  </td>
 
                                                   <td class=" justify-content-center">
+                                                       <center>
                                                        <form action="user_student_code.php" method="POST">
                                                             <input type="hidden" name="user_id"
                                                                  value="<?= $user['user_id']; ?>">
@@ -84,6 +92,7 @@ include('./includes/sidebar.php');
                                                             <input type="submit" name="deny" value="Deny"
                                                                  class="btn btn-danger">
                                                        </form>
+                                                       </center>
                                                   </td>
                                              </tr>
 
