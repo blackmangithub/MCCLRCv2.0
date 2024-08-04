@@ -56,14 +56,11 @@ $table = $_SESSION['auth_role'] == "student" ? "user" : "faculty";
                                    <div class="card">
                                         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
                                              <center>
-                                                  <?php if($row['qr_code'] != ""): ?>
-                                                       <a href="qrcodes/<?php echo $row['qr_code']; ?>" download>
-                                                            <img src="qrcodes/<?php echo $row['qr_code']; ?>" alt="QR Code" width="200px" height="200px">
-                                                       </a>
+                                                  <?php if($row['profile_image'] != ""): ?>
+                                                            <img src="uploads/profile_images/<?php echo $row['profile_image']; ?>" alt="Image" style="border-radius: 5px;" width="200px" height="200px">
                                                   <?php else: ?>
                                                        <img src="uploads/books_img/book_image.jpg" alt="Book Image" width="200px" height="250px">
                                                   <?php endif; ?>
-                                                  <h4 style="font-size:15px;margin-top:-18px;">Click the QR Code to download.</h4>
                                              </center>
                                              <br>
                                              <h3><?= strtoupper($row['role_as']); ?></h3>

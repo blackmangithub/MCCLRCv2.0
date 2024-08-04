@@ -52,12 +52,12 @@ include('./includes/sidebar.php');
                                    <table id="myDataTable" class="table table-bordered table-striped table-sm">
                                         <thead>
                                              <tr>
-                                                  <th>Student No</th>
-                                                  <th>Full Name</th>
-                                                  <th>Gender</th>
-                                                  <th>Course</th>
-                                                  <th>Year Level</th>
-                                                  <th>Action</th>
+                                                  <th><center>Student No</center></th>
+                                                  <th><center>Full Name</center></th>
+                                                  <th><center>Gender</center></th>
+                                                  <th><center>Course</center></th>
+                                                  <th><center>Year Level</center></th>
+                                                  <th><center>Action</center></th>
                                              </tr>
                                         </thead>
                                         <tbody>
@@ -69,12 +69,13 @@ include('./includes/sidebar.php');
                                                   foreach($query_run as $user) {
                                                        ?>
                                                        <tr>
-                                                            <td><?=$user['student_id_no'];?></td>
-                                                            <td><?=$user['firstname'].' '.$user['middlename'].' '.$user['lastname'];?></td>
-                                                            <td><?=$user['gender'];?></td>
-                                                            <td><?=$user['course'];?></td>
-                                                            <td><?=$user['year_level'];?></td>
+                                                            <td><center><?=$user['student_id_no'];?></center></td>
+                                                            <td><center><?=$user['firstname'].' '.$user['middlename'].' '.$user['lastname'];?></center></td>
+                                                            <td><center><?=$user['gender'];?></center></td>
+                                                            <td><center><?=$user['course'];?></center></td>
+                                                            <td><center><?=$user['year_level'];?></center></td>
                                                             <td class="justify-content-center">
+                                                                 <center>
                                                                  <div class="btn-group" style="background: #DFF6FF;">
                                                                       <!-- View Student Action-->
                                                                       <a href="user_student_view.php?id=<?=$user['user_id'];?>" class="viewBookBtn btn btn-sm border text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View Student">
@@ -94,7 +95,12 @@ include('./includes/sidebar.php');
                                                                       <button type="button" class="btn btn-sm border text-danger" onclick="confirmDelete('<?=$user['user_id'];?>')">
                                                                            <i class="bi bi-trash-fill"></i>
                                                                       </button>
+                                                                      <!-- Generate ID Card Action-->
+                                                                      <button type="button" class="btn btn-sm border text-info" onclick="generateIdCard('<?=$user['user_id'];?>')">
+                                                                           <i class="bi bi-card-heading"></i>
+                                                                      </button>
                                                                  </div>
+                                                                 </center>
                                                             </td>
                                                        </tr>
                                                        <?php
@@ -196,6 +202,35 @@ function confirmDelete(userId) {
             var input = document.createElement('input');
             input.type = 'hidden';
             input.name = 'delete_student';
+            input.value = userId;
+
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+function generateIdCard(userId) {
+    Swal.fire({
+        title: 'Generate Library ID Card',
+        text: "Are you sure you want to generate a library ID card for this student?",
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with the ID card generation
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'user_student_generate_id_card.php';
+
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'generate_id_card';
             input.value = userId;
 
             form.appendChild(input);

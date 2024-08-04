@@ -43,9 +43,9 @@ include('includes/sidebar.php');
 
 
                               <center>
-                                   <?php if($user['qr_code'] != ""): ?>
-                                   <img src="../qrcodes/<?php echo $user['qr_code']; ?>" alt=""
-                                        width="150px" height="120px">
+                                   <?php if($user['profile_image'] != ""): ?>
+                                   <img src="../uploads/profile_images/<?php echo $user['profile_image']; ?>" alt=""
+                                        width="150px" height="120px" style="border-radius: 5px;">
                                    <?php else: ?>
                                    <img src="assets/img/admin.png" class="rounded-circle" alt="" width="250px"
                                         height="250px">
@@ -53,8 +53,7 @@ include('includes/sidebar.php');
                               </center>
 
 
-                              <h2><?=$user['firstname'].' '.$user['lastname'];?></h2>
-                              <p><?=$user['student_id_no'];?></p>
+                              <h2 class="mb-2"><?=$user['firstname'].' '.$user['lastname'];?></h2>
                               <h3 style="text-transform:uppercase;"><?=$user['role_as'];?></h3>
 
                          </div>
@@ -62,9 +61,9 @@ include('includes/sidebar.php');
                     <div class="card">
                          <div class="card-body profile-card pt-3 d-flex flex-column ">
                               <hr class="text-info">
-                              <div class="label"><span>Student ID</span>
+                              <div class="label mb-2"><span>Student ID</span>
                                    &nbsp;&emsp;<?=$user['student_id_no'];?></div>
-                              <div class="label"><span>Course</span>
+                              <div class="label mb-2"><span>Course</span>
                                    &nbsp;&nbsp;&nbsp;&emsp;&emsp;<?=$user['course'];?></div>
                               <div><span>Year Level</span>
                                    &nbsp;&nbsp;&emsp;<?=$user['year_level'];?></div>
@@ -153,7 +152,7 @@ include('includes/sidebar.php');
                                              <div class="col-lg-9 col-md-8"><?=$user['email'];?>
                                              </div>
                                         </div>
-
+                                        <br>
                                    </div>
                               </div>
                          </div>
