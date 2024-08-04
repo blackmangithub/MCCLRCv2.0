@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('./admin/config/dbcon.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -10,7 +11,6 @@ require 'phpmailer/vendor/phpmailer/phpmailer/src/PHPMailer.php';
 require 'phpmailer/vendor/phpmailer/phpmailer/src/SMTP.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require 'admin/config/dbcon.php';
 
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
