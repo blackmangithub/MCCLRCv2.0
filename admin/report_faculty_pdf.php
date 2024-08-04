@@ -70,6 +70,7 @@ include('authentication.php');
                     <table border="2" cellpadding="2" class="table table-bordered">
                         <thead>
                             <tr>
+                            <th style="font-size:15px;">ID</th>
                                 <th style="font-size:15px;">Name</th>
                                 <th style="font-size:15px;">Book Title</th>
                                 <th style="font-size:15px;">Task</th>
@@ -92,6 +93,7 @@ include('authentication.php');
                                     while ($return_row = $return_result->fetch_assoc()) {
                             ?>
                             <tr>
+                            <td class="auto-id" style="text-align: center;"></td>
                                 <td><?php echo htmlspecialchars($return_row['firstname']." ".$return_row['lastname']); ?></td>
                                 <td><?php echo htmlspecialchars($return_row['title']); ?></td>
                                 <td><?php echo htmlspecialchars($return_row['detail_action']); ?></td>
@@ -148,6 +150,22 @@ include('authentication.php');
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
             XLSX.writeFile(wb, "student_report.xlsx");
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
     </script>
 
 <?php 

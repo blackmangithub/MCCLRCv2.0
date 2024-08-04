@@ -100,6 +100,7 @@ include('./includes/sidebar.php');
                                     <table id="myDataTable" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
+                                                <th>ID</th>
                                                 <th>Name</th>
                                                 <th>Book Title</th>
                                                 <th>Task</th>
@@ -121,6 +122,7 @@ include('./includes/sidebar.php');
                                             ?>
                                             <?php if(isset($row['user_id'])) :?>
                                             <tr>
+                                            <td class="auto-id" style="text-align: center;"></td>
                                                 <td><?php echo $user_name; ?></td>
                                                 <td><?php echo $row['title']; ?></td>
                                                 <td><?php echo $row['detail_action']; ?></td>
@@ -232,6 +234,22 @@ include('./includes/sidebar.php');
         const fileName = reportType === 'student' ? 'student_report.xlsx' : 'faculty_report.xlsx';
         XLSX.writeFile(wb, fileName);
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
 </script>
 
 <?php 

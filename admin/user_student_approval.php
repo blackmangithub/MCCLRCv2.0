@@ -35,6 +35,7 @@ include('./includes/sidebar.php');
                                    <table id="myDataTable" class="table table-bordered table-striped table-sm">
                                         <thead>
                                              <tr>
+                                             <th><center>ID</center></th>
                                                   <th><center>Student Profile</center></th>
                                                   <th><center>Full Name</center></th>
                                                   <th><center>Student No</center></th>
@@ -53,7 +54,7 @@ include('./includes/sidebar.php');
                                                   {
                                                        ?>
                                              <tr>
-
+                                             <td class="auto-id" style="text-align: center;"></td>
                                                   <td>
                                                        <center>
                                                             <?php if($user['profile_image'] != ""): ?>
@@ -112,11 +113,26 @@ include('./includes/sidebar.php');
      </section>
 </main>
 
-
-
-
 <?php 
 include('./includes/footer.php');
 include('./includes/script.php');
 include('../message.php');   
 ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
+</script>

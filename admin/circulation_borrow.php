@@ -101,6 +101,7 @@ include('./includes/sidebar.php');
 
                                         <thead>
                                              <tr>
+                                                  <th>ID</th>
                                                   <th>Image</th>
                                                   <th>Borrower Name</th>
                                                   <th>Title</th>
@@ -129,7 +130,7 @@ include('./includes/sidebar.php');
                                                        {
                                                        ?>
                                              <tr>
-
+                                             <td class="auto-id" style="text-align: center;"></td>
                                                   <td>
                                                        <center>
                                                             <?php if($borrow_row['book_image'] != ""): ?>
@@ -193,5 +194,21 @@ var select_box_element = document.querySelector('#select_box');
 
 dselect(select_box_element, {
      search: true
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
 });
 </script>

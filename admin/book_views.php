@@ -184,6 +184,7 @@ $activeTabPane = isset($_GET['tab']) && $_GET['tab'] == 'copies' ? 'copies-tab-p
                                     <table id="myDataTable" class="table table-bordered table-striped table-sm">
                                         <thead>
                                             <tr>
+                                                <th>ID</th>
                                                 <th>Accession No.</th>
                                                 <th>Barcode</th>
                                                 <th>Status</th>
@@ -203,6 +204,7 @@ $activeTabPane = isset($_GET['tab']) && $_GET['tab'] == 'copies' ? 'copies-tab-p
                                                 while ($book = mysqli_fetch_assoc($query_run)) {
                                                     ?>
                                                     <tr>
+                                                    <td class="auto-id" style="text-align: center;"></td>
                                                         <td><?= $book['accession_number']; ?></td>
                                                         <td><?= $book['barcode']; ?></td>
                                                         <td><?= $book['status']; ?></td>

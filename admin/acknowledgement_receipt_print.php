@@ -103,6 +103,7 @@ $user_row = $user_result->fetch_assoc();
                                     <th colspan="5" style="font-size:15px; font-weight:bold;text-align:center;" >BORROWED BOOK DETAILS</th>
                                 </tr>
                                 <tr>
+                                <th style="font-size:15px;">ID</th>
                                     <th style="font-size:15px;">Title</th>
                                     <th style="font-size:15px;">Author</th>
                                     <th style="font-size:15px;">Date Borrowed</th>
@@ -128,6 +129,7 @@ $user_row = $user_result->fetch_assoc();
                                             while ($return_row = $return_result->fetch_assoc()) {
                                     ?>
                                     <tr>
+                                    <td class="auto-id" style="text-align: center;"></td>
                                         <td><?php echo htmlspecialchars($return_row['title']); ?></td>
                                         <td style="text-transform: capitalize"><?php echo htmlspecialchars($return_row['author']); ?></td>
                                         <td><?php echo date("M d, Y", strtotime($return_row['date_borrowed'])); ?></td>
@@ -164,5 +166,22 @@ $user_row = $user_result->fetch_assoc();
 include('./includes/script.php');
 include('./message.php');   
 ?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
+</script>
 </body>
 </html>

@@ -49,6 +49,7 @@ include('./includes/sidebar.php');
                                    <table id="myDataTable" class="table table-bordered table-striped table-sm">
                                         <thead>
                                              <tr>
+                                                  <th>ID</th>
                                                   <th>Username</th>
                                                   <th>Full Name</th>
                                                   <th>Gender</th>
@@ -65,6 +66,7 @@ include('./includes/sidebar.php');
                                                   foreach($query_run as $user) {
                                                        ?>
                                                        <tr>
+                                                       <td class="auto-id" style="text-align: center;"></td>
                                                             <td><?=$user['username'];?></td>
                                                             <td><?=$user['firstname'].' '.$user['middlename'].' '.$user['lastname'];?></td>
                                                             <td><?=$user['gender'];?></td>
@@ -166,4 +168,20 @@ function confirmDelete(facultyId) {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
 </script>

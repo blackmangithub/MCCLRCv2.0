@@ -52,6 +52,7 @@ include('./includes/sidebar.php');
                                    <table id="myDataTable" class="table table-bordered table-striped table-sm">
                                         <thead>
                                              <tr>
+                                             <th><center>ID</center></th>
                                                   <th><center>Student No</center></th>
                                                   <th><center>Full Name</center></th>
                                                   <th><center>Gender</center></th>
@@ -69,6 +70,7 @@ include('./includes/sidebar.php');
                                                   foreach($query_run as $user) {
                                                        ?>
                                                        <tr>
+                                                       <td class="auto-id" style="text-align: center;"></td>
                                                             <td><center><?=$user['student_id_no'];?></center></td>
                                                             <td><center><?=$user['firstname'].' '.$user['middlename'].' '.$user['lastname'];?></center></td>
                                                             <td><center><?=$user['gender'];?></center></td>
@@ -240,4 +242,20 @@ function generateIdCard(userId) {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
 </script>

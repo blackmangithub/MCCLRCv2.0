@@ -58,6 +58,7 @@ if ($query) {
                                    class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Image</th>
                                         <th>Title</th>
                                         <th>Accession No.</th>
@@ -89,6 +90,7 @@ if ($query) {
                                         $hold_id = $borrow_row['hold_id']; // Added hold_id for action handling
                                     ?>
                                     <tr>
+                                    <td class="auto-id" style="text-align: center;"></td>
                                         <td>
                                             <center>
                                                 <?php if ($borrow_row['book_image'] != ""): ?>
@@ -211,5 +213,21 @@ include('../message.php');
 var select_box_element = document.querySelector('#select_box');
 dselect(select_box_element, {
     search: true
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
 });
 </script>

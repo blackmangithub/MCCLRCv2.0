@@ -40,6 +40,7 @@ include('./includes/sidebar.php');
                                                                  <br>
                                                                  <thead>
                                                                       <tr>
+                                                                           <th>ID</th>
                                                                            <th>Firstname</th>
                                                                            <th>Lastname</th>
                                                                            <th>Email</th>
@@ -53,6 +54,7 @@ include('./includes/sidebar.php');
                                                                            $result = $stmt->get_result();
                                                                            while ($row = $result->fetch_assoc()) {
                                                                                 echo "<tr>
+                                                                                     <td class='auto-id' style='text-align:center;'></td>
                                                                                      <td>{$row['firstname']}</td>
                                                                                      <td>{$row['lastname']}</td>
                                                                                      <td>{$row['username']}</td>
@@ -60,7 +62,7 @@ include('./includes/sidebar.php');
                                                                            }
                                                                            $stmt->close();
                                                                       } else {
-                                                                           echo "<tr><td colspan='3'>Error retrieving data</td></tr>";
+                                                                           echo "<tr><td colspan='4'>Error retrieving data</td></tr>";
                                                                       }
                                                                       ?>
                                                                  </tbody>
@@ -86,3 +88,12 @@ include('../message.php');
 
 <!-- Include SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+     let table = document.querySelector('#myDataTable');
+     let rows = table.querySelectorAll('tbody tr');
+     rows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
+</script>

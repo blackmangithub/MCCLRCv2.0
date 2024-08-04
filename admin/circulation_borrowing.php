@@ -72,6 +72,7 @@ $user_row = mysqli_fetch_array($user_query);
                                 <form method="POST" action="">
                                     <thead class="border-top border-dark border-opacity-25">
                                         <tr>
+                                            <th>ID</th>
                                             <th>Image</th>
                                             <th>Title</th>
                                             <th>Author</th>
@@ -99,7 +100,7 @@ $user_row = mysqli_fetch_array($user_query);
                                         <tr>
                                             <input type="hidden" name="user_id" value="<?php echo $user_row['user_id']; ?>">
                                             <input type="hidden" name="book_id" value="<?php echo $book_row['book_id']; ?>">
-
+                                            <td class="auto-id" style="text-align: center;"></td>
                                             <td>
                                                 <center>
                                                     <?php if ($book_row['book_image'] != ""): ?>
@@ -227,5 +228,22 @@ include('./includes/footer.php');
 include('./includes/script.php');
 include('message.php');   
 ?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
+</script>
 </body>
 </html>

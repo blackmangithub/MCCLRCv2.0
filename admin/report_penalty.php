@@ -179,6 +179,7 @@ include('includes/sidebar.php');
                                             </div>
                                             <thead>
                                                 <tr>
+                                                    <th>ID</th>
                                                     <th>Penalty Amount</th>
                                                     <th>Received from</th>
                                                     <th>Person In Charge</th>
@@ -189,6 +190,7 @@ include('includes/sidebar.php');
                                             <tbody>
                                                 <?php while ($return_row = mysqli_fetch_array($return_query)) { ?>
                                                 <tr>
+                                                <td class="auto-id" style="text-align: center;"></td>
                                                     <td class="<?= ($return_row['book_penalty'] != 'No Penalty') ? 'alert alert-warning' : ''; ?>" style="width:100px;">
                                                         Php <?= number_format($return_row['book_penalty'], 2) ?>
                                                     </td>
@@ -252,6 +254,22 @@ include('includes/sidebar.php');
         XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
         XLSX.writeFile(wb, "penalty_report.xlsx");
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
 </script>
 
 <?php 

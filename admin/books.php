@@ -53,6 +53,7 @@ include('./includes/sidebar.php');
                                                        class="table table-bordered table-striped table-sm">
                                                        <thead>
                                                             <tr>
+                                                                 <th>ID</th>
                                                                  <th>Image</th>
                                                                  <th>Title</th>
                                                                  <th>Author</th>
@@ -79,6 +80,7 @@ include('./includes/sidebar.php');
                                                        foreach ($query_run as $book) {
                                                             ?>
                                                             <tr>
+                                                                 <td class="auto-id" style="text-align: center;"></td>
                                                                  <td>
                                                                       <center>
                                                                            <?php if ($book['book_image'] != ""): ?>
@@ -147,6 +149,7 @@ include('./includes/sidebar.php');
                                                        class="table table-bordered table-striped table-sm">
                                                        <thead>
                                                             <tr>
+                                                                 <th>ID</th>
                                                                  <th>Book Image</th>
                                                                  <th>Title</th>
                                                                  <th>Author</th>
@@ -166,6 +169,7 @@ include('./includes/sidebar.php');
                                                                  {
                                                                       ?>
                                                             <tr>
+                                                            <td class="auto-id" style="text-align: center;"></td>
                                                                  <td>
                                                                       <center>
                                                                            <?php if($book['opac_image'] != ""): ?>
@@ -239,3 +243,21 @@ include('./includes/footer.php');
 include('./includes/script.php');
 include('../message.php');   
 ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
+</script>

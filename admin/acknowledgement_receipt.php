@@ -65,6 +65,7 @@ $user_row = mysqli_fetch_array($user_query);
                                    <table class="table table-bordered table-striped table-sm">
                                         <thead>
                                              <tr>
+                                                  <th>ID</th>
                                                   <th>Title</th>
                                                   <th>Author</th>
                                                   <th>Copyright Date</th>
@@ -82,6 +83,7 @@ $user_row = mysqli_fetch_array($user_query);
 							
 ?>
                                              <tr>
+                                             <td class="auto-id" style="text-align: center;"></td>
                                                   <td style="text-transform: capitalize">
                                                        <?php echo $return_row['title']; ?></td>
                                                   <td><?php echo $return_row['author']; ?></td>
@@ -163,3 +165,20 @@ include('./includes/footer.php');
 include('./includes/script.php');
 include('../message.php');   
 ?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
+</script>
