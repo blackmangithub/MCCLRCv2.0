@@ -2,48 +2,6 @@
 include('authentication.php');
 include('includes/header.php'); 
 include('./includes/sidebar.php'); 
-
-// Handle the delete request
-if (isset($_POST['delete_user_btn'])) {
-    $user_id = $_POST['user_id'];
-    
-    $query = "DELETE FROM ms_account WHERE ms_id=?";
-    if ($stmt = $con->prepare($query)) {
-        $stmt->bind_param('i', $user_id);
-        if ($stmt->execute()) {
-            echo "<script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Deleted',
-                    text: 'User has been deleted successfully.'
-                }).then(function() {
-                    window.location = 'ms_account.php';
-                });
-            </script>";
-        } else {
-            echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'There was an error deleting the user.'
-                }).then(function() {
-                    window.location = 'ms_account.php';
-                });
-            </script>";
-        }
-        $stmt->close();
-    } else {
-        echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'There was an error preparing the statement.'
-            }).then(function() {
-                window.location = 'ms_account.php';
-            });
-        </script>";
-    }
-}
 ?>
 
 <main id="main" class="main">
@@ -85,7 +43,6 @@ if (isset($_POST['delete_user_btn'])) {
                                                                            <th>Firstname</th>
                                                                            <th>Lastname</th>
                                                                            <th>Email</th>
-                                                                           <th>Action</th>
                                                                       </tr>
                                                                  </thead>
                                                                  <tbody>
@@ -99,17 +56,11 @@ if (isset($_POST['delete_user_btn'])) {
                                                                                      <td>{$row['firstname']}</td>
                                                                                      <td>{$row['lastname']}</td>
                                                                                      <td>{$row['username']}</td>
-                                                                                     <td>
-                                                                                          <form action='' method='post' class='d-inline'>
-                                                                                               <input type='hidden' name='user_id' value='{$row['ms_id']}'>
-                                                                                               <button type='submit' name='delete_user_btn' class='btn btn-danger btn-sm'>Delete</button>
-                                                                                          </form>
-                                                                                     </td>
                                                                                 </tr>";
                                                                            }
                                                                            $stmt->close();
                                                                       } else {
-                                                                           echo "<tr><td colspan='4'>Error retrieving data</td></tr>";
+                                                                           echo "<tr><td colspan='3'>Error retrieving data</td></tr>";
                                                                       }
                                                                       ?>
                                                                  </tbody>
