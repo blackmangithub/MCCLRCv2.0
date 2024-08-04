@@ -15,32 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Invalid Email',
-                    text: 'Please enter a valid MS 365 email address.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = 'ms_verify.php';
-                });
-              </script>";
-        exit();
+        $_SESSION['status'] = "Invalid Email: Please enter a valid MS 365 email address.";
+        $_SESSION['status_code'] = "error";
+        header("Location:ms_verify.php");
+        exit(0);
     }
 
     $domain = substr(strrchr($email, "@"), 1);
     if ($domain !== 'mcclawis.edu.ph') {
-        echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Invalid Domain',
-                    text: 'Please enter an email address with the mcclawis.edu.ph domain.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = 'ms_verify.php';
-                });
-              </script>";
-        exit();
+        $_SESSION['status'] = "Invalid Domain: Please enter an email address with the mcclawis.edu.ph domain.";
+        $_SESSION['status_code'] = "error";
+        header("Location:ms_verify.php");
+        exit(0);
     }
 
     $stmt = $con->prepare("SELECT COUNT(*) FROM ms_account WHERE username = ?");
@@ -51,17 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     if ($count == 0) {
-        echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Email Not Found',
-                    text: 'If you don\'t have an MS 365 Account, go to the BSIT Office.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = 'ms_verify.php';
-                });
-              </script>";
-        exit();
+        $_SESSION['status'] = "Email Not Found: If you don\'t have an MS 365 Account, go to the BSIT Office.";
+        $_SESSION['status_code'] = "error";
+        header("Location:ms_verify.php");
+        exit(0);
     }
 
     $verification_code = bin2hex(random_bytes(16));
@@ -76,8 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'richmann276@gmail.com'; // Use environment variable
-            $mail->Password   = 'higw jept zipw zrwn'; // Use environment variable
+            $mail->Username   = 'richmann276@gmail.com';
+            $mail->Password   = 'higw jept zipw zrwn';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
 
@@ -143,53 +122,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ";
 
             $mail->send();
-            echo "<script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Registration link sent. Please check your email.',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        window.location.href = 'ms_verify.php';
-                    });
-                  </script>";
+                $_SESSION['status'] = "Registration link sent. Please check email on outlook.";
+                $_SESSION['status_code'] = "success";
+                header("Location:ms_verify.php");
+                exit(0);
         } catch (Exception $e) {
-            echo "<script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to send registration link. Please try again later.',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        window.location.href = 'ms_verify.php';
-                    });
-                  </script>";
+                $_SESSION['status'] = "Failed to send registration link. Please try again later.";
+                $_SESSION['status_code'] = "error";
+                header("Location:ms_verify.php");
+                exit(0);
         }
     } else {
-        echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Database Error',
-                    text: 'Database error. Please try again later.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = 'ms_verify.php';
-                });
-              </script>";
+            $_SESSION['status'] = "Database error. Please try again later.";
+            $_SESSION['status_code'] = "error";
+            header("Location:ms_verify.php");
+            exit(0);
     }
 
     $stmt->close();
     $con->close();
 } else {
-    echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid Request',
-                text: 'Invalid request.',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = 'ms_verify.php';
-            });
-          </script>";
+        $_SESSION['status'] = "Invalid request.";
+        $_SESSION['status_code'] = "error";
+        header("Location:ms_verify.php");
+        exit(0);
 }
 ?>
