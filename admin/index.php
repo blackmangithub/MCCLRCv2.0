@@ -74,7 +74,7 @@ include('./includes/sidebar.php');
                               </div>
                          </div>
                          <div class="col-xxl-4 col-md-4" data-aos="fade-down">
-                              <div class="card info-card students-card border-3 border-top border-danger">
+                              <div class="card info-card students-card border-3 border-top border-info">
                                    <div class="card-body">
                                         <h5 class="card-title">Faculty/Staff</h5>
                                         <div class="d-flex align-items-center">
@@ -88,14 +88,14 @@ include('./includes/sidebar.php');
                                                   $total_borrowers = mysqli_num_rows($query_run);
                                                   echo '<h6>' . $total_borrowers . '</h6>';
                                                   ?>
-                                                  <span class="text-danger small pt-2 fw-bold">Total borrowers</span>
+                                                  <span class="text-info small pt-2 fw-bold">Total borrowers</span>
                                              </div>
                                         </div>
                                    </div>
                               </div>
                          </div>
                          <div class="col-xxl-4 col-md-4" data-aos="fade-down">
-                              <div class="card info-card borrowed-card  border-3 border-top border-success">
+                              <div class="card info-card borrowed-card  border-3 border-top border-dark">
                                    <div class="card-body">
                                         <h5 class="card-title">Book Borrowed</h5>
                                         <div class="d-flex align-items-center">
@@ -109,7 +109,56 @@ include('./includes/sidebar.php');
                                                   $total_borrowed = mysqli_num_rows($query_run);
                                                   echo '<h6>' . $total_borrowed . '</h6>';
                                                   ?>
-                                                  <span class="text-success small pt-2 fw-bold">Total borrowed books</span>
+                                                  <span class="text-dark small pt-2 fw-bold">Total borrowed books</span>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                         <div class="col-xxl-4 col-md-4" data-aos="fade-down">
+                              <div class="card info-card unreturned-card border-3 border-top border-danger">
+                                   <div class="card-body">
+                                        <h5 class="card-title">Unreturned Book</h5>
+                                        <div class="d-flex align-items-center">
+                                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                  <i class="bi bi-box-arrow-in-down-left"></i>
+                                             </div>
+                                             <div class="ps-3">
+                                                  <?php
+                                                  $current_date = date('Y-m-d');
+                                                  $query = "SELECT * FROM borrow_book WHERE borrowed_status = 'borrowed' AND due_date < '$current_date'";
+                                                  $query_run = mysqli_query($con, $query);
+                                                  $total_overdue = mysqli_num_rows($query_run);
+                                                  echo '<h6>' . $total_overdue . '</h6>';
+                                                  ?>
+                                                  <span class="text-danger small pt-2 fw-bold">Total unreturned books</span>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                         <div class="col-xxl-4 col-md-4" data-aos="fade-down">
+                              <div class="card info-card fines-card border-3 border-top border-success">
+                                   <div class="card-body">
+                                        <h5 class="card-title">Fines</h5>
+                                        <div class="d-flex align-items-center">
+                                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                  <i class="bi bi-cash-coin"></i>
+                                             </div>
+                                             <div class="ps-3">
+                                                  <?php
+                                                  $query = "SELECT SUM(book_penalty) AS total_penalty FROM return_book";
+                                                  $query_run = mysqli_query($con, $query);
+
+                                                  if ($query_run) {
+                                                  $result = mysqli_fetch_assoc($query_run);
+                                                  $total_penalty = $result['total_penalty'];
+                                                  echo '<h6>₱ ' . number_format($total_penalty, 2) . '</h6>';
+                                                  } else {
+                                                  echo '<h6>0 PHP</h6>';
+                                                  }
+                                                  ?>
+                                                  <span class="text-success small pt-2 fw-bold">Total book penalty</span>
                                              </div>
                                         </div>
                                    </div>
