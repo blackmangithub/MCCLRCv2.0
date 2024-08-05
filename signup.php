@@ -64,11 +64,19 @@ $code_row = $code_result->fetch_assoc();
             left: 0;
             display: none;
         }
-
-        .warning {
-            font-size: 11px;
-            position: relative;
-            top: -40px;
+        #warning_message {
+            font-size: 12px;
+            margin-top: -30px;
+            margin-bottom: -10px;
+            display: none;
+            color: red;
+        }
+        #warning_messages {
+            font-size: 12px;
+            margin-top: -30px;
+            margin-bottom: -10px;
+            display: none;
+            color: red;
         }
     </style>
 </head>
@@ -133,7 +141,7 @@ $code_row = $code_result->fetch_assoc();
 
                     <div class="field">
                         <div class="label">Last Name</div>
-                        <input type="text" name="lastname" id="lastname" />
+                        <input type="text" name="lastname" id="lastname" required/>
                         <div class="invalid-feedback">
                             Last name must start with a capital letter.
                         </div>
@@ -141,7 +149,7 @@ $code_row = $code_result->fetch_assoc();
 
                     <div class="field">
                         <div class="label">First Name</div>
-                        <input type="text" name="firstname" id="firstname" />
+                        <input type="text" name="firstname" id="firstname" required/>
                         <div class="invalid-feedback">
                             First name must start with a capital letter.
                         </div>
@@ -166,7 +174,7 @@ $code_row = $code_result->fetch_assoc();
                 <div class="page">
                     <div class="field">
                         <div class="label" for="role">User Type</div>
-                        <select name="role" id="role">
+                        <select name="role" id="role" required>
                             <option value="" disabled selected>--Select Type--</option>
                             <option value="student">Student</option>
                             <option value="faculty">Faculty</option>
@@ -176,12 +184,17 @@ $code_row = $code_result->fetch_assoc();
 
                     <div class="field">
                         <div class="label">Birthdate</div>
-                        <input type="date" name="birthdate" />
+                        <input type="date" name="birthdate" required/>
                     </div>
 
                     <div class="field">
                         <div class="label">Address</div>
-                        <input type="text" name="address" />
+                        <input type="text" name="address" required/>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Profile Image</div>
+                        <input type="file" id="profile_image" name="profile_image" accept="image/*" required>
                     </div>
 
                     <div class="field btns">
@@ -195,7 +208,7 @@ $code_row = $code_result->fetch_assoc();
                 <div class="page">
                     <div class="field">
                         <div class="label" for="gender">Gender</div>
-                        <select name="gender" id="gender">
+                        <select name="gender" id="gender" required>
                             <option value="" disabled selected>--Select Gender--</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -215,7 +228,7 @@ $code_row = $code_result->fetch_assoc();
 
                     <div class="field">
                         <div class="label" for="course" id="courseLabel">Course</div>
-                        <select name="course" id="course">
+                        <select name="course" id="course" required>
                             <option value="" id="optionLabel" disabled selected>--Select Course--</option>
                             <option value="BSIT">BSIT</option>
                             <option value="BSED">BSED</option>
@@ -236,21 +249,27 @@ $code_row = $code_result->fetch_assoc();
                 <div class="page">
                     <div class="title hides">Contact Info</div>
 
-                    <div class="field">
+                    <div class="field" style="margin-top:-2px;">
                         <div class="label">Email</div>
-                        <input type="email" placeholder="MS 365 Email" name="email" value="<?=$code_row['email'];?>" readonly />
+                        <input type="email" placeholder="MS 365 Email" name="email" value="<?=$code_row['email'];?>" readonly required/>
                     </div>
 
                     <div class="field">
                         <div class="label">Cellphone No.</div>
-                        <input type="text" id="cell_no" name="cell_no" class="format_number" maxlength="11" placeholder="09xxxxxxxxx" oninput="validateCellphone(this)">
+                        <input type="text" id="cell_no" name="cell_no" class="format_number" maxlength="11" placeholder="09xxxxxxxxx" oninput="validateCellphone(this)" required>
                     </div>
-                    <span id="warning_message" style="color:red;" class="warning"></span>
+                    <div id="warning_message">Invalid phone number. It should start with 09 and contain 11 digits.</div>
 
                     <div class="field">
-                        <div class="label">Profile Image</div>
-                        <input type="file" id="profile_image" name="profile_image" accept="image/*">
+                        <div class="label">Contact Person</div>
+                        <input type="text" id="contact_person" name="contact_person" required>
                     </div>
+
+                    <div class="field">
+                        <div class="label">Contact Person Cellphone No.</div>
+                        <input type="text" id="cell_no" name="person_cell_no" class="format_number" maxlength="11" placeholder="09xxxxxxxxx" required oninput="validateNumber(this)">
+                    </div>
+                    <div id="warning_messages">Invalid phone number. It should start with 09 and contain 11 digits.</div>
 
                     <div class="field btns">
                         <button class="prev-3 prev">Previous</button>
@@ -265,12 +284,12 @@ $code_row = $code_result->fetch_assoc();
 
                     <div class="field">
                         <div class="label" id="stud_idLabel">Student ID No.</div>
-                        <input type="text" name="student_id_no" id="student_id_no" maxlength="9" oninput="formatStudentID()">
+                        <input type="text" name="student_id_no" id="student_id_no" maxlength="9" oninput="formatStudentID()" required>
                     </div>
 
                     <div class="field">
                         <div class="label">Password</div>
-                        <input type="password" name="password" id="passwordInput" oninput="validatePassword(this)">
+                        <input type="password" name="password" id="passwordInput" oninput="validatePassword(this)" required>
                         <span class="toggle-password" onclick="togglePasswordVisibility('passwordInput')">
                             <i class="fas fa-eye toggle-password-icon"></i>
                         </span>
@@ -281,7 +300,7 @@ $code_row = $code_result->fetch_assoc();
 
                     <div class="field">
                         <div class="label">Confirm Password</div>
-                        <input type="password" name="cpassword" id="confirmPasswordInput">
+                        <input type="password" name="cpassword" id="confirmPasswordInput" required>
                         <span class="toggle-password" onclick="togglePasswordVisibility('confirmPasswordInput')">
                             <i class="fas fa-eye toggle-password-icon"></i>
                         </span>
@@ -323,7 +342,7 @@ $code_row = $code_result->fetch_assoc();
                 passwordIcon.classList.add('fa-eye');
             }
         }
-
+        
         function formatStudentID() {
             const studentIDInput = document.getElementById('student_id_no');
             const roleSelect = document.getElementById('role');
@@ -361,12 +380,35 @@ $code_row = $code_result->fetch_assoc();
             const value = input.value;
             const warningMessage = document.getElementById('warning_message');
 
+            input.value = input.value.replace(/[^0-9]/g, '');
+
             if (!/^09\d{9}$/.test(value)) {
                 input.classList.add('is-invalid');
-                warningMessage.textContent = "Invalid phone number. Please enter an 11-digit phone number starting with '09'.";
+                warningMessage.style.display = 'block';
+                warningMessages.style.display = 'block';
+                input.setCustomValidity('Invalid phone number. It should start with 09 and contain 11 digits.');
             } else {
                 input.classList.remove('is-invalid');
-                warningMessage.textContent = '';
+                warningMessage.style.display = 'none';
+                warningMessages.style.display = 'none';
+                input.setCustomValidity('');
+            }
+        }
+
+        function validateNumber(input) {
+            const value = input.value;
+            const warningMessages = document.getElementById('warning_messages');
+
+            input.value = input.value.replace(/[^0-9]/g, '');
+
+            if (!/^09\d{9}$/.test(value)) {
+                input.classList.add('is-invalid');
+                warningMessages.style.display = 'block';
+                input.setCustomValidity('Invalid phone number. It should start with 09 and contain 11 digits.');
+            } else {
+                input.classList.remove('is-invalid');
+                warningMessages.style.display = 'none';
+                input.setCustomValidity('');
             }
         }
 
