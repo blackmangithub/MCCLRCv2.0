@@ -185,7 +185,7 @@ if(isset($_POST['approved'])) {
                         <h1 style='color:#198754;text-align:center;'>Your Account has been Approved.</h1>
                         <p>Dear Student,</p>
                         <p>Your MCC-LRC account registration has been approved. You can now log in to your account.</p>
-                        <p><a href='http://mcc-lrc.com/login.php' class='btn btn-primary'>Login</a></p>
+                        <p><a  style='color: white;' href='http://mcc-lrc.com/login.php' class='button'>Login</a></p>
                         <p>Thank you.</p>
                     </div>
                 </div>
