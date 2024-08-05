@@ -56,12 +56,12 @@ include('./includes/sidebar.php');
                                              <td class="auto-id" style="text-align: center;"></td>
                                                   <td>
                                                        <center>
-                                                            <?php if($user['qr_code'] != ""): ?>
-                                                            <img src="../qrcodes/<?php echo $user['qr_code']; ?>"
-                                                                 alt="" width="100px" height="100px">
+                                                       <?php if($user['profile_image'] != ""): ?>
+                                                            <img src="../uploads/profile_images/<?php echo $user['profile_image']; ?>"
+                                                                 alt="image" width="120px" height="100px">
                                                             <?php else: ?>
                                                             <img src="uploads/books_img/book_image.jpg" alt=""
-                                                                 width="200px" height="250px">
+                                                                 width="120px" height="100px">
                                                             <?php endif; ?>
                                                        </center>
                                                   </td>
