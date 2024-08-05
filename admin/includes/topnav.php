@@ -26,11 +26,11 @@
                     WHERE h.hold_status = 'Hold'";
                     $query_run = mysqli_query($con, $query);
                     $total_borrowers = $query_run ? mysqli_fetch_assoc($query_run)['total_borrowers'] : 0;
-                    echo '<span class="badge bg-primary badge-number">'.$total_borrowers.'</span>';
+                    echo '<span class="badge bg-danger badge-number">'.$total_borrowers.'</span>';
                     ?>
                 </a>
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications scrollable-dropdown">
                     <li class="dropdown-header">
                         You have <?=$total_borrowers?> notifications
                     </li>
@@ -68,8 +68,10 @@
                         }
                     }
                     ?>
-                    <li>
+                    <li style="border-top: 1px solid skyblue;">
+                        <center>
                         <a href="hold_list.php" style="text-decoration:underline;font-size:13px;margin-left:10px;">Show all notifications</a>
+                    </center>
                     </li>
                 </ul>
             </li>
@@ -127,3 +129,9 @@
     </nav>
 </header>
 
+<style>
+.scrollable-dropdown {
+    max-height: 300px; /* Set your desired max-height */
+    overflow-y: auto;
+}
+</style>
