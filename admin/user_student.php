@@ -85,20 +85,20 @@ include('./includes/sidebar.php');
                                                                       </a>
                                                                       <!-- Block/Unblock Student Action-->
                                                                       <?php if($user['status'] == 'approved'): ?>
-                                                                           <button type="button" class="btn btn-sm border text-warning" onclick="confirmBlock('<?=$user['user_id'];?>')">
+                                                                           <button type="button" class="btn btn-sm border text-warning" onclick="confirmBlock('<?=$user['user_id'];?>')" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Block Student">
                                                                                 <i class="bi bi-lock-fill"></i>
                                                                            </button>
                                                                       <?php else: ?>
-                                                                           <button type="button" class="btn btn-sm border text-success" onclick="confirmUnblock('<?=$user['user_id'];?>')">
+                                                                           <button type="button" class="btn btn-sm border text-success" onclick="confirmUnblock('<?=$user['user_id'];?>')" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unblock Student">
                                                                                 <i class="bi bi-unlock-fill"></i>
                                                                            </button>
                                                                       <?php endif; ?>
                                                                       <!-- Delete Student Action-->
-                                                                      <button type="button" class="btn btn-sm border text-danger" onclick="confirmDelete('<?=$user['user_id'];?>')">
+                                                                      <button type="button" class="btn btn-sm border text-danger" onclick="confirmDelete('<?=$user['user_id'];?>')" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Student">
                                                                            <i class="bi bi-trash-fill"></i>
                                                                       </button>
                                                                       <!-- Generate ID Card Action-->
-                                                                      <button type="button" class="btn btn-sm border text-info" onclick="generateIdCard('<?=$user['user_id'];?>')">
+                                                                      <button type="button" class="btn btn-sm border text-info" onclick="generateIdCard('<?=$user['user_id'];?>')" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Generate Student ID">
                                                                            <i class="bi bi-card-heading"></i>
                                                                       </button>
                                                                  </div>
