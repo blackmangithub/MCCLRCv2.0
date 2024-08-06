@@ -133,13 +133,13 @@ if (isset($_POST['register_btn'])) {
             // Prepare and execute INSERT query
             $insert_query = "";
             if ($role_as == 'student') {
-                $insert_query = "INSERT INTO user (lastname, firstname, middlename, gender, course, address, cell_no, birthdate, email, year_level, student_id_no, password, role_as, status, user_added, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW(), ?)";
+                $insert_query = "INSERT INTO user (lastname, firstname, middlename, gender, course, address, cell_no, birthdate, email, year_level, student_id_no, password, role_as, status, user_added, profile_image, contact_person, person_cell_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW(), ?, ?, ?)";
             } elseif ($role_as == 'faculty' || $role_as == 'staff') {
-                $insert_query = "INSERT INTO faculty (lastname, firstname, middlename, gender, course, address, cell_no, birthdate, email, username, password, role_as, status, faculty_added, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW(), ?)";
+                $insert_query = "INSERT INTO faculty (lastname, firstname, middlename, gender, course, address, cell_no, birthdate, email, username, password, role_as, status, faculty_added, profile_image, contact_person, person_cell_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW(), ?, ?, ?)";
             }
 
             $stmt_insert = mysqli_prepare($con, $insert_query);
-            mysqli_stmt_bind_param($stmt_insert, 'ssssssssssssss', $lastname, $firstname, $middlename, $gender, $course, $address, $cell_no, $birthdate, $email, $year_level, $student_id_no, $hashed_password, $role_as, $image_path);
+            mysqli_stmt_bind_param($stmt_insert, 'ssssssssssssssss', $lastname, $firstname, $middlename, $gender, $course, $address, $cell_no, $birthdate, $email, $year_level, $student_id_no, $hashed_password, $role_as, $image_path, $contact_person, $person_cell_no);
             
             if (mysqli_stmt_execute($stmt_insert)) {
                 // Generate QR Code
