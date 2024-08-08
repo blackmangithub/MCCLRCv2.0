@@ -208,6 +208,24 @@ $(document).ready(function() {
             $(this).val(''); // Clear the input
         }
     });
+
+    // Validate book image file type
+    $('#book_image_input').on('change', function() {
+        const file = this.files[0];
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (file && !allowedTypes.includes(file.type)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid File Type',
+                text: 'Only JPG, JPEG, PNG, and GIF files are allowed.',
+                confirmButtonText: 'OK'
+            });
+            $(this).val(''); // Clear the input
+            $('#book_image_name').val(''); // Clear the filename input
+        } else {
+            $('#book_image_name').val(file ? file.name : '');
+        }
+    });
 });
 
 function checkDuplicateAccessionNumbers() {
