@@ -169,6 +169,8 @@ include('./includes/script.php');
 include('../message.php');
 ?>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 function generateAccessionFields() {
     const copyCount = document.getElementById('copy').value;
@@ -238,15 +240,45 @@ function checkDuplicateAccessionNumbers() {
             Swal.fire({
                 icon: 'error',
                 title: 'Duplicate Accession Number',
-                text: `Duplicate accession number ${accessionNumber} found.`,
-                confirmButtonText: 'OK'
+                text: 'Duplicate accession number ' + accessionNumber + ' found.',
             });
             return false; // Prevent form submission
         }
         accessionNumbers.push(accessionNumber);
     }
     
+    // Check if any accession number already exists in the database
+    for (let accessionNumber of accessionNumbers) {
+        if (checkAccessionNumberExists(accessionNumber)) {
+            return false; // Prevent form submission if any accession number exists
+        }
+    }
+    
     return true; // Allow form submission
+}
+
+function checkAccessionNumberExists(accessionNumber) {
+    let exists = false;
+    
+    $.ajax({
+        url: 'check_accession.php',
+        type: 'POST',
+        async: false,
+        data: { accession_number: accessionNumber },
+        success: function(response) {
+            const data = JSON.parse(response);
+            if (data.exists) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Accession Number Exists',
+                    text: 'Accession number ' + accessionNumber + ' already exists.',
+                });
+                exists = true;
+            }
+        }
+    });
+    
+    return exists;
 }
 
 function populateBookDetails() {
@@ -284,4 +316,3 @@ function populateBookDetails() {
     }
 }
 </script>
-

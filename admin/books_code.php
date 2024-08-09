@@ -157,21 +157,6 @@ if (isset($_POST['update_accession_number'])) {
     }
 }
 
-// Check accession number already exists
-if (isset($_POST['accession_number_check'])) {
-    $accession_number = mysqli_real_escape_string($con, $_POST['accession_number']);
-    $query = "SELECT * FROM book WHERE accession_number = '$accession_number'";
-    $query_run = mysqli_query($con, $query);
-    
-    if (mysqli_num_rows($query_run) > 0) {
-        echo json_encode(['exists' => true]);
-    } else {
-        echo json_encode(['exists' => false]);
-    }
-    exit;
-}
-
-
 // Add Book
 if (isset($_POST['add_book'])) {
     // Collect form data
