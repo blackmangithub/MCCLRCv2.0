@@ -285,6 +285,23 @@ include('../message.php');
 ?>
 
 <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+     // Add auto-increment ID to Books Table
+     let booksTable = document.querySelector('#myDataTable tbody');
+     let bookRows = booksTable.querySelectorAll('tr');
+     bookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+
+     // Add auto-increment ID to Ebooks Table
+     let ebooksTable = document.querySelector('#myDataTable2 tbody');
+     let ebookRows = ebooksTable.querySelectorAll('tr');
+     ebookRows.forEach((row, index) => {
+          row.querySelector('.auto-id').textContent = index + 1;
+     });
+});
+
 function validateNumberInput(input) {
     // Filter out non-numeric characters
     input.value = input.value.replace(/[^0-9]/g, '');
