@@ -238,7 +238,8 @@ function checkDuplicateAccessionNumbers() {
             Swal.fire({
                 icon: 'error',
                 title: 'Duplicate Accession Number',
-                text: 'Duplicate accession number ' + accessionNumber + ' found.',
+                text: `Duplicate accession number ${accessionNumber} found.`,
+                confirmButtonText: 'OK'
             });
             return false; // Prevent form submission
         }
@@ -247,7 +248,6 @@ function checkDuplicateAccessionNumbers() {
     
     return true; // Allow form submission
 }
-
 
 function populateBookDetails() {
     const selectedBook = document.getElementById('title_select').value;
@@ -284,3 +284,4 @@ function populateBookDetails() {
     }
 }
 </script>
+
