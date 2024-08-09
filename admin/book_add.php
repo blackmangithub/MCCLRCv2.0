@@ -49,7 +49,7 @@ include('./includes/sidebar.php');
                                 <div class="col-12 col-md-5">
                                     <div class="mb-2 input-group-sm">
                                         <label for="author">Author</label>
-                                        <input type="text" name="author" class="form-control" required>
+                                        <input type="text" name="author" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -57,13 +57,13 @@ include('./includes/sidebar.php');
                                 <div class="col-12 col-md-5">
                                     <div class="mb-2 input-group-sm">
                                         <label for="isbn">ISBN</label>
-                                        <input type="text" name="isbn" class="form-control" required>
+                                        <input type="text" name="isbn" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-5">
                                     <div class="mb-2 input-group-sm">
                                         <label for="publisher">Publisher</label>
-                                        <input type="text" name="publisher" class="form-control" required>
+                                        <input type="text" name="publisher" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -71,13 +71,13 @@ include('./includes/sidebar.php');
                                 <div class="col-12 col-md-5">
                                     <div class="mb-2 input-group-sm">
                                         <label for="copyright_date">Copyright Year</label>
-                                        <input type="text" id="copyright_date" name="copyright_date" class="form-control" required autocomplete="off" pattern="\d{4}">
+                                        <input type="text" id="copyright_date" name="copyright_date" class="form-control" autocomplete="off" pattern="\d{4}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-5">
                                     <div class="mb-2 input-group-sm">
                                         <label for="place_publication">Place of Publication</label>
-                                        <input type="text" name="place_publication" class="form-control" required>
+                                        <input type="text" name="place_publication" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@ include('./includes/sidebar.php');
                                 <div class="col-12 col-md-5">
                                     <div class="mb-2 input-group-sm">
                                         <label for="call_number">Call Number</label>
-                                        <input type="text" name="call_number" id="book_call_number" class="form-control" required>
+                                        <input type="text" name="call_number" id="book_call_number" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-5">
